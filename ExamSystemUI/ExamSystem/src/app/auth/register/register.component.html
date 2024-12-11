@@ -1,0 +1,75 @@
+<div class="container mt-5 mb-5">
+    <form class="p-4 shadow rounded bg-light">
+      <h2 class="mb-4 text-center text-primary">Register</h2>
+  
+      <!-- Name Field -->
+      <div class="mb-3">
+        <label for="name" class="form-label">Full Name</label>
+        <input
+          type="text"
+          id="name"
+          name="name"
+          class="form-control"
+          placeholder="Enter your full name"
+          [(ngModel)]="name"
+          required
+        />
+      </div>
+  
+      <!-- Email Field -->
+      <div class="mb-3">
+        <label for="email" class="form-label">Email Address</label>
+        <input
+          type="email"
+          id="email"
+          name="email"
+          class="form-control"
+          placeholder="Enter your email"
+          [(ngModel)]="email"
+          required
+        />
+      </div>
+  
+      <!-- Password Field -->
+      <div class="mb-3">
+        <label for="password" class="form-label">Password</label>
+        <input
+          type="password"
+          id="password"
+          name="password"
+          class="form-control"
+          placeholder="Enter your password"
+          [(ngModel)]="password"
+          required
+        />
+      </div>
+  
+      <!-- Confirm Password Field -->
+      <div class="mb-3">
+        <label for="confirmPassword" class="form-label">Confirm Password</label>
+        <input
+          type="password"
+          id="confirmPassword"
+          name="confirmPassword"
+          class="form-control"
+          placeholder="Confirm your password"
+          [(ngModel)]="confirmPassword"
+          required
+        />
+      </div>
+  
+      <!-- Submit Button -->
+      <button type="button" class="btn btn-primary w-100" (click)="register()">
+        Register
+      </button>
+  
+      <!-- Login Redirect -->
+      <div class="mt-4 text-center">
+        <small>
+          Already have an account?
+          <a href="/login" class="text-primary text-decoration-none">Login</a>
+        </small>
+      </div>
+    </form>
+  </div>
+  

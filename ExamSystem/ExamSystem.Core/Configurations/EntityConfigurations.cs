@@ -75,8 +75,8 @@ namespace ExamSystem.Core.Configurations
 
             builder
                 .HasMany(q => q.Answers)
-                .WithOne()
-                .HasForeignKey(a => a.QuestionId);
+                .WithOne();
+                //.HasForeignKey(a => a.QuestionId);
 
             builder
                 .HasMany(q => q.ExamQuestions)

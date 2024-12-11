@@ -88,7 +88,11 @@ namespace ExamSystem.Application.Services
             var existingUser = await _userManager.FindByEmailAsync(logindto.email);
             if (existingUser == null)
             {
-                return new Userdto { Result = "Email already exists." };
+                return new Userdto { Result = "Email not exists." };
+            }
+
+            if(!await _userManager.CheckPasswordAsync(existingUser, logindto.Password)) {
+                return new Userdto { Result = "Invalid password." };
             }
 
             var token = await GenerateToken(existingUser);

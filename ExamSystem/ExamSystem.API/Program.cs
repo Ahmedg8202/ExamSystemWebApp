@@ -57,19 +57,28 @@ namespace ExamSystem.API
                 ).ConfigureWarnings(warnings => warnings.Ignore(RelationalEventId.PendingModelChangesWarning));
             });
 
-            builder.Services.AddCors((options) => {
-                options.AddPolicy("DevCors", (corsBuilder) => {
-                    corsBuilder.WithOrigins("http://localhost:4200", "http://localhost:3000", "http://localhost:8000")
-                    .AllowAnyMethod()
-                    .AllowAnyHeader()
-                    .AllowCredentials();
-                });
+            //builder.Services.AddCors((options) => {
+            //    options.AddPolicy("DevCors", (corsBuilder) => {
+            //        corsBuilder.AllowAnyOrigin()
+            //        .AllowAnyMethod()
+            //        .AllowAnyHeader()
+            //        .AllowCredentials();
+            //    });
 
-                options.AddPolicy("ProdCors", (corsBuilder) => {
-                    corsBuilder.WithOrigins("https://myProductionSite.com")
-                    .AllowAnyMethod()
-                    .AllowAnyHeader()
-                    .AllowCredentials();
+            //    options.AddPolicy("ProdCors", (corsBuilder) => {
+            //        corsBuilder.WithOrigins("https://myProductionSite.com")
+            //        .AllowAnyMethod()
+            //        .AllowAnyHeader()
+            //        .AllowCredentials();
+            //    });
+            //});
+            builder.Services.AddCors(options =>
+            {
+                options.AddPolicy("AllowLocalhost", policy =>
+                {
+                    policy.WithOrigins("http://localhost:4200") // Allow the frontend
+                          .AllowAnyHeader() // Allow any headers
+                          .AllowAnyMethod(); // Allow any HTTP methods (GET, POST, etc.)
                 });
             });
 
@@ -107,19 +116,18 @@ namespace ExamSystem.API
 
 
             var app = builder.Build();
-
+            app.UseCors("AllowLocalhost");
 
 
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
             {
-                app.UseCors("DevCors");
                 app.UseSwagger();
                 app.UseSwaggerUI();
             }
             else
             {
-                app.UseCors("ProdCors");
+                //app.UseCors("ProdCors");
                 app.UseHttpsRedirection();
             }
 
@@ -133,7 +141,7 @@ namespace ExamSystem.API
             }
 
             app.UseHttpsRedirection();
-
+            app.UseRouting();
             app.UseAuthentication();
             app.UseAuthorization();
 

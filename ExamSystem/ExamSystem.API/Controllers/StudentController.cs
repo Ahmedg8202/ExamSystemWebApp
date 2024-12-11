@@ -46,7 +46,5 @@ namespace ExamSystem.API.Controllers
 
             return Ok(result);
         }
-
-
     }
 }
