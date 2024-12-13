@@ -12,7 +12,7 @@ namespace ExamSystem.Application.Interfaces
     {
         Task<IEnumerable<ExamResult>> GetExamHistoryForStudent(string studentId);
         Task<IEnumerable<ExamResult>> AllExamResults();
-        Task<ExamQuestion> GetRandomExam();
+        Task<ExamQuestiondto> GetRandomExam();
         Task<List<ExamQuestion>> ExamById(string examId);
         Task<ExamResult> SubmitExam(SubmitExamdto exam);
         Task<bool> AddExam(Examdto examdto);

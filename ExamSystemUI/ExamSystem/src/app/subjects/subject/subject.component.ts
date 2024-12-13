@@ -1,18 +1,46 @@
 import { Component, OnInit } from '@angular/core';
+import { SubjectService, Subject } from './subject.service';
 
 @Component({
-  selector: 'app-subject',
+  selector: 'app-subjects',
   templateUrl: './subject.component.html',
-  styleUrls: ['./subject.component.css']
+  styleUrls: ['./subject.component.css'],
 })
 export class SubjectComponent implements OnInit {
-  subjects = [
-    { name: 'Mathematics' },
-    { name: 'Science' },
-    { name: 'History' }
-  ];
+  subjects: Subject[] = [];
+  selectedSubject: Subject | null = null;
 
-  constructor() { }
+  constructor(private subjectService: SubjectService) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.fetchAllSubjects();
+  }
+
+  fetchAllSubjects(): void {
+    this.subjectService.getAllSubjects().subscribe(
+      (data) => {
+        this.subjects = data;
+        console.log(this.subjects);
+      },
+      (error) => {
+        console.error('Error fetching subjects:', error);
+      }
+    );
+  }
+
+  fetchSubjectById(id: string): void {
+    this.subjectService.getSubjectById(id).subscribe(
+      (data) => {
+        this.selectedSubject = data;
+      },
+      (error) => {
+        console.error('Error fetching subject:', error);
+      }
+    );
+  }
+
+  closeSubjectDetails(): void {
+    this.selectedSubject = null;
+  }
+  
 }

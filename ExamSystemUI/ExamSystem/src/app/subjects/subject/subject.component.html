@@ -1,23 +1,45 @@
-<div class="container mt-4 mb-4">
-    <h4>Completed Exams Details</h4>
-    <table class="table table-striped">
-      <thead>
-        <tr>
-          <th>#</th>
-          <th>Subject Name</th>
-          <th></th>
-          <th>Students Passed</th>
-          <th>Students Failed</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-        </tr>
-      </tbody>
-    </table>
+<div class="container">
+  <h2 class="text-center">Subjects</h2>
+
+  <!-- List of Subjects -->
+  @if(subjects.length > 0){
+    <div>
+      <ul class="list-group">
+        @for( subject of subjects; track subject.subjectId){
+          <li class="list-group-item d-flex justify-content-between">
+            <span>{{ subject.name }}</span>
+            <button
+              class="btn btn-info btn-sm"
+              (click)="fetchSubjectById(subject.subjectId)"
+            >
+              View Details
+            </button>
+          </li>
+        }
+      </ul>
+    </div>
+  }
+  @if(subjects.length == 0){
+    <div class="text-center text-muted">
+      No subjects found.
+    </div>
+  }
+
+  @if(selectedSubject){
+    <div class="card mt-4">
+      <div class="card-header">
+        <h4>{{ selectedSubject?.name }}</h4>
+      </div>
+      <div class="card-body">
+        <p><strong>Description:</strong> {{ selectedSubject?.description }}</p>
+        <p><strong>Number of Questions:</strong> {{ selectedSubject?.questionsNumber }}</p>
+        <p><strong>Duration:</strong> {{ selectedSubject?.duration }} mins</p>
+        <p><strong>Total Marks:</strong> {{ selectedSubject?.total }}</p>
+        <p><strong>Total Exams:</strong> {{ selectedSubject?.total }}</p>
+        <p><strong>Total Students take exam in this subject:</strong> {{ selectedSubject?.total }}</p>
+        <p><strong>Sucess Rate:</strong> {{ selectedSubject?.total }}</p>
+      <button class="btn btn-danger btn-sm" (click)="closeSubjectDetails()">Close</button>
+      </div>
+    </div> 
+  }  
 </div>

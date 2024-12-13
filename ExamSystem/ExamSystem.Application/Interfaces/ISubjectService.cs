@@ -10,6 +10,7 @@ namespace ExamSystem.Application.Interfaces
 {
     public interface ISubjectService
     {
+        Task<IEnumerable<Subject>> GetAll();
         Task<bool> AddSubjectAsync(Subjectdto subjectdto);
         Task<Subject> GetSubjectByIdAsync(string subjectId);
         Task<IEnumerable<Subject>> GetAllSubjectsAsync();

@@ -27,22 +27,40 @@ namespace ExamSystem.Infrastructure.Repositories
                 .Where(e => e.ExamId == examId).ToListAsync();
         }
 
-        public async Task<ExamQuestion> GetRandomExamAsync()
+        public async Task<List<ExamQuestion>> GetRandomExamAsync()
         {
-            int count = await _context.ExamQuestions
-                .Select(e => e.ExamId)
-                .Distinct()
-                .CountAsync();
-            
-            Random random = new Random();
-            int skip = random.Next(0, count);
+            //int count = await _context.ExamQuestions
+            //    .Select(e => e.ExamId)
+            //    .Distinct()
+            //    .CountAsync();
 
-            return await _context.ExamQuestions
+            //Random random = new Random();
+            //int skip = random.Next(0, count);
+
+            //return await _context.ExamQuestions
+            //    .Include(e => e.Question)
+            //    .ThenInclude(e => e.Answers)
+            //    .Skip(skip)
+            //    .Take(1)
+            //    .FirstOrDefaultAsync();
+            var randomExamId = await _context.Exams
+                .OrderBy(e => Guid.NewGuid())  // Randomly orders exams
+                .Select(e => e.ExamId)
+                .FirstOrDefaultAsync();
+
+            if (randomExamId == null)
+            {
+                return null;  // No exams found
+            }
+
+            // Fetch the questions associated with the random exam
+            var examQuestions = await _context.ExamQuestions
                 .Include(e => e.Question)
                 .ThenInclude(e => e.Answers)
-                .Skip(skip)
-                .Take(1)
-                .FirstOrDefaultAsync();
+                .Where(e => e.ExamId == randomExamId)
+                .ToListAsync();
+
+            return examQuestions;
         }
 
         public async Task AddExamResultAsync(ExamResult result)

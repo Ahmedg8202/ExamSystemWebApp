@@ -67,6 +67,12 @@ namespace ExamSystem.Application.Services
 
             return await _unitOfWork.SubjectRepository.DeleteAsync(subject);
         }
+
+        public async Task<IEnumerable<Subject>> GetAll()
+        {
+            var subjects = await _unitOfWork.SubjectRepository.GetAllAsync();
+            return subjects;
+        }
     }
 
 }

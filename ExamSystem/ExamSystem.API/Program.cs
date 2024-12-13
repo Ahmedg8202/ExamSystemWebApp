@@ -72,15 +72,6 @@ namespace ExamSystem.API
             //        .AllowCredentials();
             //    });
             //});
-            builder.Services.AddCors(options =>
-            {
-                options.AddPolicy("AllowLocalhost", policy =>
-                {
-                    policy.WithOrigins("http://localhost:4200") // Allow the frontend
-                          .AllowAnyHeader() // Allow any headers
-                          .AllowAnyMethod(); // Allow any HTTP methods (GET, POST, etc.)
-                });
-            });
 
             builder.Services.AddAutoMapper(typeof(ExamMappers));
 
@@ -116,9 +107,9 @@ namespace ExamSystem.API
 
 
             var app = builder.Build();
-            app.UseCors("AllowLocalhost");
+            //app.UseCors("AllowLocalhost");
 
-
+            app.UseCors(c => c.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin());
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
             {

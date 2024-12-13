@@ -11,7 +11,7 @@ namespace ExamSystem.Application.Services
     public interface IExamRepository: IGenericRepository<Exam>
     {
         Task AddQuestionAsync(Question question);
-        Task<ExamQuestion> GetRandomExamAsync();
+        Task<List<ExamQuestion>> GetRandomExamAsync();
         Task<List<ExamQuestion>> GetExamById(string examId);
         Task<List<Exam>> GetExamsBySubjectAsync(string subject);
         Task AddExamResultAsync(ExamResult result);

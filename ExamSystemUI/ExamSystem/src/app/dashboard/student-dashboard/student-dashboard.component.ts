@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 
+import { ExamResult, ExamsService } from '../../exams/exams.service';
+
 @Component({
   selector: 'app-student-dashboard',
   imports: [],
@@ -14,14 +16,29 @@ export class StudentDashboardComponent {
     { id: 3, name: 'Computer Science' }
   ];
 
-  examHistory = [
+  examHistory: ExamResult[] = [];
+
+
+  eexamHistory = [
     { examName: 'Math Final Exam', date: '2024-11-20', score: 85 },
     { examName: 'Physics Mid-Term', date: '2024-10-15', score: 90 },
     { examName: 'Computer Science Quiz', date: '2024-09-10', score: 78 }
   ];
 
-  constructor(private router: Router) {}
+  constructor(private router: Router, private examService: ExamsService) {}
 
+  ngOnInit(): void {
+    this.dashboard();
+  }
+  dashboard() {
+    this.examService.getAllExamsResults().subscribe((data) => {
+      console.log(data);
+      this.examHistory = data;
+    },
+    (error) => {
+      console.error('Error fetching exams:', error);
+    })
+  }
   navigateToSubject(subjectId: number) {
     // Navigate to a detailed subject view (if necessary)
     this.router.navigateByUrl(`/subject/${subjectId}`);

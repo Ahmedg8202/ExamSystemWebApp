@@ -17,7 +17,7 @@ namespace ExamSystem.API.Controllers
             _examService = examService;
         }
 
-        [HttpGet("exam/History")]
+        [HttpGet("History")]
         public async Task<IActionResult> AllExamHistory()
         {
             var examHistory = await _examService.AllExamResults();
@@ -30,7 +30,7 @@ namespace ExamSystem.API.Controllers
             return Ok(examHistory);
         }
 
-        [HttpGet("exam/History/{studentId}")]
+        [HttpGet("History/{studentId}")]
         public async Task<IActionResult> ExamHistory(string studentId)
         {
             var examHistory = await _examService.GetExamHistoryForStudent(studentId);
@@ -54,7 +54,7 @@ namespace ExamSystem.API.Controllers
             return Ok(exam);
         }
 
-        [HttpGet("exam/{examId}")]
+        [HttpGet("{examId}")]
         public async Task<ActionResult<Exam>> GetExam(string examId)
         {
             var exam = await _examService.ExamById(examId);
@@ -65,7 +65,7 @@ namespace ExamSystem.API.Controllers
             return Ok(exam);
         }
 
-        [HttpPost("exam/submit")]
+        [HttpPost("submit")]
         public async Task<ActionResult<ExamResult>> SubmitExam([FromBody] SubmitExamdto exam)
         {
             var result = await _examService.SubmitExam(exam);
@@ -77,7 +77,7 @@ namespace ExamSystem.API.Controllers
             return Ok(result);
         }
 
-        [HttpPost("exam/add")]
+        [HttpPost("add")]
         public async Task<ActionResult> AddExam([FromForm] Examdto examdto)
         {
             var success = await _examService.AddExam(examdto);
@@ -89,7 +89,7 @@ namespace ExamSystem.API.Controllers
             return Ok();
         }
 
-        [HttpPut("exam/update")]
+        [HttpPut("update")]
         public async Task<ActionResult> UpdateExam([FromBody] Examdto examdto)
         {
             var success = await _examService.UpdateExam(examdto);
@@ -101,7 +101,7 @@ namespace ExamSystem.API.Controllers
             return Ok();
         }
 
-        [HttpDelete("exam/delete/{examId}")]
+        [HttpDelete("delete/{examId}")]
         public async Task<ActionResult> DeleteExam(string examId)
         {
             var success = await _examService.DeleteExam(examId);

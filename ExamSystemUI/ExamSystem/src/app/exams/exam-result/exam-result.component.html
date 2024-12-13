@@ -1,0 +1,29 @@
+<div class="container mt-5">
+    <h2 class="text-center">Exam Results</h2>
+    <div *ngIf="result; else loading">
+      <div class="card">
+        <div class="card-header">
+          <h4>Exam: {{ result.examName }}</h4>
+        </div>
+        <div class="card-body">
+          <p><strong>Score:</strong> {{ result.score }} / {{ result.total }}</p>
+          <p><strong>Status:</strong> <span [class.text-success]="result.passed" [class.text-danger]="!result.passed">
+            {{ result.passed ? 'Passed' : 'Failed' }}
+          </span></p>
+          <h5>Details:</h5>
+          <ul class="list-group">
+            <li class="list-group-item" *ngFor="let detail of result.details">
+              <strong>Question:</strong> {{ detail.question }}<br>
+              <strong>Your Answer:</strong> {{ detail.studentAnswer }}<br>
+              <strong>Correct Answer:</strong> {{ detail.correctAnswer }}
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  
+    <ng-template #loading>
+      <p>Loading result...</p>
+    </ng-template>
+  </div>
+  

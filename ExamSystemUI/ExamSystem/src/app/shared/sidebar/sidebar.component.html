@@ -1,20 +1,14 @@
-<div class="d-flex flex-column flex-shrink-0 p-3 bg-light" style="width: 250px;">
-    <h4>Admin Sidebar</h4>
-  
-    <div *ngIf="section === 'subject'">
-      <button class="btn btn-primary w-100 mb-2" (click)="addSubject()">Add Subject</button>
-      <button class="btn btn-warning w-100 mb-2" (click)="updateSubject()">Update Subject</button>
-      <button class="btn btn-danger w-100" (click)="deleteSubject()">Delete Subject</button>
-    </div>
-  
-    <div *ngIf="section === 'exams'">
-      <button class="btn btn-primary w-100 mb-2">Create Exam</button>
-      <button class="btn btn-success w-100 mb-2">View Exam Results</button>
-    </div>
-  
-    <div *ngIf="section === 'students'">
-      <button class="btn btn-primary w-100 mb-2">View All Students</button>
-      <button class="btn btn-success w-100 mb-2">Add Student</button>
-    </div>
-  </div>
-  
+<nav class="sidebar bg-light border-end">
+  <h3 class="text-center p-3">Admin Panel</h3>
+  <ul class="nav flex-column p-2">
+    <li class="nav-item" *ngFor="let link of navLinks">
+      <a
+        class="nav-link"
+        [class.active]="activeLink === link.name"
+        (click)="onNavigate(link)"
+      >
+        {{ link.name }}
+      </a>
+    </li>
+  </ul>
+</nav>

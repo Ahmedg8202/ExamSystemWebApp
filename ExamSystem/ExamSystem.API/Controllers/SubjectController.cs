@@ -15,6 +15,13 @@ namespace ExamSystem.API.Controllers
             _subjectService = subjectService;
         }
 
+        [HttpGet]
+        public async Task<IActionResult> AllSubjects()
+        {
+            var result = await _subjectService.GetAll();
+            return Ok(result);
+        }
+
         [HttpPost("Subject")]
         public async Task<IActionResult> AddSubject([FromBody] Subjectdto subjectdto)
         {

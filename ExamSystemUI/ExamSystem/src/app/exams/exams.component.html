@@ -1,0 +1,69 @@
+<div class="container">
+  <h2 class="text-center">Exams</h2>
+
+  <!-- List of exams -->
+  <div *ngIf="exams.length > 0">
+    <ul class="list-group">
+      <li class="list-group-item d-flex justify-content-between" *ngFor="let exam of exams;">
+        <span>{{ exam.name }}</span>
+        <button
+          class="btn btn-info btn-sm"
+          (click)="fetchExamById(exam.examId)"
+        >
+          View Details
+        </button>
+      </li>
+    </ul>
+  </div>
+
+  <!-- No exams found message -->
+  <div *ngIf="exams.length === 0" class="text-center text-muted">
+    No exams found.
+  </div>
+
+  <!-- Exam details section -->
+  <div *ngIf="selectedExam">
+    <div class="card mt-4">
+      <div class="card-header">
+        <h4>{{ selectedExam?.name }}</h4>
+      </div>
+      <div class="card-body">
+        <p><strong>Description:</strong> {{ selectedExam?.description }}</p>
+        <p><strong>Number of Questions:</strong> {{ selectedExam?.questionsNumber }}</p>
+        <p><strong>Duration:</strong> {{ selectedExam?.duration }} mins</p>
+        <button class="btn btn-danger btn-sm" (click)="closeExamDetails()">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Dropdown for subject selection -->
+  <div class="container mt-4">
+    <h3 class="text-center">Select a Subject to Take an Exam</h3>
+  
+    <form (ngSubmit)="takeExam(selectedSubject!)">
+      <div class="mb-3">
+        <ul for="subjectDropdown" class="form-label">Subject</ul>
+        <select
+          class="form-select"
+          id="subjectDropdown"
+          [(ngModel)]="selectedSubject"
+          name="selectedSubject"
+          required
+        >
+          <option value="" disabled>Select a subject</option>
+          @for(subject of subjects; track subject.subjectId){
+            <option value="{{ subject.subjectId }}">{{ subject.name }}</option>
+          }
+        </select>
+      </div>
+  
+      <button
+        type="submit"
+        class="btn btn-primary"
+        [disabled]="!selectedSubject"
+      >
+        Take Exam
+      </button>
+    </form>
+  </div>  
+</div>

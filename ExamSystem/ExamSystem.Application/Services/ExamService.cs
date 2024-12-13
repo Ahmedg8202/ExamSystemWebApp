@@ -19,9 +19,28 @@ namespace ExamSystem.Application.Services
             _unitOfWork = unitOfWork;
         }
 
-        public async Task<ExamQuestion> GetRandomExam()
+        public async Task<ExamQuestiondto> GetRandomExam()
         {
-            return await _unitOfWork.ExamRepository.GetRandomExamAsync();
+            var examQuestions = await _unitOfWork.ExamRepository.GetRandomExamAsync();
+
+            var questions = examQuestions.Select(examQuestion => new QuestionExam
+            {
+                questionId = examQuestion.Question.QuestionId,
+                text = examQuestion.Question.Text,
+                Answers = examQuestion.Question.Answers.Select(answer => new AnswerExam
+                {
+                    answerId = answer.AnswerId,
+                    text = answer.Text,
+                    isCorrect = answer.IsCorrect
+                }).ToList()
+            }).ToList();
+
+
+            return new ExamQuestiondto
+            {
+                ExamId = examQuestions.FirstOrDefault().ExamId,
+                Questions = questions
+            };
         }
 
         public async Task<List<ExamQuestion>> ExamById(string examId)
@@ -57,8 +76,8 @@ namespace ExamSystem.Application.Services
                 return null;
 
             int score = await calculateScore(examdto.questions);
-
-            bool passed = (examdto.questions.Count() * 1.0 / score) > 0.5;
+                
+            bool passed = (score * 1.0 / examdto.questions.Count()) * 100 > 49;
 
             var examResult = new ExamResult
             {
