@@ -29,4 +29,8 @@ export class SubjectService {
   getSubjectById(id: string): Observable<Subject> {
     return this.http.get<Subject>(`${this.baseUrl}/Subject/${id}`);
   }
+
+  addSubject(subject: any): Observable<any> {
+    return this.http.post(`${this.baseUrl}/Subject`, subject);
+  }
 }

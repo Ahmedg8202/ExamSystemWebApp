@@ -1,7 +1,8 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 
-import { ExamResult, ExamsService } from '../../exams/exams.service';
+import { ExamResult, ExamsService, Subject } from '../../exams/exams.service';
+import { AuthService } from '../../auth/login/AuthService';
 
 @Component({
   selector: 'app-student-dashboard',
@@ -10,28 +11,28 @@ import { ExamResult, ExamsService } from '../../exams/exams.service';
   styleUrl: './student-dashboard.component.css'
 })
 export class StudentDashboardComponent {
-  subjects = [
-    { id: 1, name: 'Mathematics' },
-    { id: 2, name: 'Physics' },
-    { id: 3, name: 'Computer Science' }
-  ];
+  subjects: Subject[] = [];
 
   examHistory: ExamResult[] = [];
 
-
-  eexamHistory = [
-    { examName: 'Math Final Exam', date: '2024-11-20', score: 85 },
-    { examName: 'Physics Mid-Term', date: '2024-10-15', score: 90 },
-    { examName: 'Computer Science Quiz', date: '2024-09-10', score: 78 }
-  ];
-
-  constructor(private router: Router, private examService: ExamsService) {}
+  constructor(private router: Router, 
+    private examService: ExamsService, 
+    private authService: AuthService) {}
 
   ngOnInit(): void {
     this.dashboard();
   }
   dashboard() {
-    this.examService.getAllExamsResults().subscribe((data) => {
+
+    const userId = this.authService.getId();
+console.log("UserIDDDDDDDDDDDD " + userId)
+    this.examService.getAllSubjects().subscribe((data) => {
+      console.log(data);
+      this.subjects = data;
+    }
+    )
+
+    this.examService.getStudentHistory(userId!).subscribe((data) => {      
       console.log(data);
       this.examHistory = data;
     },
@@ -39,13 +40,16 @@ export class StudentDashboardComponent {
       console.error('Error fetching exams:', error);
     })
   }
+
   navigateToSubject(subjectId: number) {
-    // Navigate to a detailed subject view (if necessary)
     this.router.navigateByUrl(`/subject/${subjectId}`);
   }
 
   navigateToExamDetails(examName: string) {
-    // Navigate to a detailed exam results page
     this.router.navigateByUrl(`/exam-details/${examName}`);
+  }
+
+  getStudentHistory(studentId: string){
+    this.router.navigateByUrl(`/student/${studentId}`)
   }
 }

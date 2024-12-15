@@ -36,6 +36,7 @@ namespace ExamSystem.Application.Services
             Question question = new Question
             {
                 QuestionId = Guid.NewGuid().ToString(),
+                SubjectId = questiondto.SubjectId,
                 Text = questiondto.Text,
                 Answers = options
             };
@@ -55,9 +56,9 @@ namespace ExamSystem.Application.Services
             //return await _unitOfWork.QuestionRepository.DeleteAsync(questionId);
         }
 
-        public async Task<IEnumerable<Question>> GetAllQuestions()
+        public async Task<IEnumerable<Question>> GetAllQuestions(string subjectId)
         {
-            return await _unitOfWork.QuestionRepository.GetAllAsync();
+            return await _unitOfWork.QuestionRepository.GetAll(subjectId);
         }
 
         public async Task<Question> GetQuestionById(string questionId)

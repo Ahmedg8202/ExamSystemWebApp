@@ -1,16 +1,20 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+
 import { SubjectService, Subject } from './subject.service';
 
 @Component({
   selector: 'app-subjects',
-  templateUrl: './subject.component.html',
-  styleUrls: ['./subject.component.css'],
+  templateUrl: './subjects.component.html',
+  styleUrls: ['./subjects.component.css'],
 })
-export class SubjectComponent implements OnInit {
+export class SubjectsComponent implements OnInit {
   subjects: Subject[] = [];
   selectedSubject: Subject | null = null;
 
-  constructor(private subjectService: SubjectService) {}
+  constructor(private subjectService: SubjectService,
+    private router: Router
+  ) {}
 
   ngOnInit(): void {
     this.fetchAllSubjects();
@@ -41,6 +45,10 @@ export class SubjectComponent implements OnInit {
 
   closeSubjectDetails(): void {
     this.selectedSubject = null;
+  }
+
+  addSubject(){
+    this.router.navigateByUrl('/new-subject');
   }
   
 }

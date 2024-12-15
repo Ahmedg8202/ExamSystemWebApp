@@ -9,6 +9,7 @@ namespace ExamSystem.Application.DTOs
     public class ExamQuestiondto
     {
         public string ExamId { get; set; }
+        public string SubjectId { get; set; }
         public List<QuestionExam> Questions { get; set; }
     }
 

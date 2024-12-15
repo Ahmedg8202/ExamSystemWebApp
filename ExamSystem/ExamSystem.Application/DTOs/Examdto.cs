@@ -10,7 +10,6 @@ namespace ExamSystem.Application.DTOs
     public class Examdto
     {
         public string SubjectId { get; set; }
-        public string SubjectName { get; set; }
         public List<string> Questions { get; set; }
     }
 }

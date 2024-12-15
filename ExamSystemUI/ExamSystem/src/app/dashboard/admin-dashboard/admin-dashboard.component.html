@@ -7,7 +7,7 @@
         <div class="card shadow border-primary">
           <div class="card-body text-center">
             <h5 class="card-title text-primary">Total Students</h5>
-            <h3>{{ totalStudents }}</h3>
+            <h3>{{ dashboard?.studentNumber }}</h3>
           </div>
         </div>
       </div>
@@ -17,7 +17,7 @@
         <div class="card shadow border-info">
           <div class="card-body text-center">
             <h5 class="card-title text-info">Completed Exams</h5>
-            <h3>{{ completedExams }}</h3>
+            <h3>{{ dashboard?.examCompleted }}</h3>
           </div>
         </div>
       </div>
@@ -27,7 +27,7 @@
         <div class="card shadow border-success">
           <div class="card-body text-center">
             <h5 class="card-title text-success">Passed Exams</h5>
-            <h3>{{ passedExams }}</h3>
+            <h3>{{ dashboard?.passedExams }}</h3>
           </div>
         </div>
       </div>
@@ -37,7 +37,7 @@
         <div class="card shadow border-danger">
           <div class="card-body text-center">
             <h5 class="card-title text-danger">Failed Exams</h5>
-            <h3>{{ failedExams }}</h3>
+            <h3>{{ dashboard?.failedExam }}</h3>
           </div>
         </div>
       </div>

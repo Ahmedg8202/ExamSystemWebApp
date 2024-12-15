@@ -34,6 +34,7 @@ namespace ExamSystem.Application.Services
             {
                 ExamId = result.ExamId,
                 StudentId = result.StudentId,
+                DateTime = result.DateTime,
                 Score = result.Score,
                 Status = result.Status
             }).ToList();

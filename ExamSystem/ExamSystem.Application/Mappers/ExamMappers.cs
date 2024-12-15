@@ -15,7 +15,7 @@ namespace ExamSystem.Application.Mappers
         {
             CreateMap<Exam, Examdto>()
                 .ForMember(dest => dest.SubjectId, opt => opt.MapFrom(src => src.SubjectId))
-                .ForMember(dest => dest.SubjectName, opt => opt.Ignore()) // AutoMapper will skip this property
+                //.ForMember(dest => dest.SubjectName, opt => opt.Ignore()) // AutoMapper will skip this property
                 ;
         }
     }

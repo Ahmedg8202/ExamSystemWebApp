@@ -1,69 +1,95 @@
 <div class="container">
+  @if(isAdmin){
   <h2 class="text-center">Exams</h2>
 
   <!-- List of exams -->
-  <div *ngIf="exams.length > 0">
+  @if(exams.length > 0){
+  <div>
     <ul class="list-group">
       <li class="list-group-item d-flex justify-content-between" *ngFor="let exam of exams;">
-        <span>{{ exam.name }}</span>
+        <span>{{ exam.examId }}</span>
+        <span>{{ exam.subjectId }}</span>
         <button
           class="btn btn-info btn-sm"
           (click)="fetchExamById(exam.examId)"
         >
           View Details
         </button>
+        
+      <button class="btn btn-warning btn-sm"  (click)="updateExam(exam.examId)">Update</button>
+      <button class="btn btn-danger btn-sm"  (click)="deleteExam(exam.examId)">Delete</button>
       </li>
     </ul>
   </div>
-
+  }
+  
   <!-- No exams found message -->
   <div *ngIf="exams.length === 0" class="text-center text-muted">
     No exams found.
   </div>
 
+  <div class="d-flex justify-content-end mb-4">
+    <button class="btn btn-success me-2" (click)="navigateToAddQuestion()">Add Question</button>
+    <button class="btn btn-success me-2" (click)="navigateToAddExam()">Add Exam</button>
+  </div>
+  
   <!-- Exam details section -->
   <div *ngIf="selectedExam">
     <div class="card mt-4">
       <div class="card-header">
-        <h4>{{ selectedExam?.name }}</h4>
+        <h4>{{ selectedExam.examId }}</h4>
       </div>
       <div class="card-body">
-        <p><strong>Description:</strong> {{ selectedExam?.description }}</p>
+        <!-- <p><strong>Description:</strong> {{ selectedExam?.description }}</p>
         <p><strong>Number of Questions:</strong> {{ selectedExam?.questionsNumber }}</p>
-        <p><strong>Duration:</strong> {{ selectedExam?.duration }} mins</p>
+        <p><strong>Duration:</strong> {{ selectedExam?.duration }} mins</p> -->
         <button class="btn btn-danger btn-sm" (click)="closeExamDetails()">Close</button>
       </div>
     </div>
   </div>
+  }
 
-  <!-- Dropdown for subject selection -->
-  <div class="container mt-4">
-    <h3 class="text-center">Select a Subject to Take an Exam</h3>
-  
-    <form (ngSubmit)="takeExam(selectedSubject!)">
-      <div class="mb-3">
-        <ul for="subjectDropdown" class="form-label">Subject</ul>
-        <select
-          class="form-select"
-          id="subjectDropdown"
-          [(ngModel)]="selectedSubject"
-          name="selectedSubject"
-          required
+  @if(isStudent){
+    <div class="container mt-4">
+      <h3 class="text-center">Select a Subject to Take an Exam</h3>
+    
+      <form (ngSubmit)="takeExam(selectedSubject!)">
+        <div class="mb-3">
+          <ul for="subjectDropdown" class="form-label">Subject</ul>
+          <select
+            class="form-select"
+            id="subjectDropdown"
+            [(ngModel)]="selectedSubject"
+            name="selectedSubject"
+            required
+          >
+            <option value="" disabled>Select a subject</option>
+            @for(subject of subjects; track subject.subjectId){
+              <option value="{{ subject.subjectId }}">{{ subject.name }}</option>
+            }
+          </select>
+        </div>
+    
+        <button
+          type="submit"
+          class="btn btn-primary"
+          [disabled]="!selectedSubject"
         >
-          <option value="" disabled>Select a subject</option>
-          @for(subject of subjects; track subject.subjectId){
-            <option value="{{ subject.subjectId }}">{{ subject.name }}</option>
-          }
-        </select>
-      </div>
-  
-      <button
-        type="submit"
-        class="btn btn-primary"
-        [disabled]="!selectedSubject"
-      >
-        Take Exam
-      </button>
-    </form>
-  </div>  
+          Take Exam
+        </button>
+      </form>
+    </div>  
+  }
+
+  @if (!isAdmin && !isStudent)
+{
+    <div class="container mt-5 text-center">
+        <div class="alert alert-warning" role="alert">
+            <p class="mb-3">You need to log in to access this page.</p>
+            <h3 class="mb-4">Please Log In</h3>
+            <a class="btn btn-primary btn-lg" href="/login" role="button">Log In</a>
+        </div>
+    </div>
+}
+
 </div>

@@ -10,6 +10,7 @@ namespace ExamSystem.Core.Entites
     {
         public string QuestionId { get; set; }
         public string Text { get; set; }
+        public string SubjectId { get; set; }
         public List<Answer> Answers { get; set; }
         public List<ExamQuestion> ExamQuestions { get; set; }
     }

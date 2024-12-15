@@ -1,1 +1,61 @@
-<p>new-exam works!</p>
+<div class="container mt-4">
+    <h2 class="text-primary text-center mb-4">Add Exam</h2>
+  
+    <div class="mb-3">
+      <h4 class="mt-4">subject</h4>
+    </div>
+  
+    <div>
+      <h4 class="mt-4">Select Questions</h4>
+      <div *ngIf="questions.length > 0; else noQuestions">
+        <div
+          class="card mb-2"
+          *ngFor="let question of questions"
+          (click)="toggleQuestionSelection(question.questionId)"
+          [class.selected]="selectedQuestions.includes(question.questionId)"
+        >
+          <div class="card-body">
+            <h5 class="card-title">{{ question.text }}</h5>
+            <button class="btn btn-success mt-4" (click)="addToExam(question.questionId, question.text)">Add to Exam</button>
+
+            <!-- <ul>
+              <li *ngFor="let answer of question.answers">
+                <span>{{ answer.text }}</span>
+                <span *ngIf="answer.isCorrect" class="text-success">(Correct)</span>
+              </li>
+            </ul> -->
+          </div>
+        </div>
+      </div>
+
+      <ng-template #noQuestions>
+        <p class="text-danger">No questions available to display.</p>
+      </ng-template>
+
+      <div class="mt-5">
+        <h4 class="text-primary">Exam Questions</h4>
+        <div *ngIf="questionToExam.length > 0; else noQuestionToExam">
+          <div
+            class="card mb-2"
+            *ngFor="let question of questionToExam"
+          >
+            <div class="card-body">
+              <h5 class="card-title">{{ question.text }}</h5>
+              <button
+                class="btn btn-danger mt-2"
+                (click)="removeFromExam(question.questionId)"
+              >
+                Remove
+              </button>
+            </div>
+          </div>
+        </div>    
+  
+      <ng-template #noQuestionToExam>
+        <p class="text-danger">No questions available to display.</p>
+      </ng-template>
+    </div>
+  
+    <button class="btn btn-success mt-4" (click)="saveExam()">Save Exam</button>
+  </div>
+  

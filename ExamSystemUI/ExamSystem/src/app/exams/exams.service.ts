@@ -5,10 +5,6 @@ import { Observable } from 'rxjs';
 export interface Exam {
   examId: string;
   subjectId: string;
-  name: string;
-  description: string;
-  duration: number;
-  questionsNumber: number;
 }
   
   export interface Subject {
@@ -51,6 +47,8 @@ export interface SubmitExam{
 export interface ExamResult{
   studentId: string;
   examId: string;
+  subjectId: string;
+  dateTime: string;
   score: string;
   status: boolean;
 }
@@ -64,9 +62,8 @@ export class ExamsService {
   constructor(private http: HttpClient) {}
 
   getAllExams(): Observable<Exam[]> {
-    return this.http.get<Exam[]>(`${this.baseUrl}/exams`);
+    return this.http.get<Exam[]>(`${this.baseUrl}/Exams`);
   }
-
 
   getAllSubjects(): Observable<Subject[]> {
     return this.http.get<Subject[]>(`http://localhost:5130/api/Subject`);
@@ -76,12 +73,16 @@ export class ExamsService {
     return this.http.get<ExamResult[]>(`${this.baseUrl}/History`);
   }
 
-  getRandomExam(): Observable<any> {
-    return this.http.get<any>(`${this.baseUrl}/random`);
+  getStudentHistory(id: string): Observable<ExamResult[]> {
+    return this.http.get<ExamResult[]>(`${this.baseUrl}/History/${id}`);
+  }
+  getRandomExam(subjectId: string): Observable<any> {
+    // console.
+    return this.http.get<any>(`${this.baseUrl}/random/${subjectId}`);
   }
   
-  getExamById(id: string): Observable<Exam> {
-    return this.http.get<Exam>(`${this.baseUrl}/exam/${id}`);
+  getExamById(id: string): Observable<any> {
+    return this.http.get<any>(`${this.baseUrl}/Exam/${id}`);
   }
 
   
@@ -90,7 +91,10 @@ export class ExamsService {
     return this.http.post<any>(`${this.baseUrl}/submit`, examData);
   }
 
-  getExamResult(examId: string): Observable<any> {
-    return this.http.get<any>(`${this.baseUrl}/${examId}`);
+  setExamResult(result: any): void {
+    //this.examResult = result;
+  }
+  getExamResult(): any {
+    //return this.examResult;
   }
 }

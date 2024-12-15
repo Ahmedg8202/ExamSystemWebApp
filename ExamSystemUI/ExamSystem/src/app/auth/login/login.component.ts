@@ -31,7 +31,7 @@ export class LoginComponent {
       (response: any) => { 
         this.isLoading = false;
         try {
-          this.authService.handleLoginSuccess(response); 
+          this.authService.handleLoginSuccess(response, this.userRole); 
           console.log(response.token);
         } catch (error:any) {
           this.loginError = error.message as string;

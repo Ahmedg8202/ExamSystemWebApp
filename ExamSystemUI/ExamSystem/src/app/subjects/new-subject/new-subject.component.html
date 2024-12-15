@@ -1,0 +1,75 @@
+<div class="container mt-5">
+    <h2 class="text-center mb-4">Add New Subject</h2>
+    <form #subjectForm="ngForm" (ngSubmit)="onSubmit(subjectForm)" class="needs-validation" novalidate>
+      <div class="mb-3">
+        <label for="name" class="form-label">Subject Name</label>
+        <input
+          type="text"
+          class="form-control"
+          id="name"
+          name="name"
+          (ngModel)="subject.name"
+          required
+        />
+        <div class="invalid-feedback">Subject name is required.</div>
+      </div>
+  
+      <div class="mb-3">
+        <label for="description" class="form-label">Description</label>
+        <textarea
+          class="form-control"
+          id="description"
+          name="description"
+          (ngModel)="subject.description"
+          rows="3"
+          required
+        ></textarea>
+        <div class="invalid-feedback">Description is required.</div>
+      </div>
+  
+      <div class="mb-3">
+        <label for="questionsNumber" class="form-label">Number of Questions</label>
+        <input
+          type="number"
+          class="form-control"
+          id="questionsNumber"
+          name="questionsNumber"
+          (ngModel)="subject.questionsNumber"
+          required
+          min="1"
+        />
+        <div class="invalid-feedback">Number of questions is required.</div>
+      </div>
+  
+      <div class="mb-3">
+        <label for="duration" class="form-label">Duration (minutes)</label>
+        <input
+          type="number"
+          class="form-control"
+          id="duration"
+          name="duration"
+          (ngModel)="subject.duration"
+          required
+          min="1"
+        />
+        <div class="invalid-feedback">Duration is required.</div>
+      </div>
+  
+      <div class="mb-3">
+        <label for="total" class="form-label">Total Marks</label>
+        <input
+          type="number"
+          class="form-control"
+          id="total"
+          name="total"
+          (ngModel)="subject.total"
+          required
+          min="1"
+        />
+        <div class="invalid-feedback">Total marks are required.</div>
+      </div>
+  
+      <button type="submit" class="btn btn-primary" [disabled]="!subjectForm.valid">Add Subject</button>
+    </form>
+  </div>
+  

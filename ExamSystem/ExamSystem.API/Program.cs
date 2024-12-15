@@ -21,7 +21,7 @@ namespace ExamSystem.API
 {
     public class Program
     {
-        public static void Main(string[] args)
+        public static async Task Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
 
@@ -55,6 +55,15 @@ namespace ExamSystem.API
                 options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"),
                     optionsBuilder => optionsBuilder.EnableRetryOnFailure()
                 ).ConfigureWarnings(warnings => warnings.Ignore(RelationalEventId.PendingModelChangesWarning));
+            });
+
+            builder.Services.Configure<IdentityOptions>(options =>
+            {
+                options.Password.RequireDigit = true;
+                options.Password.RequireLowercase = true;
+                options.Password.RequireNonAlphanumeric = false;
+                options.Password.RequireUppercase = true;
+                options.Password.RequiredLength = 6;
             });
 
             //builder.Services.AddCors((options) => {
@@ -125,7 +134,7 @@ namespace ExamSystem.API
             using (var scope = app.Services.CreateScope())
             {
                 var serviceProvider = scope.ServiceProvider;
-                Seed.SeedRole(serviceProvider);
+                await Seed.SeedRole(serviceProvider);
 
                 //var mapper = scope.ServiceProvider.GetRequiredService<IMapper>();
                 //mapper.ConfigurationProvider.AssertConfigurationIsValid();

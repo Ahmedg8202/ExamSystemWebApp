@@ -10,7 +10,9 @@
             <a class="nav-link active" aria-current="page" href="/student-Dashboard">Dashboard</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="/subject">Subject</a>
+            @if(isAdmin){
+              <a class="nav-link" href="/subject">Subject</a>
+            }
           </li>
           <li class="nav-item">
             <a class="nav-link" href="/exams">Exams</a>
@@ -20,7 +22,19 @@
           </li>
         </ul>
         <form class="d-flex" role="search">
-        <a  class="btn btn-primary" href="" routerLinkActive="router-link-active">Logout</a>
+          @if(!isAdmin && !isStudent){
+          <ul class="nav-item">
+            <button type="button" class="btn btn-primary" (click)="login()">Login</button>
+          </ul>
+          <ul>
+            <button type="button" class="btn btn-primary" (click)="register()">Register</button>
+          </ul>
+          }
+          <ul>
+          @if(isAdmin || isStudent){
+            <button type="button" class="btn btn-primary" (click)="logout()">Logout</button>
+          }
+          </ul>
         </form>
       </div>
     </div>

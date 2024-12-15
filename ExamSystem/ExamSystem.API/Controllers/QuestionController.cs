@@ -14,10 +14,10 @@ namespace ExamSystem.API.Controllers
             _questionService = service;
         }
 
-        [HttpGet("questions")]
-        public async Task<ActionResult> AllQuestions()
+        [HttpGet("questions/{subjectId}")]
+        public async Task<ActionResult> AllQuestions(string subjectId)
         {
-            var exams = await _questionService.GetAllQuestions();
+            var exams = await _questionService.GetAllQuestions(subjectId);
             if (exams == null)
             {
                 return BadRequest("No Questions found.");
@@ -37,7 +37,7 @@ namespace ExamSystem.API.Controllers
         }
 
         [HttpPost("question")]
-        public async Task<IActionResult> Question(Questiondto questiondto)
+        public async Task<IActionResult> Question([FromBody]Questiondto questiondto)
         {
             var result = await _questionService.AddQuestion(questiondto);
             if (!result)

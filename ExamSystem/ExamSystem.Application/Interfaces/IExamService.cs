@@ -12,8 +12,9 @@ namespace ExamSystem.Application.Interfaces
     {
         Task<IEnumerable<ExamResult>> GetExamHistoryForStudent(string studentId);
         Task<IEnumerable<ExamResult>> AllExamResults();
-        Task<ExamQuestiondto> GetRandomExam();
-        Task<List<ExamQuestion>> ExamById(string examId);
+        Task<IEnumerable<Exam>> AllExams();
+        Task<ExamQuestiondto> GetRandomExam(string subjectId);
+        Task<ExamQuestiondto> ExamById(string examId);
         Task<ExamResult> SubmitExam(SubmitExamdto exam);
         Task<bool> AddExam(Examdto examdto);
         Task<bool> UpdateExam(Examdto examdto);

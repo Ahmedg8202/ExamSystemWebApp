@@ -13,16 +13,20 @@ import { FormsModule } from '@angular/forms';
 export class ExamsComponent {
 
   exams: Exam[] = [];
-  selectedExam: Exam | null = null;
+  selectedExam: ExamQuestion | null = null;
   randomExam: ExamQuestion | null = null;
   subjects: Subject[] = [];
   selectedSubject: string | null = null;
 
+  isStudent = false;
+  isAdmin = false;
+
   constructor(private examService: ExamsService, private router: Router) {}
 
   ngOnInit(): void {
+    this.isStudent = localStorage.getItem('userRole') === 'Student';
+    this.isAdmin = localStorage.getItem('userRole') === 'Admin';
     this.fetchAllExams();
-    this.fetchRandomExam();
     this.loadSubjects();
   }
 
@@ -37,28 +41,16 @@ export class ExamsComponent {
       }
     );
   }
-
- fetchRandomExam(): void {
-    // this.examService.getRandomExam().subscribe(
-    //   (data) => {
-    //     this.randomExam = data;
-    //     console.log('Random Exammmmmm:', data);
-    //   },
-    //   (error) => {
-    //     console.error('Error fetching random exam:', error);
-    //   }
-    // );
-  }
-
   fetchExamById(id: string): void {
-    this.examService.getExamById(id).subscribe(
-      (data) => {
+    this.examService.getExamById(id).subscribe({
+      next: (data) => {
         this.selectedExam = data;
+        console.log("fetch by id"+ id +" SS "+ data?.questions[0]);//object
       },
-      (error) => {
+      error: (error) => {
         console.error('Error fetching subject:', error);
       }
-    );
+  });
   }
 
   submitExam(){
@@ -80,9 +72,26 @@ export class ExamsComponent {
   takeExam(subjectId: string) {
     this.selectedSubject = subjectId;
     alert(this.selectedSubject);
-    this.router.navigateByUrl('take-exam');
+    this.router.navigate(['/take-exam', subjectId]);
   }
   closeExamDetails(){
 
   }
+
+  navigateToAddQuestion(){
+    this.router.navigateByUrl('new-question');
+  }
+
+  navigateToAddExam(){
+    this.router.navigateByUrl('new-exam');
+  }
+
+  updateExam(examId: string){
+    console.log("update " + examId);
+  }
+
+  deleteExam(examId: string){
+    console.log("delete " + examId);
+  }
+  
 }

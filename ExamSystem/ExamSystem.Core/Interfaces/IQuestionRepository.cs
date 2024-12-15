@@ -9,6 +9,8 @@ namespace ExamSystem.Core.Interfaces
 {
     public interface IQuestionRepository : IGenericRepository<Question>
     {
+        Task<List<Question>> GetAll(string subjectId);
+
         Task<string> GetCorrectAnswerId(string questionId);
         Task<Question> GetQuestionById(string questionId);
     }

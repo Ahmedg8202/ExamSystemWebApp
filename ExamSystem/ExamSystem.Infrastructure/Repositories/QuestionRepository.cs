@@ -27,7 +27,13 @@ namespace ExamSystem.Infrastructure.Repositories
                 .Select(a => a.AnswerId)
                 .FirstOrDefaultAsync();
         }
-
+        public async Task<List<Question>> GetAll(string subjectId)
+        {
+            return await _context.Questions
+                .Where(q => q.SubjectId == subjectId)
+                .Include(q => q.Answers)
+                .ToListAsync();
+        }
         public async Task<Question> GetQuestionById(string questionId)
         {
             return await _context.Questions

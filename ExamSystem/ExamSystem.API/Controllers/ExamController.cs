@@ -29,6 +29,19 @@ namespace ExamSystem.API.Controllers
 
             return Ok(examHistory);
         }
+        
+        [HttpGet("Exams")]
+        public async Task<IActionResult> AllExams()
+        {
+            var exams = await _examService.AllExams();
+
+            if (exams == null || !exams.Any())
+            {
+                return BadRequest("No exam history found");
+            }
+
+            return Ok(exams);
+        }
 
         [HttpGet("History/{studentId}")]
         public async Task<IActionResult> ExamHistory(string studentId)
@@ -43,10 +56,10 @@ namespace ExamSystem.API.Controllers
             return Ok(examHistory);
         }
 
-        [HttpGet("random")]
-        public async Task<ActionResult<Exam>> GetRandomExam()
+        [HttpGet("random/{subjectId}")]
+        public async Task<ActionResult<Exam>> GetRandomExam(string subjectId)
         {
-            var exam = await _examService.GetRandomExam();
+            var exam = await _examService.GetRandomExam(subjectId);
             if (exam == null)
             {
                 return NotFound("No exams found.");
@@ -54,7 +67,7 @@ namespace ExamSystem.API.Controllers
             return Ok(exam);
         }
 
-        [HttpGet("{examId}")]
+        [HttpGet("Exam/{examId}")]
         public async Task<ActionResult<Exam>> GetExam(string examId)
         {
             var exam = await _examService.ExamById(examId);
@@ -78,7 +91,7 @@ namespace ExamSystem.API.Controllers
         }
 
         [HttpPost("add")]
-        public async Task<ActionResult> AddExam([FromForm] Examdto examdto)
+        public async Task<ActionResult> AddExam([FromBody] Examdto examdto)
         {
             var success = await _examService.AddExam(examdto);
             if (!success)

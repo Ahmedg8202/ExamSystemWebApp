@@ -1,7 +1,9 @@
-import { Component, OnInit } from '@angular/core';
-import { ExamsService, QuesiontToSubmit, SubmitExam } from '../exams.service'
+import { Component, OnInit, Input} from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
+
+import { ExamsService, QuesiontToSubmit, SubmitExam } from '../exams.service'
+import { AuthService } from '../../auth/login/AuthService';
 
  class Answer {
   answerId = '';
@@ -28,23 +30,28 @@ import { CommonModule } from '@angular/common';
 })
 
 export class TakeExamComponent implements OnInit {
+  //@Input({required: true}) subjectId!: string;
   randomExam!: ExamQuestion;
-  randomExamNew = new ExamQuestion();
   examId: string = '';
-  studentId: string = 'student-id';
+  studentId!: string;
   subjectId: string = 'subject-id';
   selectedAnswers: QuesiontToSubmit[] = [];
 
-  constructor(private examService: ExamsService, private router: Router) {}
+  constructor(private examService: ExamsService, 
+    private authService: AuthService,
+    private router: Router,
+    private route: ActivatedRoute) {}
 
   ngOnInit(): void {
     // Get the exam id from route params if needed
-    // this.examId = this.route.snapshot.paramMap.get('examId') || '';
+    this.subjectId = this.route.snapshot.paramMap.get('subjectId') || '';
+    console.log('Received subjectId:', this.subjectId);
+    this.studentId = this.authService.getId()!;
     this.fetchRandomExam();
   }
 
   fetchRandomExam(): void {
-    this.examService.getRandomExam().subscribe({
+    this.examService.getRandomExam(this.subjectId).subscribe({
       next: (data) => {
         this.randomExam = data;
         console.log();
@@ -67,18 +74,19 @@ export class TakeExamComponent implements OnInit {
 
   submitExam(): void {
     const examData: SubmitExam = {
-      subjectId: "54576727-303e-4768-8235-6aeb31ae1fde",
-      studentId: "2bc1c983-c12e-45ff-8aff-47ed87f81ab6",
+      subjectId: this.subjectId,
+      studentId: this.studentId,
       examId: this.randomExam.examId,
       questions: this.selectedAnswers
     }
-    console.log(this.selectedAnswers);
-    console.log(examData);
     
     this.examService.submitExam(examData).subscribe(
       (response) => {
+        console.log('Exam submitted successfully', response);
         alert('Exam submitted successfully!');
-        this.router.navigateByUrl('/exam-result');
+        this.router.navigate(['/exam-result'], {
+          state: { result: response }  // Pass exam result as state
+        });
       },
       (error) => {
         console.error('Error submitting exam', error);
