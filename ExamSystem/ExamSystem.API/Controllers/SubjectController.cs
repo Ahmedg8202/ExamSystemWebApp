@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using ExamSystem.Application.DTOs;
 using ExamSystem.Application.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 
 namespace ExamSystem.API.Controllers
 {
@@ -15,13 +16,14 @@ namespace ExamSystem.API.Controllers
             _subjectService = subjectService;
         }
 
-        [HttpGet]
-        public async Task<IActionResult> AllSubjects()
+        [HttpGet("AllSubjects")]
+        public async Task<IActionResult> AllSubjects([FromQuery] int page, [FromQuery] int pageSize)
         {
-            var result = await _subjectService.GetAll();
+            var result = await _subjectService.GetAll(page, pageSize);
             return Ok(result);
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPost("Subject")]
         public async Task<IActionResult> AddSubject([FromBody] Subjectdto subjectdto)
         {
@@ -31,7 +33,7 @@ namespace ExamSystem.API.Controllers
                 return BadRequest("Failed to add the subject.");
             }
 
-            return Ok("Subject added successfully.");
+            return Ok();
         }
 
         [HttpGet("Subject/{subjectId}")]
@@ -46,13 +48,15 @@ namespace ExamSystem.API.Controllers
             return Ok(subject);
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpGet("Subjects")]
-        public async Task<IActionResult> GetAllSubjects()
+        public async Task<IActionResult> GetAllSubjects(int page = 0, int pageSize = 0)
         {
-            var subjects = await _subjectService.GetAllSubjectsAsync();
+            var subjects = await _subjectService.GetAllSubjectsAsync(page, pageSize);
             return Ok(subjects);
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPut("Subject/{subjectId}")]
         public async Task<IActionResult> UpdateSubject(string subjectId, [FromBody] Subjectdto subjectdto)
         {
@@ -65,6 +69,7 @@ namespace ExamSystem.API.Controllers
             return Ok("Subject updated successfully.");
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpDelete("Subject/{subjectId}")]
         public async Task<IActionResult> DeleteSubject(string subjectId)
         {

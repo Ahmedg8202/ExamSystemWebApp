@@ -3,17 +3,18 @@ import { Exam, ExamsService, ExamQuestion, Subject } from './exams.service';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
+import { SubjectsComponent } from "../subjects/subjects.component";
 
 @Component({
   selector: 'app-exams',
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, SubjectsComponent],
   templateUrl: './exams.component.html',
   styleUrl: './exams.component.css'
 })
 export class ExamsComponent {
 
   exams: Exam[] = [];
-  selectedExam: ExamQuestion | null = null;
+  selectedExam: any | null = null;
   randomExam: ExamQuestion | null = null;
   subjects: Subject[] = [];
   selectedSubject: string | null = null;
@@ -29,7 +30,14 @@ export class ExamsComponent {
     this.fetchAllExams();
     this.loadSubjects();
   }
+  onPrevious(){
+    
+  }
 
+  onNext(){
+
+  }
+  
   fetchAllExams(): void {
     this.examService.getAllExams().subscribe(
       (data) => {
@@ -45,7 +53,7 @@ export class ExamsComponent {
     this.examService.getExamById(id).subscribe({
       next: (data) => {
         this.selectedExam = data;
-        console.log("fetch by id"+ id +" SS "+ data?.questions[0]);//object
+        console.log("fetch by id"+ id +" SS "+ this.selectedExam);
       },
       error: (error) => {
         console.error('Error fetching subject:', error);
@@ -58,10 +66,11 @@ export class ExamsComponent {
   }
 
   loadSubjects(): void {
+    console.log("load subjects");
     this.examService.getAllSubjects().subscribe(
       (data) => {
         this.subjects = data;
-        console.log("subjects"+this.subjects);
+        console.log("subjects" + this.subjects);
       },
       (error) => {
         console.error('Error fetching subjects', error);
@@ -71,19 +80,20 @@ export class ExamsComponent {
 
   takeExam(subjectId: string) {
     this.selectedSubject = subjectId;
-    alert(this.selectedSubject);
     this.router.navigate(['/take-exam', subjectId]);
   }
   closeExamDetails(){
 
   }
 
-  navigateToAddQuestion(){
-    this.router.navigateByUrl('new-question');
+  navigateToAddQuestion(subjectId: string){
+    console.log(subjectId);
+    this.router.navigate(['/new-question', subjectId]);
   }
 
-  navigateToAddExam(){
-    this.router.navigateByUrl('new-exam');
+  navigateToAddExam(subjectId: string){
+    console.log(subjectId);
+    this.router.navigate(['new-exam', subjectId]);
   }
 
   updateExam(examId: string){

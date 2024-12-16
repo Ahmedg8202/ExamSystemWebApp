@@ -2,16 +2,24 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 
 import { SubjectService, Subject } from './subject.service';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { BrowserModule } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-subjects',
   templateUrl: './subjects.component.html',
   styleUrls: ['./subjects.component.css'],
+  imports: [CommonModule, FormsModule],
 })
 export class SubjectsComponent implements OnInit {
   subjects: Subject[] = [];
   selectedSubject: Subject | null = null;
-
+  filter = {
+    page: 1,
+    pageSize: 1
+  };
+  
   constructor(private subjectService: SubjectService,
     private router: Router
   ) {}
@@ -19,9 +27,19 @@ export class SubjectsComponent implements OnInit {
   ngOnInit(): void {
     this.fetchAllSubjects();
   }
+  
+  onPrevious() {
+    this.filter.page --;
+    this.fetchAllSubjects();
+  }
+  onNext() {
+    this.filter.page ++;
+    this.fetchAllSubjects();
+  }
 
   fetchAllSubjects(): void {
-    this.subjectService.getAllSubjects().subscribe(
+    console.log(this.filter.page, this.filter.pageSize);
+    this.subjectService.getAllSubjects(this.filter).subscribe(
       (data) => {
         this.subjects = data;
         console.log(this.subjects);
@@ -50,5 +68,4 @@ export class SubjectsComponent implements OnInit {
   addSubject(){
     this.router.navigateByUrl('/new-subject');
   }
-  
 }

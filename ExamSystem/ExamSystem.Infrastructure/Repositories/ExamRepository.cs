@@ -21,10 +21,17 @@ namespace ExamSystem.Infrastructure.Repositories
 
         public Task<List<ExamQuestion>> GetExamById(string examId)
         {
+            //return _context.ExamQuestions
+            //    .Include(e => e.Question)
+            //    .ThenInclude(e => e.Answers)
+            //    .Where(e => e.ExamId == examId).ToListAsync();
             return _context.ExamQuestions
                 .Include(e => e.Question)
-                .ThenInclude(e => e.Answers)
-                .Where(e => e.ExamId == examId).ToListAsync();
+                    .ThenInclude(q => q.Answers)
+                .Include(e => e.Exam)  
+                    .ThenInclude(ex => ex.Subject)
+                .Where(e => e.ExamId == examId)
+                .ToListAsync();
         }
 
         public async Task<List<ExamQuestion>> GetRandomExamAsync(string subjectId)
@@ -41,6 +48,7 @@ namespace ExamSystem.Infrastructure.Repositories
             }
 
             var examQuestions = await _context.ExamQuestions
+                .Include(e => e.Exam.Subject)
                 .Include(e => e.Question)
                 .ThenInclude(e => e.Answers)
                 .Where(e => e.ExamId == randomExamId)

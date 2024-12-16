@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { CommonModule } from '@angular/common';
 
 @Component({
@@ -18,17 +18,18 @@ export class NewExamComponent implements OnInit {
     text: string;
   }[] = [];
   subjectId = '54576727-303e-4768-8235-6aeb31ae1fde';
-  apiUrl = 'http://localhost:5130/questions/54576727-303e-4768-8235-6aeb31ae1fde'; // Replace with your actual endpoint
+  apiUrl = 'http://localhost:5130/questions'; // Replace with your actual endpoint
 
-  constructor(private http: HttpClient, private router: Router) {}
+  constructor(private http: HttpClient, private router: Router, private route: ActivatedRoute) {}
 
   ngOnInit(): void {
+    this.subjectId = this.route.snapshot.paramMap.get('subjectId') || '';
     this.loadQuestions();
   }
 
   loadQuestions() {
-    const subjectId = "54576727-303e-4768-8235-6aeb31ae1fde";
-    this.http.get<any[]>(`${this.apiUrl}`).subscribe({
+    console.log(this.subjectId);
+    this.http.get<any[]>(`${this.apiUrl}/${this.subjectId}`).subscribe({
       next: (data) => {
         this.questions = data;
       },

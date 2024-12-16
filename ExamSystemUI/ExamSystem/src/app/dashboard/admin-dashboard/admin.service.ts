@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 export interface Dashboard{
@@ -18,6 +18,10 @@ export class AdminService {
     constructor(private http: HttpClient) {}
 
     dashboard(): Observable<Dashboard> {
-        return this.http.get<Dashboard>(`${this.baseUrl}/Dashboard`);
+        const token = localStorage.getItem('authToken');
+        const headers = new HttpHeaders({
+        'Authorization': `Bearer ${token}`,
+        });
+        return this.http.get<Dashboard>(`${this.baseUrl}/Dashboard`, { headers });
     }
 }

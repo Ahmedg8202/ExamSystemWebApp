@@ -39,9 +39,9 @@ namespace ExamSystem.Application.Services
             return await _unitOfWork.SubjectRepository.GetByIdAsync(subjectId);
         }
 
-        public async Task<IEnumerable<Subject>> GetAllSubjectsAsync()
+        public async Task<IEnumerable<Subject>> GetAllSubjectsAsync(int page = 0, int pageSize = 0)
         {
-            return await _unitOfWork.SubjectRepository.GetAllAsync();
+            return await _unitOfWork.SubjectRepository.GetAllAsync(page, pageSize);
         }
 
         public async Task<bool> UpdateSubjectAsync(string subjectId, Subjectdto subjectdto)
@@ -68,9 +68,9 @@ namespace ExamSystem.Application.Services
             return await _unitOfWork.SubjectRepository.DeleteAsync(subject);
         }
 
-        public async Task<IEnumerable<Subject>> GetAll()
+        public async Task<IEnumerable<Subject>> GetAll(int page, int pageSize)
         {
-            var subjects = await _unitOfWork.SubjectRepository.GetAllAsync();
+            var subjects = await _unitOfWork.SubjectRepository.GetAllAsync(page, pageSize);
             return subjects;
         }
     }

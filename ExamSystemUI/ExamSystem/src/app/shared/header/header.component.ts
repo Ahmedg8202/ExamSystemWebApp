@@ -1,14 +1,14 @@
 import { Component } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, RouterLink, RouterLinkActive } from '@angular/router';
 
 @Component({
   selector: 'app-header',
-  imports: [],
+  imports: [RouterLink],
   templateUrl: './header.component.html',
   styleUrl: './header.component.css'
 })
 export class HeaderComponent {
-  name = 'student';
+  name = '';
   isAdmin = false;
   isStudent = false;
 
@@ -17,6 +17,8 @@ export class HeaderComponent {
   ngOnInit(): void {
     this.isStudent = localStorage.getItem('userRole') === 'Student';
     this.isAdmin = localStorage.getItem('userRole') === 'Admin';
+    this.isStudent ? this.name = 'Student' : this.name = '';
+    this.isAdmin ? this.name = 'Admin' : this.name = '';
   }
 
   login(){

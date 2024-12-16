@@ -1,5 +1,6 @@
 ﻿using ExamSystem.Application.DTOs;
 using ExamSystem.Application.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ExamSystem.API.Controllers
@@ -17,6 +18,7 @@ namespace ExamSystem.API.Controllers
 
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpGet("Dashboard")]
         public async Task<ActionResult> Dashboard() {
             var result = await _adminService.Dashboard();

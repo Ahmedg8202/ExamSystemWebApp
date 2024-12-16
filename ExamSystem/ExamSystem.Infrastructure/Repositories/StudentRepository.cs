@@ -23,18 +23,35 @@ namespace ExamSystem.Infrastructure.Repositories
 
         }
 
-        public async Task<List<Student>> GetAllAsync()
+        public async Task<List<Student>> GetAllAsync(int page, int pageSize)
         {
             var role = await _roleManager.FindByNameAsync("Student");
 
-            var userRoles = await _context.UserRoles
-                .Where(ur => ur.RoleId == role.Id)
-                .ToListAsync();
+            if (role == null)
+            {
+                return new List<Student>();
+            }
 
-            var userIds = userRoles.Select(ur => ur.UserId).ToList();
-            var users = await _context.Users
-                .Where(u => userIds.Contains(u.Id))
+            var userIds = await _context.UserRoles
+                .Where(ur => ur.RoleId == role.Id)
+                .Select(ur => ur.UserId)
                 .ToListAsync();
+            var users = new List<IdentityUser> { };
+
+            if (page <= 0 || pageSize <= 0)
+            {
+                users = await _context.Users
+                   .Where(u => userIds.Contains(u.Id))
+                   .ToListAsync();
+            }
+            else
+            {
+                users = await _context.Users
+                    .Where(u => userIds.Contains(u.Id))
+                    .Skip((page - 1) * pageSize)
+                    .Take(pageSize)
+                    .ToListAsync();
+            }
 
             return users.Select(u => new Student
             {
@@ -43,8 +60,9 @@ namespace ExamSystem.Infrastructure.Repositories
                 email = u.Email,
                 Result = "",
                 Token = ""
-            }).ToList(); ;
+            }).ToList();
         }
+
 
         public async Task<Student> GetByIdAsync(string studentId)
         {

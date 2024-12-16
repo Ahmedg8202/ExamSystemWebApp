@@ -2,6 +2,7 @@
 using ExamSystem.Application.Interfaces;
 using ExamSystem.Application.Services;
 using ExamSystem.Core.Entites;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ExamSystem.API.Controllers
@@ -14,6 +15,7 @@ namespace ExamSystem.API.Controllers
             _questionService = service;
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpGet("questions/{subjectId}")]
         public async Task<ActionResult> AllQuestions(string subjectId)
         {
@@ -25,6 +27,7 @@ namespace ExamSystem.API.Controllers
             return Ok(exams);
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpGet("question/{questionId}")]
         public async Task<ActionResult> GetQuestionById(string questionId)
         {
@@ -36,6 +39,7 @@ namespace ExamSystem.API.Controllers
             return Ok(exam);
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPost("question")]
         public async Task<IActionResult> Question([FromBody]Questiondto questiondto)
         {
@@ -46,6 +50,7 @@ namespace ExamSystem.API.Controllers
             return Ok(result);
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPut("question")]
         public async Task<IActionResult> UpdateQuestion(Questiondto questiondto)
         {
@@ -56,6 +61,7 @@ namespace ExamSystem.API.Controllers
             return Ok();
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpDelete("question/{questionId}")]
         public async Task<IActionResult> DeleteQuestion(string questionId)
         {

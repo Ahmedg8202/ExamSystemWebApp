@@ -43,7 +43,6 @@ export class TakeExamComponent implements OnInit {
     private route: ActivatedRoute) {}
 
   ngOnInit(): void {
-    // Get the exam id from route params if needed
     this.subjectId = this.route.snapshot.paramMap.get('subjectId') || '';
     console.log('Received subjectId:', this.subjectId);
     this.studentId = this.authService.getId()!;
@@ -54,7 +53,7 @@ export class TakeExamComponent implements OnInit {
     this.examService.getRandomExam(this.subjectId).subscribe({
       next: (data) => {
         this.randomExam = data;
-        console.log();
+        console.log(this.randomExam);
       },
       error: (error) => {
         console.error('Error fetching random exam:', error);

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 export interface Exam {
@@ -62,33 +62,57 @@ export class ExamsService {
   constructor(private http: HttpClient) {}
 
   getAllExams(): Observable<Exam[]> {
-    return this.http.get<Exam[]>(`${this.baseUrl}/Exams`);
+    const token = localStorage.getItem('authToken');
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${token}`,
+    });
+    return this.http.get<Exam[]>(`${this.baseUrl}/Exams`, { headers });
   }
 
   getAllSubjects(): Observable<Subject[]> {
-    return this.http.get<Subject[]>(`http://localhost:5130/api/Subject`);
+    const filter = { page: 0, pageSize: 0 };
+    const params = new HttpParams()
+          .set('page', filter.page)
+          .set('pageSize', filter.pageSize);
+    console.log("loading " + filter.page + " " + filter.pageSize);
+    return this.http.get<Subject[]>(`http://localhost:5130/api/Subject/AllSubjects`, { params });
   }
 
   getAllExamsResults(): Observable<ExamResult[]> {
-    return this.http.get<ExamResult[]>(`${this.baseUrl}/History`);
+    const token = localStorage.getItem('authToken');
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${token}`,
+    });
+    return this.http.get<ExamResult[]>(`${this.baseUrl}/History`,{ headers });
   }
 
   getStudentHistory(id: string): Observable<ExamResult[]> {
     return this.http.get<ExamResult[]>(`${this.baseUrl}/History/${id}`);
   }
   getRandomExam(subjectId: string): Observable<any> {
-    // console.
-    return this.http.get<any>(`${this.baseUrl}/random/${subjectId}`);
+    const token = localStorage.getItem('authToken');
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${token}`,
+    });
+    return this.http.get<any>(`${this.baseUrl}/random/${subjectId}`, { headers });
   }
   
   getExamById(id: string): Observable<any> {
-    return this.http.get<any>(`${this.baseUrl}/Exam/${id}`);
+    const token = localStorage.getItem('authToken');
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${token}`,
+    });
+
+    return this.http.get<any>(`${this.baseUrl}/Exam/${id}`, { headers });
   }
 
   
   submitExam(examData: SubmitExam): Observable<any> {
-    alert("Submitted");
-    return this.http.post<any>(`${this.baseUrl}/submit`, examData);
+    const token = localStorage.getItem('authToken');
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${token}`,
+    });
+    return this.http.post<any>(`${this.baseUrl}/submit`, examData, { headers });
   }
 
   setExamResult(result: any): void {

@@ -11,7 +11,7 @@ namespace ExamSystem.Application.Interfaces
     public interface IExamService
     {
         Task<IEnumerable<ExamResult>> GetExamHistoryForStudent(string studentId);
-        Task<IEnumerable<ExamResult>> AllExamResults();
+        Task<IEnumerable<ExamResult>> AllExamResults(int page, int pageSize);
         Task<IEnumerable<Exam>> AllExams();
         Task<ExamQuestiondto> GetRandomExam(string subjectId);
         Task<ExamQuestiondto> ExamById(string examId);

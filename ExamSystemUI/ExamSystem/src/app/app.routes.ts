@@ -28,10 +28,10 @@ export const routes: Routes = [
     { path: 'new-subject', component:  NewSubjectComponent, canActivate: [AdminGuard]},
     { path: 'exams', component:  ExamsComponent},
     { path: 'take-exam/:subjectId', component:  TakeExamComponent, canActivate: [StudentGuard]},
-    { path: 'new-exam', component:  NewExamComponent, canActivate: [AdminGuard]},
+    { path: 'new-exam/:subjectId', component:  NewExamComponent, canActivate: [AdminGuard]},
     { path: 'exam-result', component:  ExamResultComponent},
     { path: 'question', component:  QuestionComponent},
-    { path: 'new-question', component:  NewQuestionComponent},
+    { path: 'new-question/:subjectId', component:  NewQuestionComponent},
     { path: 'logout', component: LogoutComponent },
 ];
 

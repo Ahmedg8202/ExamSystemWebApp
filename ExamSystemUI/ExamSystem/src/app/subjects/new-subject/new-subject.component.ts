@@ -39,7 +39,7 @@ alert(this.subject.name);
       next: (response) => {
         console.log('Subject added successfully!' + response);
         alert('Subject added successfully!');
-        this.router.navigate(['/subject']);
+        this.router.navigateByUrl('/subject');
       },
       error: (error) => {
         console.error('Error adding subject:', error);

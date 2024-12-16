@@ -31,23 +31,26 @@
     <!-- Options -->
     <div class="form-group mb-3">
       <label for="options" class="form-label">Options</label>
-      <div *ngFor="let option of newQuestion.options; let i = index" class="d-flex align-items-center mb-2">
-        <input
-          type="text"
-          [(ngModel)]="newQuestion.options[i]"
-          name="option{{ i }}"
-          class="form-control me-2"
-          required
-        />
-        <button
-          type="button"
-          class="btn btn-danger"
-          (click)="removeOption(i)"
-          [disabled]="newQuestion.options.length === 1"
-        >
-          Remove
-        </button>
-      </div>
+      @for(option of newQuestion.options; let i = $index;track i){
+        <div  class="d-flex align-items-center mb-2">
+          <input
+            type="text"
+            [(ngModel)]="newQuestion.options[i]"
+            name="option{{ i }}"
+            class="form-control me-2"
+            required
+          />
+          <button
+            type="button"
+            class="btn btn-danger"
+            (click)="removeOption(i)"
+            [disabled]="option.length < 1"
+          >
+            Remove
+          </button>
+        </div>
+      }
+     
       <button type="button" class="btn btn-secondary mt-2" (click)="addOption()">Add Option</button>
     </div>
 

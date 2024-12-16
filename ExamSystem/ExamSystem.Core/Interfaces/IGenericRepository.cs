@@ -12,6 +12,6 @@ namespace ExamSystem.Core.Interfaces
         Task<bool> UpdateAsync(T entity);
         Task<bool> DeleteAsync(T entity);
         Task<T> GetByIdAsync(string id);
-        Task<IEnumerable<T>> GetAllAsync();
+        Task<IEnumerable<T>> GetAllAsync(int page = 0, int pageSize = 0);
     }
 }

@@ -1,6 +1,6 @@
 
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 export interface Subject {
@@ -20,17 +20,23 @@ export class SubjectService {
 
   constructor(private http: HttpClient) {}
 
-  // Get all subjects
-  getAllSubjects(): Observable<Subject[]> {
-    return this.http.get<Subject[]>(`${this.baseUrl}`);
+  getAllSubjects(filter: any): Observable<any> {
+    console.log(filter.page, filter.pageSize);
+    const params = new HttpParams()
+      .set('page', filter.page)
+      .set('pageSize', filter.pageSize);
+    return this.http.get<Subject[]>(`${this.baseUrl}/AllSubjects`, { params });
   }
 
-  // Get a specific subject by ID
   getSubjectById(id: string): Observable<Subject> {
     return this.http.get<Subject>(`${this.baseUrl}/Subject/${id}`);
   }
 
   addSubject(subject: any): Observable<any> {
-    return this.http.post(`${this.baseUrl}/Subject`, subject);
+    const token = localStorage.getItem('authToken');
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${token}`,
+    });
+    return this.http.post(`${this.baseUrl}/Subject`, subject, { headers });
   }
 }

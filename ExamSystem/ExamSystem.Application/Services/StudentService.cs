@@ -2,6 +2,7 @@
 using ExamSystem.Application.Interfaces;
 using ExamSystem.Core.Entites;
 using ExamSystem.Core.Interfaces;
+using Microsoft.AspNetCore.Mvc;
 
 namespace ExamSystem.Application.Services
 {
@@ -13,9 +14,9 @@ namespace ExamSystem.Application.Services
             _studentRepository = studentRepository;
         }
 
-        public async Task<IEnumerable<Student>> GetAll()
+        public async Task<IEnumerable<Student>> GetAll(int page, int pageSize)
         {
-            return await _studentRepository.GetAllAsync();
+            return await _studentRepository.GetAllAsync(page, pageSize);
         }
     }
 }

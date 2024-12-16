@@ -1,5 +1,6 @@
 ﻿using ExamSystem.Application.DTOs;
 using ExamSystem.Core.Entites;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,7 +11,7 @@ namespace ExamSystem.Application.Interfaces
 {
     public interface IStudentService
     {
-        Task<IEnumerable<Student>> GetAll();
+        Task<IEnumerable<Student>> GetAll(int page, int pageSize);
 
     }
 }

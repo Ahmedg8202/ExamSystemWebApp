@@ -25,9 +25,7 @@ export class StudentDashboardComponent {
   dashboard() {
 
     const userId = this.authService.getId();
-console.log("UserIDDDDDDDDDDDD " + userId)
     this.examService.getAllSubjects().subscribe((data) => {
-      console.log(data);
       this.subjects = data;
     }
     )

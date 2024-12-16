@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { ActivatedRoute, Router } from '@angular/router';
 
 export interface NewQuestion {
   subjectId: string;
@@ -27,8 +28,11 @@ export class NewQuestionComponent {
     correctAnswer: ''
   };
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private router: Router, private route: ActivatedRoute) {}
 
+  ngOnInit(): void {
+    this.newQuestion.subjectId = this.route.snapshot.paramMap.get('subjectId') || '';
+  }
   addOption(): void {
     this.newQuestion.options.push('');
   }
@@ -60,9 +64,6 @@ export class NewQuestionComponent {
     });
   }
 
-  /**
-   * Resets the form after successful submission
-   */
   private resetForm(): void {
     this.newQuestion = {
       subjectId: '',

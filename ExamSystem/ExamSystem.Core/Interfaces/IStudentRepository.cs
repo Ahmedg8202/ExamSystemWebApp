@@ -10,6 +10,6 @@ namespace ExamSystem.Core.Interfaces
     public interface IStudentRepository
     {
         Task<Student> GetByIdAsync(string studentId);
-        Task<List<Student>> GetAllAsync();
+        Task<List<Student>> GetAllAsync(int page = 0, int pageSize = 0);
     }
 }

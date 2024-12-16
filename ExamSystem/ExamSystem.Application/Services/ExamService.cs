@@ -30,11 +30,12 @@ namespace ExamSystem.Application.Services
                 }).ToList()
             }).ToList();
 
-
+            var subjectName = examQuestions.FirstOrDefault().Exam.Subject.Name;
             return new ExamQuestiondto
             {
                 ExamId = examQuestions.FirstOrDefault().ExamId,
                 SubjectId = subjectId,
+                SubjectName = subjectName,
                 Questions = questions
             };
         }
@@ -65,6 +66,7 @@ namespace ExamSystem.Application.Services
             {
                 ExamId = examFromdb.FirstOrDefault().ExamId,
                 SubjectId = exam.SubjectId,
+                SubjectName = examFromdb.FirstOrDefault().Exam.Subject.Name,
                 Questions = questions
             };
         }
@@ -166,9 +168,9 @@ namespace ExamSystem.Application.Services
             }).ToList();
         }
 
-        public async Task<IEnumerable<ExamResult>> AllExamResults()
+        public async Task<IEnumerable<ExamResult>> AllExamResults(int page, int pageSize)
         {
-            var examResults = await _unitOfWork.ExamResultRepository.GetAllAsync();
+            var examResults = await _unitOfWork.ExamResultRepository.GetAllAsync(page, pageSize);
 
             if (examResults == null || !examResults.Any())
                 return null;

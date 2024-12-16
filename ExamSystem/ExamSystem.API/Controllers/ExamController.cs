@@ -2,6 +2,7 @@
 using ExamSystem.Application.Interfaces;
 using ExamSystem.Core.Entites;
 using ExamSystem.Core.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ExamSystem.API.Controllers
@@ -17,10 +18,11 @@ namespace ExamSystem.API.Controllers
             _examService = examService;
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpGet("History")]
-        public async Task<IActionResult> AllExamHistory()
+        public async Task<IActionResult> AllExamHistory([FromQuery] int page, [FromQuery] int pageSize)
         {
-            var examHistory = await _examService.AllExamResults();
+            var examHistory = await _examService.AllExamResults(page, pageSize);
 
             if (examHistory == null || !examHistory.Any())
             {
@@ -29,7 +31,8 @@ namespace ExamSystem.API.Controllers
 
             return Ok(examHistory);
         }
-        
+
+        [Authorize(Roles = "Admin")]
         [HttpGet("Exams")]
         public async Task<IActionResult> AllExams()
         {
@@ -56,6 +59,7 @@ namespace ExamSystem.API.Controllers
             return Ok(examHistory);
         }
 
+        [Authorize(Roles ="Student")]
         [HttpGet("random/{subjectId}")]
         public async Task<ActionResult<Exam>> GetRandomExam(string subjectId)
         {
@@ -67,8 +71,9 @@ namespace ExamSystem.API.Controllers
             return Ok(exam);
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpGet("Exam/{examId}")]
-        public async Task<ActionResult<Exam>> GetExam(string examId)
+        public async Task<ActionResult<ExamQuestiondto>> GetExam(string examId)
         {
             var exam = await _examService.ExamById(examId);
             if (exam == null)
@@ -78,6 +83,7 @@ namespace ExamSystem.API.Controllers
             return Ok(exam);
         }
 
+        [Authorize(Roles ="Student")]
         [HttpPost("submit")]
         public async Task<ActionResult<ExamResult>> SubmitExam([FromBody] SubmitExamdto exam)
         {
@@ -90,6 +96,7 @@ namespace ExamSystem.API.Controllers
             return Ok(result);
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPost("add")]
         public async Task<ActionResult> AddExam([FromBody] Examdto examdto)
         {
@@ -102,6 +109,7 @@ namespace ExamSystem.API.Controllers
             return Ok();
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPut("update")]
         public async Task<ActionResult> UpdateExam([FromBody] Examdto examdto)
         {
@@ -114,6 +122,7 @@ namespace ExamSystem.API.Controllers
             return Ok();
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpDelete("delete/{examId}")]
         public async Task<ActionResult> DeleteExam(string examId)
         {
