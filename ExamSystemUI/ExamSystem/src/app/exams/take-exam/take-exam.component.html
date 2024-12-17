@@ -2,17 +2,18 @@
     <h2 class="text-center">Take Exam</h2>
 
     <!-- Random Exam Questions -->
-    <div *ngIf="randomExam && randomExam.questions.length > 0" class="w-100 d-flex align-items-center justify-content-center">
+    <!-- class="w-100 d-flex align-items-center justify-content-center" -->
+    <div *ngIf="randomExam && randomExam.questions.length > 0">
         <form >
             @for(question of randomExam.questions; track question.questionId){
             <div>
-                <div class="question">
+                <div class="p-4 shadow rounded bg-light mt-4">
                     <h4>{{ question.text}}</h4>
 
                     @for(answer of question.answers; track answer.answerId){
-                    <div>
+                    <div class="card-body">
                         <label>
-                            <input type="radio" name="question{{ question.questionId }}" [value]="answer.answerId"
+                            <input type="radio" name="question{{ question.questionId }}" [value]="answer.answerId" 
                                 (change)="onAnswerChange(question.questionId, answer.answerId)">
                             {{ answer.text }}
                         </label>
@@ -20,8 +21,9 @@
                 }
                 </div>
             </div>
-        }
-            <button type="button" class="btn btn-primary" (click)="submitExam()">Submit Exam</button>
+            }
+
+            <button type="button" class="btn btn-primary mt-4 mb-4 w-100" [disabled]="isReadyToSubmit()" (click)="submitExam()">Submit Exam</button>
         </form>
     </div>
 

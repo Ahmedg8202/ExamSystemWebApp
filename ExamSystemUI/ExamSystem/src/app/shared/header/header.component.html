@@ -8,18 +8,18 @@
         <ul class="navbar-nav me-auto my-2 my-lg-0 navbar-nav-scroll" style="--bs-scroll-height: 100px;">
           <li class="nav-item">
             @if(isAdmin){
-            <a class="nav-link" aria-current="page" href="/admin-Dashboard">Dashboard</a>
+            <a class="nav-link" aria-current="page" [routerLink]="['/admin-Dashboard']">Dashboard</a>
           }@else if(isStudent){
-            <a class="nav-link active" aria-current="page" href="/student-Dashboard">Dashboard</a>
+            <a class="nav-link active" aria-current="page" [routerLink]="['/student-Dashboard']">Dashboard</a>
           }
           </li>
           <li class="nav-item">
             @if(isAdmin){
-              <a class="nav-link" href="/subject">Subject</a>
+              <a class="nav-link" [routerLink]="['/subject']" >Subject</a>
             }
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="/exams">Exams</a>
+            <a class="nav-link" [routerLink]="['/exams']">Exams</a>
           </li>
 
           <!-- <li class="nav-item">

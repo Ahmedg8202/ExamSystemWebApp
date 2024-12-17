@@ -85,7 +85,7 @@ namespace ExamSystem.API.Controllers
 
         [Authorize(Roles ="Student")]
         [HttpPost("submit")]
-        public async Task<ActionResult<ExamResult>> SubmitExam([FromBody] SubmitExamdto exam)
+        public async Task<ActionResult> SubmitExam([FromBody] SubmitExamdto exam)
         {
             var result = await _examService.SubmitExam(exam);
             if (result == null)

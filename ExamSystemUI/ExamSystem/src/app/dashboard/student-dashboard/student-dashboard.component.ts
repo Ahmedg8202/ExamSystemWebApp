@@ -3,10 +3,11 @@ import { Router } from '@angular/router';
 
 import { ExamResult, ExamsService, Subject } from '../../exams/exams.service';
 import { AuthService } from '../../auth/login/AuthService';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-student-dashboard',
-  imports: [],
+  imports: [CommonModule],
   templateUrl: './student-dashboard.component.html',
   styleUrl: './student-dashboard.component.css'
 })

@@ -1,11 +1,7 @@
 <div class="container mt-4">
-    <h2 class="text-primary text-center mb-4">Add Exam</h2>
+    <h2 class="text-primary text-center mb-4">Add {{ subjectName }} Exam</h2>
   
-    <div class="mb-3">
-      <h4 class="mt-4">subject</h4>
-    </div>
-  
-    <div>
+    <div class="p-4 shadow rounded bg-light mt-5">
       <h4 class="mt-4">Select Questions</h4>
       <div *ngIf="questions.length > 0; else noQuestions">
         <div
@@ -16,7 +12,9 @@
         >
           <div class="card-body">
             <h5 class="card-title">{{ question.text }}</h5>
-            <button class="btn btn-success mt-4" (click)="addToExam(question.questionId, question.text)">Add to Exam</button>
+            <button class="btn btn-success mt-4" 
+            [disabled]="selectedQuestions.includes(question.questionId)"
+            (click)="addToExam(question.questionId, question.text)">Add to Exam</button>
 
             <!-- <ul>
               <li *ngFor="let answer of question.answers">
@@ -31,7 +29,8 @@
       <ng-template #noQuestions>
         <p class="text-danger">No questions available to display.</p>
       </ng-template>
-
+    </div>
+    <div class="p-4 shadow rounded bg-light mt-5">
       <div class="mt-5">
         <h4 class="text-primary">Exam Questions</h4>
         <div *ngIf="questionToExam.length > 0; else noQuestionToExam">
@@ -56,6 +55,6 @@
       </ng-template>
     </div>
   
-    <button class="btn btn-success mt-4" (click)="saveExam()">Save Exam</button>
+    <button class="btn btn-success mt-4" [disabled]="questionToExam.length === 0" (click)="saveExam()">Save Exam</button>
   </div>
   

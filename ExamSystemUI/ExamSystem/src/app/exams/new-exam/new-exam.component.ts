@@ -3,11 +3,14 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Router, ActivatedRoute } from '@angular/router';
 import { CommonModule } from '@angular/common';
 
+import { SubjectService } from '../../subjects/subject.service';
+import { FormsModule } from '@angular/forms';
+
 @Component({
   selector: 'app-new-exam',
   templateUrl: './new-exam.component.html',
   styleUrls: ['./new-exam.component.css'],
-  imports: [CommonModule]
+  imports: [CommonModule, FormsModule]
 })
 export class NewExamComponent implements OnInit {
   questions: any[] = [];
@@ -19,11 +22,15 @@ export class NewExamComponent implements OnInit {
   }[] = [];
   subjectId = '54576727-303e-4768-8235-6aeb31ae1fde';
   apiUrl = 'http://localhost:5130/questions'; // Replace with your actual endpoint
-
-  constructor(private http: HttpClient, private router: Router, private route: ActivatedRoute) {}
+  subjectName: string = '';
+  constructor(private http: HttpClient, 
+    private router: Router, 
+    private route: ActivatedRoute,
+    private subjectService: SubjectService) {}
 
   ngOnInit(): void {
     this.subjectId = this.route.snapshot.paramMap.get('subjectId') || '';
+    this.subjectService.getSubjectById(this.subjectId).subscribe(subject => this.subjectName = subject.name);
     this.loadQuestions();
   }
 
@@ -36,6 +43,7 @@ export class NewExamComponent implements OnInit {
     this.http.get<any[]>(`${this.apiUrl}/${this.subjectId}`, { headers }).subscribe({
       next: (data) => {
         this.questions = data;
+        console.log("sddf" , this.questions);
       },
       error: (error) => {
         console.error('Failed to load questions:', error);
@@ -50,6 +58,10 @@ export class NewExamComponent implements OnInit {
     } else {
       this.selectedQuestions.splice(index, 1);
     }
+  }
+
+  isAdded(questionId: string): boolean {
+    return this.selectedQuestions.includes(questionId) ? true : false;
   }
 
   addToExam(questionId: string, text: string){

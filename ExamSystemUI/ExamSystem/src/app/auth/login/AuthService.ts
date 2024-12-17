@@ -18,6 +18,7 @@ export class AuthService {
   private tokenKey = 'authToken';
   private userId = 'userId';
   private userRole = 'userRole';
+  private userName = '';
 
   constructor(private http: HttpClient, private router: Router) { }
 
@@ -31,14 +32,14 @@ export class AuthService {
   }
 
   handleLoginSuccess(response: any, userRole: string): void {
-    
+    this.userName = response.userName;
+    console.log(response, this.userName);
     if (response.token) {
 
       this.setToken(response.token);
       console.log("success LogIn");
 
       if (this.getRole() === 'Student') {
-      console.log("success LogIn student"); 
         this.router.navigateByUrl('student-Dashboard').then(() => {
           window.location.reload();
         });;
@@ -49,17 +50,19 @@ export class AuthService {
         window.location.reload();
       });;
       } else {
-        throw new Error('Invalid role');
+        console.log('Invalid role');
       }
 
     }
   }
 
   handleLoginError(): void {
-    throw new Error('Invalid email or password!');
+    console.log('Invalid email or password!');
   }
 
-
+  getUserName(): string{
+    return this.userName;
+  }
   setToken(token: string): void {
     localStorage.setItem(this.tokenKey, token);
     localStorage.setItem(this.userRole, this.getRole()!);

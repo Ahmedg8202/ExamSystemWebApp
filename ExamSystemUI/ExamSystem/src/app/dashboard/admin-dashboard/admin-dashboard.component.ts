@@ -51,7 +51,10 @@ export class AdminDashboardComponent {
     })
 
     this.getAllStudents();
+    this.getAllExamResults();
+  }
 
+  getAllExamResults(){
     this.examService.getAllExamsResults().subscribe({
       next: (data) => {
         this.examResults = data;
@@ -62,7 +65,6 @@ export class AdminDashboardComponent {
       }
     })
   }
-
   getAllStudents(){
     console.log(this.filter.pageSize);
     this.studentService.getAllStudents(this.filter).subscribe({

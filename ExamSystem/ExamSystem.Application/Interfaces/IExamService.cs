@@ -15,7 +15,7 @@ namespace ExamSystem.Application.Interfaces
         Task<IEnumerable<ExamFromdb>> AllExams();
         Task<ExamQuestiondto> GetRandomExam(string subjectId);
         Task<ExamQuestiondto> ExamById(string examId);
-        Task<ExamResult> SubmitExam(SubmitExamdto exam);
+        Task<ExamResultdto> SubmitExam(SubmitExamdto exam);
         Task<bool> AddExam(Examdto examdto);
         Task<bool> UpdateExam(Examdto examdto);
         Task<bool> DeleteExam(string examId);

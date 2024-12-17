@@ -20,7 +20,7 @@ export interface NewQuestion {
 })
 export class NewQuestionComponent {
   private apiUrl = 'http://localhost:5130/question';
-
+  submitError: string | null = null;
   newQuestion: NewQuestion = {
     subjectId: '',
     text: '',
@@ -64,7 +64,8 @@ export class NewQuestionComponent {
       },
       error: (error) => {
         console.error('Failed to add question:', error);
-        alert('An error occurred while adding the question.');
+        this.submitError = 'An error occurred while adding the question.';
+        alert('Failed to add this question.');
       }
     });
   }

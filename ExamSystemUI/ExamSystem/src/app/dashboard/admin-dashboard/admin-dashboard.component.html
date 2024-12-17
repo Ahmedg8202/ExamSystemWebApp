@@ -1,6 +1,6 @@
-<div class="container mt-4">
-  <div>
-    <h2 class="text-primary text-center mb-4">Admin Dashboard</h2>
+<div class="container mt-4 mb-4">
+  <div class="p-4 shadow rounded bg-light">
+    <h2 class="text-primary text-center mb-4">Dashboard</h2>
   
     <div class="row">
       <!-- Card: Total Students -->
@@ -45,28 +45,29 @@
     </div>
   </div>
     <!-- studentsList -->
-  <div class="container mt-4">
+  <div class="container mt-5 p-4 shadow rounded bg-light">
     <h2 class="text-primary text-center mb-4">Student List</h2>
-    <div class="row">
-      <div class="col-2">
-        <div class="dataTables_length"><label>Show
-            <select [(ngModel)]="filter.pageSize" (change)="getAllStudents()">
-              <option value="1">1</option>
-              <option value="10">10</option>
-              <option value="20">20</option>
-              <option value="50">50</option>
-              <option value="100">100</option>
-            </select> entries</label>
-        </div>
+    <div class="d-flex justify-content-between align-items-center mb-2">
+      <div class="dataTables_length">
+        <label>
+          Show entries
+        </label>
+          <select [(ngModel)]="filter.pageSize" (change)="getAllStudents()" class="form-select form-select-sm">
+            <option value="1">1</option>
+            <option value="10">10</option>
+            <option value="20">20</option>
+            <option value="50">50</option>
+            <option value="100">100</option>
+          </select>
       </div>
-    </div>
-    <div class="col-md-10 text-end">
-      <div class="btn-group" id="radioBtn">
+    
+      <div class="btn-group">
         <a class="btn btn-primary btn-sm" (click)="onPrevious()">Previous</a>
-        <span class="btn btn-primary btn-sm active">Current Page</span>
+        <span class="btn btn-primary btn-sm active">{{ filter.page }} </span>
         <a class="btn btn-primary btn-sm" (click)="onNext()">Next</a>
       </div>
     </div>
+    
     <table class="table table-striped">
       <thead>
         <tr>
@@ -95,14 +96,36 @@
     </table>
   </div>
   
-  <div class="mt-4">
+  <div class="p-4 shadow rounded bg-light mt-5">
     <h4>Completed Exams Details</h4>
+    <div class="d-flex justify-content-between align-items-center">
+      <div class="dataTables_length mb-2">
+        <label>
+          Show entries
+        </label>
+          <select [(ngModel)]="filter.pageSize" (change)="getAllExamResults()" class="form-select form-select-sm">
+            <option value="1">1</option>
+            <option value="10">10</option>
+            <option value="20">20</option>
+            <option value="50">50</option>
+            <option value="100">100</option>
+          </select>
+      </div>
+    
+      <div class="btn-group">
+        <a class="btn btn-primary btn-sm" (click)="onPrevious()">Previous</a>
+        <span class="btn btn-primary btn-sm active">{{ filter.page }}</span>
+        <a class="btn btn-primary btn-sm" (click)="onNext()">Next</a>
+      </div>
+    </div>
+
+
     <table class="table table-striped">
       <thead>
         <tr>
           <th>#</th>
           <th>subject</th>
-          <th>Student Id</th>
+          <th>Student Name</th>
           <th>Date</th>
           <th>Student status</th>
         </tr>
@@ -113,7 +136,7 @@
                   <td>{{ 1 }}</td>
                   <td>{{ exam.subjectName }}</td>
                   <td>{{ exam.studentName }}</td>
-                  <td>{{ exam.dateTime }}</td>
+                  <td>{{ exam.dateTime | date}}</td>
                   <td>{{ exam.status ? 'Pass' : 'Fail' }}</td>
                 </tr>
           }

@@ -1,69 +1,108 @@
 <div class="container">
-  <h2 class="text-center">Subjects</h2>
+  <!-- Dynamic Header -->
+  <h2 class="text-center mb-2">
+    {{ subjects.length > 0 ? 'Subjects' : 'No Subjects Available' }}
+  </h2>
 
   <!-- List of Subjects -->
-  @if(subjects.length > 0){
-    <div class="row">
-      <div class="col-2">
-        <div class="dataTables_length"><label>Show
-            <select [(ngModel)]="filter.pageSize" (change)="fetchAllSubjects()">
-              <option value="1">1</option>
-              <option value="10">10</option>
-              <option value="20">20</option>
-              <option value="50">50</option>
-              <option value="100">100</option>
-            </select> entries</label>
-        </div>
+  @if (subjects.length > 0) {
+    <!-- Page Size and Navigation -->
+    <div class="d-flex justify-content-between align-items-center mb-2">
+      <div class="dataTables_length">
+        <label>
+          Show entries
+        </label>
+          <select [(ngModel)]="filter.pageSize" (change)="fetchAllSubjects()" class="form-select form-select-sm">
+            <option value="1">1</option>
+            <option value="10">10</option>
+            <option value="20">20</option>
+            <option value="50">50</option>
+            <option value="100">100</option>
+          </select>
       </div>
-    </div>
-    <div class="col-md-10 text-end">
-      <div class="btn-group" id="radioBtn">
+    
+      <div class="btn-group">
         <a class="btn btn-primary btn-sm" (click)="onPrevious()">Previous</a>
-        <span class="btn btn-primary btn-sm active">Current Page</span>
+        <span class="btn btn-primary btn-sm active">{{ filter.page }} </span>
         <a class="btn btn-primary btn-sm" (click)="onNext()">Next</a>
       </div>
     </div>
-    <div>
-      <ul class="list-group">//change list to be a crads with update and delete
-        @for( subject of subjects; track subject.subjectId){
-          <li class="list-group-item d-flex justify-content-between">
-            <span>{{ subject.name }}</span>
-            <button
-              class="btn btn-info btn-sm"
-              (click)="fetchSubjectById(subject.subjectId)"
-            >
-              View Details
-            </button>
-          </li>
-        }
-      </ul>
-    </div>
-  }
-  @if(subjects.length == 0){
-    <div class="text-center text-muted">
-      No subjects found.
+    
+
+    <!-- Table Layout -->
+    <div class="table-responsive">
+      <table class="table table-bordered table-striped table-hover text-center">
+        <thead class="table-primary">
+          <tr>
+            <th>Name</th>
+            <th>Details</th>
+            <th>Update</th>
+            <th>Delete</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (subject of subjects; track subject.subjectId) {
+            <tr>
+              <td>{{ subject.name }}</td>
+              <td>
+                <button
+                  class="btn btn-info btn-sm"
+                  (click)="fetchSubjectById(subject.subjectId)"
+                >
+                  View Details
+                </button>
+              </td>
+              <td>
+                <button
+                  class="btn btn-warning btn-sm"
+                  (click)="updateSubject(subject.subjectId)"
+                >
+                  Update
+                </button>
+              </td>
+              <td>
+                <button
+                  class="btn btn-danger btn-sm"
+                  (click)="deleteSubject(subject.subjectId)"
+                >
+                  Delete
+                </button>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
     </div>
   }
 
-  <div class="d-flex justify-content-end mb-4">
-    <button class="btn btn-success me-2" (click)="addSubject()">Add Subject</button>
-  </div>
+  <!-- Empty State -->
+  @if (subjects.length == 0) {
+    <div class="text-center text-muted mt-5">
+      <p>No subjects found. Please add a subject.</p>
+      <button class="btn btn-success" (click)="addSubject()">Add Subject</button>
+    </div>
+  }
 
-  @if(selectedSubject){
+  <!-- Add Subject Button -->
+  @if (subjects.length > 0) {
+    <div class="d-flex justify-content-end mb-4">
+      <button class="btn btn-success me-2" (click)="addSubject()">Add Subject</button>
+    </div>
+  }
+
+  <!-- Subject Details -->
+  @if (selectedSubject) {
     <div class="card mt-4">
       <div class="card-header">
-        <h4>{{ selectedSubject?.name }}</h4>
+        <h4>{{ selectedSubject.name }}</h4>
       </div>
       <div class="card-body">
-        <p><strong>Description:</strong> {{ selectedSubject?.description }}</p>
-        <p><strong>Number of Questions:</strong> {{ selectedSubject?.questionsNumber }}</p>
-        <p><strong>Duration:</strong> {{ selectedSubject?.duration }} mins</p>
-        <p><strong>Total Marks:</strong> {{ selectedSubject?.total }}</p>
-        <p><strong>Total Exams:</strong> {{ selectedSubject?.total }}</p>
-        <p><strong>Total Students take exam in this subject:</strong> {{ selectedSubject?.total }}</p>
-        <p><strong>Sucess Rate:</strong> {{ selectedSubject?.total }}</p>
-      <button class="btn btn-danger btn-sm" (click)="closeSubjectDetails()">Close</button>
+        <p><strong>Description:</strong> {{ selectedSubject.description }}</p>
+        <p><strong>Number of Questions:</strong> {{ selectedSubject.questionsNumber }}</p>
+        <p><strong>Duration:</strong> {{ selectedSubject.duration }} mins</p>
+        <p><strong>Total Marks:</strong> {{ selectedSubject.total }}</p>
+        <button class="btn btn-danger btn-sm" (click)="closeSubjectDetails()">Close</button>
       </div>
-    </div> 
-  }  
+    </div>
+  }
 </div>

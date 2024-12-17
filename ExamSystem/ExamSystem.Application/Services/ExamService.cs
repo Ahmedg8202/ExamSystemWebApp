@@ -85,7 +85,7 @@ namespace ExamSystem.Application.Services
             return (int)((score * 100.0) / questions.Count);
         }
 
-        public async Task<ExamResult> SubmitExam(SubmitExamdto examdto)
+        public async Task<ExamResultdto> SubmitExam(SubmitExamdto examdto)
         {
             var exam = await _unitOfWork.ExamRepository.GetExamById(examdto.ExamId);
             if (exam == null)
@@ -94,6 +94,7 @@ namespace ExamSystem.Application.Services
             int score = await calculateScore(examdto.questions);
                 
             bool passed = score > 49;
+            var subjectName = await getSubjectName(examdto.SubjectId);
 
             var examResult = new ExamResult
             {
@@ -110,7 +111,17 @@ namespace ExamSystem.Application.Services
             if (!result)
                 return null;
 
-            return examResult;
+            return new ExamResultdto
+            {
+                SubjectId = examResult.SubjectId,
+                ExamResultId = examResult.ExamResultId,
+                DateTime = examResult.DateTime,
+                ExamId = examResult.ExamId,
+                Score = examResult.Score,
+                SubjectName = subjectName,
+                StudentId = examResult.StudentId,
+                Status = examResult.Status
+            };
         }
 
         public async Task<bool> AddExam(Examdto examdto)

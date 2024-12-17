@@ -17,7 +17,7 @@ export class SubjectsComponent implements OnInit {
   selectedSubject: Subject | null = null;
   filter = {
     page: 1,
-    pageSize: 1
+    pageSize: 10
   };
   
   constructor(private subjectService: SubjectService,
@@ -65,6 +65,14 @@ export class SubjectsComponent implements OnInit {
     this.selectedSubject = null;
   }
 
+  updateSubject(subjectId: string){
+
+  }
+
+  deleteSubject(subjectId: string){
+
+  }
+  
   addSubject(){
     this.router.navigateByUrl('/new-subject');
   }

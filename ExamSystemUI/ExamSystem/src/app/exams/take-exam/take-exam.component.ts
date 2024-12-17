@@ -71,7 +71,11 @@ export class TakeExamComponent implements OnInit {
     }
   }
 
+  isReadyToSubmit(): boolean{
+    return this.selectedAnswers.length !== this.randomExam.questions.length;
+  }
   submitExam(): void {
+    
     const examData: SubmitExam = {
       subjectId: this.subjectId,
       studentId: this.studentId,

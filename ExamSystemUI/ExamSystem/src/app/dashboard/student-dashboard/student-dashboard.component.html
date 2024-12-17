@@ -48,7 +48,7 @@
                         View student History
                     </button>
                     </td> -->
-                    <td>{{ exam.dateTime }}</td>
+                    <td>{{ exam.dateTime | date}}</td>
                     <td>{{ exam.score }}</td>
                     <td>{{ exam.status == true ? 'Pass' : 'Fail' }}</td>
                 </tr>

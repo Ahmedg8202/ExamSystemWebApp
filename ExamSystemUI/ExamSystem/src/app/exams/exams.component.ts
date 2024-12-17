@@ -18,6 +18,10 @@ export class ExamsComponent {
   randomExam: ExamQuestion | null = null;
   subjects: Subject[] = [];
   selectedSubject: string | null = null;
+  filter = {
+    page: 1,
+    pageSize: 10
+  };
 
   isStudent = false;
   isAdmin = false;
@@ -30,12 +34,13 @@ export class ExamsComponent {
     this.fetchAllExams();
     this.loadSubjects();
   }
-  onPrevious(){
-    
+  onPrevious() {
+    this.filter.page --;
+    this.fetchAllExams();
   }
-
-  onNext(){
-
+  onNext() {
+    this.filter.page ++;
+    this.fetchAllExams();
   }
   
   fetchAllExams(): void {
@@ -53,7 +58,7 @@ export class ExamsComponent {
     this.examService.getExamById(id).subscribe({
       next: (data) => {
         this.selectedExam = data;
-        console.log("fetch by id"+ id +" SS "+ this.selectedExam);
+        console.log("fetch by id"+ id +" SS "+ data);
       },
       error: (error) => {
         console.error('Error fetching subject:', error);
@@ -83,7 +88,7 @@ export class ExamsComponent {
     this.router.navigate(['/take-exam', subjectId]);
   }
   closeExamDetails(){
-
+    this.selectedExam = null;
   }
 
   navigateToAddQuestion(subjectId: string){

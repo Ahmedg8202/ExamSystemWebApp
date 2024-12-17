@@ -3,22 +3,33 @@
   <!-- Admin Section -->
   <div *ngIf="isAdmin">
     <h2 class="text-center">Exams</h2>
-
     <!-- Exams list -->
     <div class="card-body">
+      <div class="p-4 shadow rounded bg-light mt-5">
       <div *ngIf="exams.length > 0">
-
-        <!-- Pagination Controls -->
-        <div class="col-md-10 text-end">
-          <div class="btn-group" id="radioBtn">
+        <div class="d-flex justify-content-between align-items-center mb-2">
+          <div class="dataTables_length">
+            <label>
+              Show entries
+            </label>
+              <select [(ngModel)]="filter.pageSize" (change)="fetchAllExams()" class="form-select form-select-sm">
+                <option value="1">1</option>
+                <option value="10">10</option>
+                <option value="20">20</option>
+                <option value="50">50</option>
+                <option value="100">100</option>
+              </select>
+          </div>
+        
+          <div class="btn-group">
             <a class="btn btn-primary btn-sm" (click)="onPrevious()">Previous</a>
-            <span class="btn btn-primary btn-sm active">Current Page</span>
+            <span class="btn btn-primary btn-sm active">{{ filter.page }} </span>
             <a class="btn btn-primary btn-sm" (click)="onNext()">Next</a>
           </div>
         </div>
-
+        
         <!-- Exams List -->
-        <table class="table table-striped table-bordered text-center w-75 align-items-center">
+        <table class="table table-striped table-bordered text-center align-items-center">
           <thead class="table-primary">
             <tr>
               <th>Exam ID</th>
@@ -50,7 +61,6 @@
             </tr>
           </tbody>
         </table>
-        
 
       </div>
 
@@ -58,7 +68,28 @@
       <div *ngIf="exams.length === 0" class="text-center text-muted">
         No exams found.
       </div>
+    </div>
+    
+    
+      <!-- Exam Details Section -->
+      <div *ngIf="selectedExam">
+        <div class="p-4 shadow rounded bg-light mt-5">
+        <div class="card mt-4">
+          <div class="card-header">
+            <h4>{{ selectedExam.examId }}</h4>
+          </div>
+          <div class="card-body">
+            <p>{{ selectedExam.subjectName }}</p>
+            <!-- <p>{{ selectedExam.questionsNumber }}</p>
+            <p>{{ selectedExam.duration }}</p>
+            <p>{{ selectedExam.total }}</p> -->
+            <button class="btn btn-danger btn-sm" (click)="closeExamDetails()">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
 
+    <div class="p-4 shadow rounded bg-light mt-5">
       <div class="mb-3">
         <label for="subjectDropdown" class="form-label">Subject</label>
         <select
@@ -77,26 +108,14 @@
         <button class="btn btn-success me-2" (click)="navigateToAddQuestion(selectedSubject!)">Add Question</button>
         <button class="btn btn-success me-2" (click)="navigateToAddExam(selectedSubject!)">Add Exam</button>
       </div>
-
-      <!-- Exam Details Section -->
-      <div *ngIf="selectedExam">
-        <div class="card mt-4">
-          <div class="card-header">
-            <h4>{{ selectedExam.examId }}</h4>
-          </div>
-          <div class="card-body">
-            <!-- Optionally you can add more details about the exam here -->
-            <button class="btn btn-danger btn-sm" (click)="closeExamDetails()">Close</button>
-          </div>
-        </div>
-      </div>
+    </div>
     </div>
   </div>
 
   <!-- Student Section -->
   <div *ngIf="isStudent">
     <div class="container mt-4">
-      <h3 class="text-center">Select a Subject to Take an Exam</h3>
+      <h3 class="text-center">Select subject to take an exam</h3>
 
       <!-- Subject Selection Form -->
       <form (ngSubmit)="takeExam(selectedSubject!)">
