@@ -18,13 +18,11 @@
         </div>
 
         <!-- Exams List -->
-        <table class="table table-striped table-bordered">
+        <table class="table table-striped table-bordered text-center w-75 align-items-center">
           <thead class="table-primary">
             <tr>
               <th>Exam ID</th>
-              <th>Subject ID</th>
-              <!-- <th>Description</th>
-              <th>Duration (mins)</th> -->
+              <th>Subject Name</th>
               <th>Details</th>
               <th>Update</th>
               <th>Delete</th>
@@ -32,19 +30,19 @@
           </thead>
           <tbody>
             <tr *ngFor="let exam of exams">
-              <td>{{ exam.examId }}</td>
-              <td>{{ exam.subjectId }}</td>
-              <td>
+              <td class="w-40">{{ exam.examId }}</td>
+              <td class="w-30">{{ exam.subjectName }}</td>
+              <td class="w-10">
                 <button class="btn btn-info btn-sm me-2" (click)="fetchExamById(exam.examId)">
                   View
                 </button>
               </td>
-              <td>
+              <td class="w-10">
                 <button class="btn btn-warning btn-sm me-2" (click)="updateExam(exam.examId)">
                   Update
                 </button>
               </td>
-              <td>
+              <td class="w-10">
                 <button class="btn btn-danger btn-sm" (click)="deleteExam(exam.examId)">
                   Delete
                 </button>

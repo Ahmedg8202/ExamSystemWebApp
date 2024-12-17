@@ -13,7 +13,7 @@ import { SubjectsComponent } from "../subjects/subjects.component";
 })
 export class ExamsComponent {
 
-  exams: Exam[] = [];
+  exams: any[] = [];
   selectedExam: any | null = null;
   randomExam: ExamQuestion | null = null;
   subjects: Subject[] = [];

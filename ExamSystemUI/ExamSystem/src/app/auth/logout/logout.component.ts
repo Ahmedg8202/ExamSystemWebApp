@@ -17,6 +17,8 @@ export class LogoutComponent {
     localStorage.removeItem('authToken');
     localStorage.removeItem('userRole');
 
-    this.router.navigate(['/login']);
+    this.router.navigate(['/login']).then(() => {
+      window.location.reload();
+    });
   }
 }

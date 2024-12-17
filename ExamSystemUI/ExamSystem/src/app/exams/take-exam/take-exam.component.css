@@ -1,0 +1,6 @@
+.formExam{
+    align-items: start;
+    justify-content: start;
+    display: flex;
+    flex-direction: column;
+}

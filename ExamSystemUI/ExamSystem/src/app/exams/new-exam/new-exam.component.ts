@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Router, ActivatedRoute } from '@angular/router';
 import { CommonModule } from '@angular/common';
 
@@ -29,7 +29,11 @@ export class NewExamComponent implements OnInit {
 
   loadQuestions() {
     console.log(this.subjectId);
-    this.http.get<any[]>(`${this.apiUrl}/${this.subjectId}`).subscribe({
+    const token = localStorage.getItem('authToken');
+        const headers = new HttpHeaders({
+          'Authorization': `Bearer ${token}`,
+        });
+    this.http.get<any[]>(`${this.apiUrl}/${this.subjectId}`, { headers }).subscribe({
       next: (data) => {
         this.questions = data;
       },
@@ -75,9 +79,12 @@ export class NewExamComponent implements OnInit {
     };
 
     console.log(newExam);
-
+    const token = localStorage.getItem('authToken');
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${token}`,
+    });
     // Call API to save the exam
-    this.http.post('http://localhost:5130/api/Exam/add', newExam).subscribe({
+    this.http.post('http://localhost:5130/api/Exam/add', newExam, { headers }).subscribe({
       next: () => {
         alert('Exam saved successfully!');
         this.router.navigateByUrl('admin-Dashboard');

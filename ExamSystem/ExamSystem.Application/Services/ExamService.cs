@@ -150,45 +150,88 @@ namespace ExamSystem.Application.Services
             //return await _examGRepository.DeleteAsync(examId);
         }
 
-        public async Task<IEnumerable<ExamResult>> GetExamHistoryForStudent(string studentId)
+        public async Task<IEnumerable<ExamResultdto>> GetExamHistoryForStudent(string studentId)
         {
             var examResults = await _unitOfWork.ExamRepository.GetExamHistoryAsync(studentId);
 
             if (examResults == null || !examResults.Any())
                 return null;
+            var subjectId = examResults.FirstOrDefault().SubjectId;
+            var subjectName = (await _unitOfWork.SubjectRepository.GetByIdAsync(subjectId)).Name;
 
-            return examResults.Select(result => new ExamResult
+            var studentName = (await _unitOfWork.StudentRepository.GetByIdAsync(studentId)).userName;
+
+            return examResults.Select(result => new ExamResultdto
             {
                 ExamId = result.ExamId,
                 StudentId = result.StudentId,
                 SubjectId = result.SubjectId,
+                StudentName = studentName,
+                SubjectName = subjectName,
                 DateTime = result.DateTime,
                 Score = result.Score,
                 Status = result.Status
             }).ToList();
         }
 
-        public async Task<IEnumerable<ExamResult>> AllExamResults(int page, int pageSize)
+        private async Task<string> getUserName(string userId)
+        {
+            var student = await _unitOfWork.StudentRepository.GetByIdAsync(userId);
+            return (student).userName;
+        }
+        private async Task<string> getSubjectName(string subjectId)
+        {
+            return (await _unitOfWork.SubjectRepository.GetByIdAsync(subjectId)).Name;
+        }
+        public async Task<IEnumerable<ExamResultdto>> AllExamResults(int page, int pageSize)
         {
             var examResults = await _unitOfWork.ExamResultRepository.GetAllAsync(page, pageSize);
-
+            
             if (examResults == null || !examResults.Any())
                 return null;
 
-            return examResults.Select(result => new ExamResult
-            {   
-                ExamId = result.ExamId,
-                StudentId = result.StudentId,
-                SubjectId = result.SubjectId,
-                DateTime = result.DateTime,
-                Score = result.Score,
-                Status = result.Status
-            }).ToList();
+            var subjectId = examResults.FirstOrDefault().SubjectId;
+            var subjectName = await getSubjectName(subjectId);
+
+
+            var resultDtoList = new List<ExamResultdto>();
+
+            foreach (var result in examResults)
+            {
+                var studentName = await getUserName(result.StudentId);
+
+                resultDtoList.Add(new ExamResultdto
+                {
+                    ExamId = result.ExamId,
+                    StudentId = result.StudentId,
+                    SubjectId = result.SubjectId,
+                    StudentName = studentName,
+                    SubjectName = subjectName,
+                    DateTime = result.DateTime,
+                    Score = result.Score,
+                    Status = result.Status
+                });
+            }
+
+            return resultDtoList;
         }
 
-        public async Task<IEnumerable<Exam>> AllExams()
+        public async Task<IEnumerable<ExamFromdb>> AllExams()
         {
-            return await _unitOfWork.ExamRepository.GetAllAsync();
+            var examFromdDB =  await _unitOfWork.ExamRepository.GetAllAsync();
+            var exams = new List<ExamFromdb> { };
+            foreach(var exam in examFromdDB)
+            {
+                var name = await getSubjectName(exam.SubjectId);
+                exams.Add(new ExamFromdb
+                {
+                    ExamId  = exam.ExamId,
+                    SubjectId = exam.SubjectId,
+                    SubjectName = name,
+                    ExamQuestions = exam.ExamQuestions
+                });
+            }
+            return exams;
         }
     }
 

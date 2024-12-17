@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -51,7 +51,12 @@ export class NewQuestionComponent {
       return;
     }
 
-    this.http.post(this.apiUrl, this.newQuestion).subscribe({
+    const token = localStorage.getItem('authToken');
+        const headers = new HttpHeaders({
+          'Authorization': `Bearer ${token}`,
+        });
+
+    this.http.post(this.apiUrl, this.newQuestion, { headers }).subscribe({
       next: (response) => {
         console.log('Question added successfully:', response);
         alert('Question added successfully!');

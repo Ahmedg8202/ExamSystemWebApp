@@ -39,11 +39,15 @@ export class AuthService {
 
       if (this.getRole() === 'Student') {
       console.log("success LogIn student"); 
-        this.router.navigateByUrl('student-Dashboard');
+        this.router.navigateByUrl('student-Dashboard').then(() => {
+          window.location.reload();
+        });;
       console.log("success LogIn");
       } else if (this.getRole() === 'Admin') {
       console.log("success LogIn admin");
-      this.router.navigateByUrl('admin-Dashboard');
+      this.router.navigateByUrl('admin-Dashboard').then(() => {
+        window.location.reload();
+      });;
       } else {
         throw new Error('Invalid role');
       }

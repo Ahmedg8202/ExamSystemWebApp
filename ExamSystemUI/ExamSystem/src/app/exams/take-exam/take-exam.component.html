@@ -2,8 +2,8 @@
     <h2 class="text-center">Take Exam</h2>
 
     <!-- Random Exam Questions -->
-    <div *ngIf="randomExam && randomExam.questions.length > 0">
-        <form>
+    <div *ngIf="randomExam && randomExam.questions.length > 0" class="w-100 d-flex align-items-center justify-content-center">
+        <form >
             @for(question of randomExam.questions; track question.questionId){
             <div>
                 <div class="question">
