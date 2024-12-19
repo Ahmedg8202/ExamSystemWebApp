@@ -41,9 +41,10 @@ namespace ExamSystem.Application.Services
 
             var studentNumber = (await _unitOfWork.StudentRepository.GetAllAsync()).Count;
             var examCompleted = examResults.Count();
-            var failedExams = examResults.Where(e => e.Status == false).ToList().Count();
-            var passedExams = examResults.Where(e => e.Status == true).ToList().Count();
-            
+            var failedExams = examResults.Count(e => !e.Status);
+            var passedExams = examResults.Count(e => e.Status);
+
+
             return new Dashboarddto {
                 StudentNumber = studentNumber,
                 ExamCompleted = examCompleted,

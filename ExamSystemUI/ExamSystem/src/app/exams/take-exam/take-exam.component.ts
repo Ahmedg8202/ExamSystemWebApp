@@ -88,7 +88,7 @@ export class TakeExamComponent implements OnInit {
         console.log('Exam submitted successfully', response);
         alert('Exam submitted successfully!');
         this.router.navigate(['/exam-result'], {
-          state: { result: response }  // Pass exam result as state
+          state: { result: response }
         });
       },
       (error) => {

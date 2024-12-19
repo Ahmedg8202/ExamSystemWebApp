@@ -58,6 +58,7 @@ export interface ExamResult{
 })
 export class ExamsService {
   private baseUrl = 'http://localhost:5130/api/Exam';
+  private questionUrl = 'http://localhost:5130/questions';
 
   constructor(private http: HttpClient) {}
 
@@ -106,6 +107,13 @@ export class ExamsService {
     return this.http.get<any>(`${this.baseUrl}/Exam/${id}`, { headers });
   }
 
+  getQuestionsBySubjectId(subjectId: string): Observable<Question[]> {
+    const token = localStorage.getItem('authToken');
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${token}`,
+    });
+    return this.http.get<Question[]>(`${this.questionUrl}/${subjectId}`, { headers });
+  }
   
   submitExam(examData: SubmitExam): Observable<any> {
     const token = localStorage.getItem('authToken');
@@ -113,6 +121,14 @@ export class ExamsService {
       'Authorization': `Bearer ${token}`,
     });
     return this.http.post<any>(`${this.baseUrl}/submit`, examData, { headers });
+  }
+
+  addExam(newExam: any): Observable<any> {
+    const token = localStorage.getItem('authToken');
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${token}`,
+    });
+    return this.http.post<any>(`${this.baseUrl}/add`, newExam, { headers });
   }
 
   setExamResult(result: any): void {

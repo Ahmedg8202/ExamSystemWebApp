@@ -21,10 +21,6 @@ namespace ExamSystem.Infrastructure.Repositories
 
         public Task<List<ExamQuestion>> GetExamById(string examId)
         {
-            //return _context.ExamQuestions
-            //    .Include(e => e.Question)
-            //    .ThenInclude(e => e.Answers)
-            //    .Where(e => e.ExamId == examId).ToListAsync();
             return _context.ExamQuestions
                 .Include(e => e.Question)
                     .ThenInclude(q => q.Answers)
@@ -60,7 +56,6 @@ namespace ExamSystem.Infrastructure.Repositories
         public async Task AddExamResultAsync(ExamResult result)
         {
             _context.ExamResults.Add(result);
-            await _context.SaveChangesAsync();
         }
 
         public async Task<List<Exam>> GetExamsBySubjectAsync(string subjectId)

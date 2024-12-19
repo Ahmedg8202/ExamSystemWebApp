@@ -1,4 +1,5 @@
-﻿using ExamSystem.Application.DTOs;
+﻿using AutoMapper;
+using ExamSystem.Application.DTOs;
 using ExamSystem.Application.Interfaces;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
@@ -20,17 +21,20 @@ namespace ExamSystem.Application.Services
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly IConfiguration _configuration;
         private readonly ILogger<AuthService> _logger;
+        private readonly IMapper _mapper;
 
         public AuthService(
             UserManager<IdentityUser> userManager,
             RoleManager<IdentityRole> roleManager,
             IConfiguration configuration,
-            ILogger<AuthService> logger)
+            ILogger<AuthService> logger,
+            IMapper mapper)
         {
             _userManager = userManager;
             _roleManager = roleManager;
             _configuration = configuration;
             _logger = logger;
+            _mapper = mapper;
         }
 
         public async Task<Userdto> Register(RegisterStudentdto registerdto)
@@ -73,14 +77,10 @@ namespace ExamSystem.Application.Services
 
             var token = await GenerateToken(user);
 
-            return new Userdto
-            {
-                id = user.Id,
-                userName = user.UserName,
-                email = user.Email,
-                Token = token,
-                Result = "Success"
-            };
+            var userdto = _mapper.Map<Userdto>(user);
+            userdto.Token = token;
+
+            return userdto;
         }
 
         public async Task<Userdto> Login(UserLogindto logindto)
@@ -97,14 +97,9 @@ namespace ExamSystem.Application.Services
 
             var token = await GenerateToken(existingUser);
 
-            return new Userdto
-            {
-                id = existingUser.Id,
-                userName = existingUser.UserName,
-                email = existingUser.Email,
-                Token = token,
-                Result = "Success"
-            };
+            var userdto = _mapper.Map<Userdto>(existingUser);
+            userdto.Token = token;
+            return userdto;
         }
 
         private async Task<string> GenerateToken(IdentityUser user)

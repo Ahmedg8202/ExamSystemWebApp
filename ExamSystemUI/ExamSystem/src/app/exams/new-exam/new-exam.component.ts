@@ -1,10 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Router, ActivatedRoute } from '@angular/router';
+import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 
 import { SubjectService } from '../../subjects/subject.service';
-import { FormsModule } from '@angular/forms';
+import { ExamsService } from '../exams.service';
 
 @Component({
   selector: 'app-new-exam',
@@ -14,19 +15,20 @@ import { FormsModule } from '@angular/forms';
 })
 export class NewExamComponent implements OnInit {
   questions: any[] = [];
-  selectedQuestions: string[] = []; // Array to store selected question IDs
-  examName: string = ''; // Input field for exam name
+  selectedQuestions: string[] = [];
+  examName: string = '';
   questionToExam: {
     questionId: string;
     text: string;
   }[] = [];
   subjectId = '54576727-303e-4768-8235-6aeb31ae1fde';
-  apiUrl = 'http://localhost:5130/questions'; // Replace with your actual endpoint
+  apiUrl = 'http://localhost:5130/questions';
   subjectName: string = '';
   constructor(private http: HttpClient, 
     private router: Router, 
     private route: ActivatedRoute,
-    private subjectService: SubjectService) {}
+    private subjectService: SubjectService,
+  private examService: ExamsService) {}
 
   ngOnInit(): void {
     this.subjectId = this.route.snapshot.paramMap.get('subjectId') || '';
@@ -36,11 +38,8 @@ export class NewExamComponent implements OnInit {
 
   loadQuestions() {
     console.log(this.subjectId);
-    const token = localStorage.getItem('authToken');
-        const headers = new HttpHeaders({
-          'Authorization': `Bearer ${token}`,
-        });
-    this.http.get<any[]>(`${this.apiUrl}/${this.subjectId}`, { headers }).subscribe({
+
+    this.examService.getQuestionsBySubjectId(this.subjectId).subscribe({
       next: (data) => {
         this.questions = data;
         console.log("sddf" , this.questions);
@@ -48,7 +47,7 @@ export class NewExamComponent implements OnInit {
       error: (error) => {
         console.error('Failed to load questions:', error);
       }
-    });
+    })
   }
 
   toggleQuestionSelection(questionId: string) {
@@ -95,8 +94,8 @@ export class NewExamComponent implements OnInit {
     const headers = new HttpHeaders({
       'Authorization': `Bearer ${token}`,
     });
-    // Call API to save the exam
-    this.http.post('http://localhost:5130/api/Exam/add', newExam, { headers }).subscribe({
+    
+    this.examService.addExam(newExam).subscribe({
       next: () => {
         alert('Exam saved successfully!');
         this.router.navigateByUrl('admin-Dashboard');

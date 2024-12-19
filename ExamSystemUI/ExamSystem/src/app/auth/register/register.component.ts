@@ -38,7 +38,7 @@ export class RegisterComponent {
     this.authService.register(registerData).subscribe({
       next: (data) =>{
         console.log(data);
-        alert(data);
+        alert('Registration successful!, Please Login');
         this.router.navigateByUrl('/login');
       },
       error: (error) =>{
@@ -46,15 +46,5 @@ export class RegisterComponent {
       }
     }
     )
-    // console.log(this.name, this.email, this.password, this.confirmPassword);
-    
-
-    // console.log('Registration successful:', {
-    //   name: this.name,
-    //   email: this.email,
-    //   password: this.password,
-    // });
-    // alert('Registration successful!');
-    // this.router.navigateByUrl('/login');
   }
 }

@@ -34,7 +34,7 @@ export class NewSubjectComponent {
     this.subject.duration = subjectForm.value.duration;
     this.subject.total = subjectForm.value.total;
     console.log(this.subject);
-alert(this.subject.name);
+    
     this.subjectService.addSubject(this.subject).subscribe({
       next: (response) => {
         console.log('Subject added successfully!' + response);

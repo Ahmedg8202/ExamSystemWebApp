@@ -31,7 +31,8 @@
           <thead>
             <tr>
               <th>#</th>
-              <th>Subject Name</th>
+              <th>Exam ID</th>
+              <!-- <th>Subject Name</th> -->
               <!-- <th>student Name</th> -->
               <th>Date</th>
               <th>Score</th>
@@ -42,7 +43,7 @@
             @for(exam of examHistory; track exam.examId){
                 <tr>
                     <td>{{ 1 }}</td>
-                    <td>{{ exam.subjectId }}</td>
+                    <td>{{ exam.examId }}</td>
                     <!-- <td>{{ exam.studentId }}
                       <button class="btn btn-info btn-sm" (click)="getStudentHistory(exam.studentId)">
                         View student History

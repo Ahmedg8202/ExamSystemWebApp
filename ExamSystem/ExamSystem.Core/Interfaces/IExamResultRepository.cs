@@ -10,6 +10,6 @@ namespace ExamSystem.Core.Interfaces
     public interface IExamResultRepository: IGenericRepository<ExamResult>
     {
         Task<List<ExamResult>> GetAll(string studentId);
-        Task<bool> AddExamResult(ExamResult examResult);
+        Task AddExamResult(ExamResult examResult);
     }
 }

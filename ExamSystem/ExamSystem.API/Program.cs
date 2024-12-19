@@ -114,9 +114,10 @@ namespace ExamSystem.API
                 options.AddPolicy("Student", policy => policy.RequireRole("Student"));
             });
 
+            builder.Services.AddAutoMapper(typeof(ExamMappers));
 
             var app = builder.Build();
-            //app.UseCors("AllowLocalhost");
+
 
             app.UseCors(c => c.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin());
             // Configure the HTTP request pipeline.

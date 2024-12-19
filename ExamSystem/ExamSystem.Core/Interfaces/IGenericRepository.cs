@@ -8,9 +8,9 @@ namespace ExamSystem.Core.Interfaces
 {
     public interface IGenericRepository<T> where T : class
     {
-        Task<bool> AddAsync(T entity);
-        Task<bool> UpdateAsync(T entity);
-        Task<bool> DeleteAsync(T entity);
+        Task AddAsync(T entity);
+        Task UpdateAsync(T entity);
+        Task DeleteAsync(T entity);
         Task<T> GetByIdAsync(string id);
         Task<IEnumerable<T>> GetAllAsync(int page = 0, int pageSize = 0);
     }

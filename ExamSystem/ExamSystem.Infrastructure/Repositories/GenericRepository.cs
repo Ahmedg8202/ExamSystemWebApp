@@ -20,23 +20,19 @@ namespace ExamSystem.Infrastructure.Repositories
             _dbSet = _context.Set<T>();
         }
 
-        public async Task<bool> AddAsync(T entity)
+        public async Task AddAsync(T entity)
         {
-            await _dbSet.AddAsync(entity);
-            return await _context.SaveChangesAsync() > 0;
-            
+            await _dbSet.AddAsync(entity);            
         }
 
-        public async Task<bool> UpdateAsync(T entity)
+        public async Task UpdateAsync(T entity)
         {
             _dbSet.Update(entity);
-            return await _context.SaveChangesAsync() > 0;
         }
 
-        public async Task<bool> DeleteAsync(T entity)
+        public async Task DeleteAsync(T entity)
         {
             _dbSet.Remove(entity);
-            return await _context.SaveChangesAsync() > 0;
         }
 
         public async Task<T> GetByIdAsync(string id)

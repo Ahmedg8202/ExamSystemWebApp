@@ -38,7 +38,6 @@ export class SubjectsComponent implements OnInit {
   }
 
   fetchAllSubjects(): void {
-    console.log(this.filter.page, this.filter.pageSize);
     this.subjectService.getAllSubjects(this.filter).subscribe(
       (data) => {
         this.subjects = data;

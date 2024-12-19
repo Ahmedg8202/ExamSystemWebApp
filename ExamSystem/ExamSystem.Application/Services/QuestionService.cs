@@ -1,4 +1,5 @@
-﻿using ExamSystem.Application.DTOs;
+﻿using AutoMapper;
+using ExamSystem.Application.DTOs;
 using ExamSystem.Application.Interfaces;
 using ExamSystem.Core.Entites;
 using ExamSystem.Core.Interfaces;
@@ -14,10 +15,12 @@ namespace ExamSystem.Application.Services
     public class QuestionService : IQuestionService
     {
         private readonly IUnitOfWork _unitOfWork;
+        private readonly IMapper _mapper;
 
-        public QuestionService(IUnitOfWork unitOfWork)
+        public QuestionService(IUnitOfWork unitOfWork, IMapper mapper)
         {
             _unitOfWork = unitOfWork;
+            _mapper = mapper;
         }
 
         public async Task<bool> AddQuestion(Questiondto questiondto)
@@ -33,15 +36,19 @@ namespace ExamSystem.Application.Services
                 });
             }
 
-            Question question = new Question
-            {
-                QuestionId = Guid.NewGuid().ToString(),
-                SubjectId = questiondto.SubjectId,
-                Text = questiondto.Text,
-                Answers = options
-            };
+            var question = _mapper.Map<Question>(questiondto);
+            question.Answers = options;
 
-            return await _unitOfWork.QuestionRepository.AddAsync(question);
+            //Question question = new Question
+            //{
+            //    QuestionId = Guid.NewGuid().ToString(),
+            //    SubjectId = questiondto.SubjectId,
+            //    Text = questiondto.Text,
+            //    Answers = options
+            //};
+
+            await _unitOfWork.QuestionRepository.AddAsync(question);
+            return await _unitOfWork.CompleteAsync() > 0;
         }
 
         public async Task<bool> UpdateQuestion(Questiondto questiondto)

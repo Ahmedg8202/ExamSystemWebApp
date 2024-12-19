@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 
 import { ExamResult, ExamsService, Subject } from '../../exams/exams.service';
 import { AuthService } from '../../auth/login/AuthService';
+import { SubjectService } from '../../subjects/subject.service';
 import { CommonModule } from '@angular/common';
 
 @Component({
@@ -18,13 +19,13 @@ export class StudentDashboardComponent {
 
   constructor(private router: Router, 
     private examService: ExamsService, 
-    private authService: AuthService) {}
+    private authService: AuthService,
+    private subjectService: SubjectService) {}
 
   ngOnInit(): void {
     this.dashboard();
   }
   dashboard() {
-
     const userId = this.authService.getId();
     this.examService.getAllSubjects().subscribe((data) => {
       this.subjects = data;
@@ -40,6 +41,12 @@ export class StudentDashboardComponent {
     })
   }
 
+  getSubjectName(subjectId: string) {
+    console.log(subjectId);
+    this.subjectService.getSubjectById(subjectId).subscribe(subject => {
+      return subject.name;
+    });
+  }
   navigateToSubject(subjectId: number) {
     this.router.navigateByUrl(`/subject/${subjectId}`);
   }

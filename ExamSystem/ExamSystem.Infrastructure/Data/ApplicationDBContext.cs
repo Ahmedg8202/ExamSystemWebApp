@@ -1,4 +1,5 @@
-﻿using ExamSystem.Core.Entites;
+﻿using ExamSystem.Core.Configurations;
+using ExamSystem.Core.Entites;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
@@ -24,6 +25,8 @@ namespace ExamSystem.Infrastructure.Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
+
+            //modelBuilder.ApplyConfigurationsFromAssembly(typeof(ExamEntityTypeConfiguration).Assembly);
 
             modelBuilder.Entity<ExamResult>()
             .HasOne(er => er.Student)

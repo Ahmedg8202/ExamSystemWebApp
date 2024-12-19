@@ -18,7 +18,7 @@ namespace ExamSystem.Core.Configurations
                 .HasOne(e => e.Subject)
                 .WithMany()
                 .HasForeignKey(e => e.SubjectId)
-                .OnDelete(DeleteBehavior.Restrict); // You can adjust the delete behavior as needed
+                .OnDelete(DeleteBehavior.Restrict); //adjust the delete behavior
 
             builder
                 .HasMany(e => e.ExamQuestions)

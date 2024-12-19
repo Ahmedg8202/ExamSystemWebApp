@@ -8,7 +8,7 @@ export interface NewQuestion {
   subjectId: string;
   text: string;
   options: string[];
-  correctAnswer: string;
+  correcAnswer: string;
 }
 
 @Component({
@@ -25,7 +25,7 @@ export class NewQuestionComponent {
     subjectId: '',
     text: '',
     options: [''],
-    correctAnswer: ''
+    correcAnswer: ''
   };
 
   constructor(private http: HttpClient, private router: Router, private route: ActivatedRoute) {}
@@ -46,7 +46,7 @@ export class NewQuestionComponent {
   }
 
   addQuestion(): void {
-    if (!this.newQuestion.subjectId || !this.newQuestion.text || !this.newQuestion.correctAnswer) {
+    if (!this.newQuestion.subjectId || !this.newQuestion.text || !this.newQuestion.correcAnswer) {
       alert('Please fill out all required fields.');
       return;
     }
@@ -60,7 +60,9 @@ export class NewQuestionComponent {
       next: (response) => {
         console.log('Question added successfully:', response);
         alert('Question added successfully!');
-        this.resetForm();
+        console.log(this.newQuestion.subjectId);
+        this.router.navigate(['new-exam', this.newQuestion.subjectId]);
+
       },
       error: (error) => {
         console.error('Failed to add question:', error);
@@ -75,7 +77,7 @@ export class NewQuestionComponent {
       subjectId: '',
       text: '',
       options: [''], // Reset to one empty option
-      correctAnswer: ''
+      correcAnswer: ''
     };
   }
 }

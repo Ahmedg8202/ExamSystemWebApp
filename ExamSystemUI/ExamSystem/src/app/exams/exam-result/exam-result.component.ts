@@ -17,23 +17,13 @@ export class ExamResultComponent implements OnInit {
      private examService: ExamsService) {}
 
   ngOnInit(): void {
-    console.log("historyyyy", JSON.stringify(history.state)); // Log the state object
-
-  // Access the state directly from history
     if (history.state && history.state.result) {
-      this.result = history.state.result; // Access 'result' from state
-      console.log("test");
-      console.log(this.result); // Log the actual result object
-      this.fetchExamResult(); // Fetch the exam result using the data
+      this.result = history.state.result;
+      this.fetchExamResult();
     }
-    // const examId = this.route.snapshot.paramMap.get('examId');
-    // if (examId) {
-    //   this.fetchExamResult(examId);
-    // }
   }
 
   fetchExamResult(): void {
-    alert("examresult");
     console.log(this.result);
   }
 }

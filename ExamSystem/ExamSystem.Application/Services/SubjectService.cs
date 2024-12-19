@@ -1,4 +1,5 @@
-﻿using ExamSystem.Application.DTOs;
+﻿using AutoMapper;
+using ExamSystem.Application.DTOs;
 using ExamSystem.Application.Interfaces;
 using ExamSystem.Core.Entites;
 using ExamSystem.Core.Interfaces;
@@ -13,25 +14,20 @@ namespace ExamSystem.Application.Services
     public class SubjectService : ISubjectService
     {
         private readonly IUnitOfWork _unitOfWork;
+        private readonly IMapper _mapper;
 
-        public SubjectService(IUnitOfWork unitOfWork)
+        public SubjectService(IUnitOfWork unitOfWork, IMapper mapper)
         {
             _unitOfWork = unitOfWork;
+            _mapper = mapper;
         }
 
         public async Task<bool> AddSubjectAsync(Subjectdto subjectdto)
         {
-            Subject subject = new Subject
-            {
-                SubjectId = Guid.NewGuid().ToString(),
-                Name = subjectdto.Name,
-                Description = subjectdto.Description,
-                Duration = subjectdto.Duration,
-                QuestionsNumber = subjectdto.QuestionsNumber,
-                total = subjectdto.total
-            };
+            var subject = _mapper.Map<Subject>(subjectdto);
 
-            return await _unitOfWork.SubjectRepository.AddAsync(subject);
+            await _unitOfWork.SubjectRepository.AddAsync(subject);
+            return await _unitOfWork.CompleteAsync() > 0;
         }
 
         public async Task<Subject> GetSubjectByIdAsync(string subjectId)
@@ -56,7 +52,8 @@ namespace ExamSystem.Application.Services
             existingSubject.QuestionsNumber = subjectdto.QuestionsNumber;
             existingSubject.total = subjectdto.total;
 
-            return await _unitOfWork.SubjectRepository.UpdateAsync(existingSubject);
+            await _unitOfWork.SubjectRepository.UpdateAsync(existingSubject);
+            return await _unitOfWork.CompleteAsync() > 0;
         }
 
         public async Task<bool> DeleteSubjectAsync(string subjectId)
@@ -65,7 +62,8 @@ namespace ExamSystem.Application.Services
             if (subject == null)
                 return false;
 
-            return await _unitOfWork.SubjectRepository.DeleteAsync(subject);
+            await _unitOfWork.SubjectRepository.DeleteAsync(subject);
+            return await _unitOfWork.CompleteAsync() > 0;
         }
 
         public async Task<IEnumerable<Subject>> GetAll(int page, int pageSize)
