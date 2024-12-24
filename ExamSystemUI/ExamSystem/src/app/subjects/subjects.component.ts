@@ -69,7 +69,14 @@ export class SubjectsComponent implements OnInit {
   }
 
   deleteSubject(subjectId: string){
-
+    this.subjectService.deleteSubject(subjectId).subscribe(
+      (data) => {
+        alert("subject deleted");
+      },
+      (error) => {
+        console.log(error);
+      }
+    );
   }
   
   addSubject(){

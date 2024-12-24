@@ -16,7 +16,7 @@ export interface Subject {
   providedIn: 'root',
 })
 export class SubjectService {
-  private baseUrl = 'http://localhost:5130/api/subject';
+  private baseUrl = 'http://localhost:5130/api/Subject';
 
   constructor(private http: HttpClient) {}
 
@@ -39,4 +39,21 @@ export class SubjectService {
     });
     return this.http.post(`${this.baseUrl}/Subject`, subject, { headers });
   }
+
+  updateSubject(subjectId: any, subject: any): Observable<any> {
+    const token = localStorage.getItem('authToken');
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${token}`,
+    });
+    return this.http.post(`${this.baseUrl}/Subject/${subjectId}`, subject, { headers });
+  }
+
+  deleteSubject(subjectId: any): Observable<any> {
+    const token = localStorage.getItem('authToken');
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${token}`,
+    });
+    return this.http.delete(`${this.baseUrl}/Subject/${subjectId}`, { headers });
+  }
+  
 }

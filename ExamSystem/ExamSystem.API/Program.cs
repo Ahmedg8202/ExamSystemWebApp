@@ -1,4 +1,5 @@
 using AutoMapper;
+using ExamSystem.API.Hubs;
 using ExamSystem.Application.DTOs;
 using ExamSystem.Application.Interfaces;
 using ExamSystem.Application.Mappers;
@@ -66,23 +67,7 @@ namespace ExamSystem.API
                 options.Password.RequiredLength = 6;
             });
 
-            //builder.Services.AddCors((options) => {
-            //    options.AddPolicy("DevCors", (corsBuilder) => {
-            //        corsBuilder.AllowAnyOrigin()
-            //        .AllowAnyMethod()
-            //        .AllowAnyHeader()
-            //        .AllowCredentials();
-            //    });
-
-            //    options.AddPolicy("ProdCors", (corsBuilder) => {
-            //        corsBuilder.WithOrigins("https://myProductionSite.com")
-            //        .AllowAnyMethod()
-            //        .AllowAnyHeader()
-            //        .AllowCredentials();
-            //    });
-            //});
-
-            builder.Services.AddAutoMapper(typeof(ExamMappers));
+            builder.Services.AddAutoMapper(typeof(Mappers));
 
             builder.Services.AddAuthentication(options =>
             {
@@ -114,21 +99,43 @@ namespace ExamSystem.API
                 options.AddPolicy("Student", policy => policy.RequireRole("Student"));
             });
 
-            builder.Services.AddAutoMapper(typeof(ExamMappers));
+            builder.Services.AddSignalR();
+
+            builder.Services.AddCors((options) =>
+            {
+                options.AddPolicy("DevCors", (corsBuilder) =>
+                {
+                    corsBuilder.WithOrigins("http://localhost:4200", "http://localhost:3000", "http://localhost:8000")
+                    .AllowAnyMethod()
+                    .AllowAnyHeader()
+                    .AllowCredentials();
+                });
+
+                options.AddPolicy("ProdCors", (corsBuilder) =>
+                {
+                    corsBuilder.WithOrigins("https://myProductionSite.com")
+                    .AllowAnyMethod()
+                    .AllowAnyHeader()
+                    .AllowCredentials();
+                });
+            });
 
             var app = builder.Build();
 
 
-            app.UseCors(c => c.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin());
+            //app.UseCors(c => c.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin());
+            
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
             {
+                app.UseCors("DevCors");
+
                 app.UseSwagger();
                 app.UseSwaggerUI();
             }
             else
             {
-                //app.UseCors("ProdCors");
+                app.UseCors("ProdCors");
                 app.UseHttpsRedirection();
             }
 
@@ -146,9 +153,11 @@ namespace ExamSystem.API
             app.UseAuthentication();
             app.UseAuthorization();
 
+            //          Server-Side      Client-Side
+            app.MapHub<NotificationHub>("notify-admin");
 
             app.MapControllers();
-
+            
             app.Run();
         }
     }

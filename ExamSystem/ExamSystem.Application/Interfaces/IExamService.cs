@@ -19,5 +19,6 @@ namespace ExamSystem.Application.Interfaces
         Task<bool> AddExam(Examdto examdto);
         Task<bool> UpdateExam(Examdto examdto);
         Task<bool> DeleteExam(string examId);
+        Task<bool> DeleteExamResult(string examResultId);
     }
 }

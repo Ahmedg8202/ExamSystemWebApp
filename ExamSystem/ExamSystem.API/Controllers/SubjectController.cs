@@ -56,7 +56,7 @@ namespace ExamSystem.API.Controllers
             return Ok(subjects);
         }
 
-        [Authorize(Roles = "Admin")]
+        //[Authorize(Roles = "Admin")]
         [HttpPut("Subject/{subjectId}")]
         public async Task<IActionResult> UpdateSubject(string subjectId, [FromBody] Subjectdto subjectdto)
         {

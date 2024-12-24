@@ -59,8 +59,12 @@ namespace ExamSystem.Application.Services
 
         public async Task<bool> DeleteQuestion(string questionId)
         {
-            return true;
-            //return await _unitOfWork.QuestionRepository.DeleteAsync(questionId);
+            var question = await _unitOfWork.QuestionRepository.GetByIdAsync(questionId);
+            if (question == null)
+                return false;
+
+            await _unitOfWork.QuestionRepository.DeleteAsync(question);
+            return await _unitOfWork.CompleteAsync() > 0;
         }
 
         public async Task<IEnumerable<Question>> GetAllQuestions(string subjectId)

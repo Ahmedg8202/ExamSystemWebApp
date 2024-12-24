@@ -123,13 +123,26 @@ namespace ExamSystem.API.Controllers
         }
 
         [Authorize(Roles = "Admin")]
-        [HttpDelete("delete/{examId}")]
+        [HttpDelete("deleteExam/{examId}")]
         public async Task<ActionResult> DeleteExam(string examId)
         {
             var success = await _examService.DeleteExam(examId);
             if (!success)
             {
                 return NotFound($"Exam with ID {examId} not found.");
+            }
+
+            return Ok();
+        }
+
+        [Authorize(Roles = "Admin")]
+        [HttpDelete("deleteExamResult/{examResultId}")]
+        public async Task<ActionResult> DeleteExamResult(string examResultId)
+        {
+            var success = await _examService.DeleteExamResult(examResultId);
+            if (!success)
+            {
+                return NotFound($"Exam with ID {examResultId} not found.");
             }
 
             return Ok();

@@ -1,8 +1,10 @@
 ﻿using AutoMapper;
+using ExamSystem.API.Hubs;
 using ExamSystem.Application.DTOs;
 using ExamSystem.Application.Interfaces;
 using ExamSystem.Core.Entites;
 using ExamSystem.Core.Interfaces;
+using Microsoft.AspNetCore.SignalR;
 
 namespace ExamSystem.Application.Services
 {
@@ -10,10 +12,11 @@ namespace ExamSystem.Application.Services
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
-
-        public ExamService(IUnitOfWork unitOfWork, IMapper mapper)
+        private readonly IHubContext<NotificationHub, IHub> _hubContext;
+        public ExamService(IUnitOfWork unitOfWork, IMapper mapper, IHubContext<NotificationHub, IHub> hubContext)
         {
             _unitOfWork = unitOfWork;
+            _hubContext = hubContext;
             _mapper = mapper;
         }
 
@@ -92,7 +95,20 @@ namespace ExamSystem.Application.Services
             await _unitOfWork.ExamResultRepository.AddAsync(examResult);
             if (await _unitOfWork.CompleteAsync() <= 0) return null;
 
-            return _mapper.Map<ExamResultdto>(examResult);
+
+            await _hubContext.Clients.All.ReceiveExamNotification($"{examdto.StudentId}" , "has submit exam");
+
+            return new ExamResultdto
+            {
+                SubjectId = examResult.SubjectId,
+                ExamResultId = examResult.ExamResultId,
+                DateTime = examResult.DateTime,
+                ExamId = examResult.ExamId,
+                Score = examResult.Score,
+                SubjectName = subjectName,
+                StudentId = examResult.StudentId,
+                Status = examResult.Status
+            };
         }
 
         public async Task<bool> AddExam(Examdto examdto)
@@ -129,8 +145,22 @@ namespace ExamSystem.Application.Services
 
         public async Task<bool> DeleteExam(string examId)
         {
-            return false; 
-            //return await _examGRepository.DeleteAsync(examId);
+            var exam = await _unitOfWork.ExamRepository.GetByIdAsync(examId);
+            if (exam == null)
+                return false;
+
+            await _unitOfWork.ExamRepository.DeleteAsync(exam);
+            return await _unitOfWork.CompleteAsync() > 0;
+        }
+
+        public async Task<bool> DeleteExamResult(string examResultId)
+        {
+            var examResult = await _unitOfWork.ExamResultRepository.GetByIdAsync(examResultId);
+            if (examResult == null)
+                return false;
+
+            await _unitOfWork.ExamResultRepository.DeleteAsync(examResult);
+            return await _unitOfWork.CompleteAsync() > 0;
         }
 
         public async Task<IEnumerable<ExamResultdto>> GetExamHistoryForStudent(string studentId)
@@ -144,15 +174,17 @@ namespace ExamSystem.Application.Services
             var subjectName = await getSubjectName(subjectId);
             var studentName = await getUserName(studentId);
 
-            var examResultDtos = _mapper.Map<IEnumerable<ExamResultdto>>(examResults);
-
-            foreach (var examResultDto in examResultDtos)
+            return examResults.Select(result => new ExamResultdto
             {
-                examResultDto.StudentName = studentName;
-                examResultDto.SubjectName = subjectName;
-            }
-
-            return examResultDtos;
+                ExamId = result.ExamId,
+                StudentId = result.StudentId,
+                SubjectId = result.SubjectId,
+                StudentName = studentName,
+                SubjectName = subjectName,
+                DateTime = result.DateTime,
+                Score = result.Score,
+                Status = result.Status
+            }).ToList();
         }
 
         private async Task<string> getUserName(string userId)

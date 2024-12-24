@@ -43,8 +43,6 @@ namespace ExamSystem.Application.Mappers
 
             CreateMap<Exam, ExamFromdb>()
                 .ForMember(dest => dest.SubjectName, opt => opt.MapFrom(src => src.Subject.Name));
-
-
         }
     }
 }

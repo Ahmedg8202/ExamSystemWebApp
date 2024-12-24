@@ -17,6 +17,7 @@ import { AdminGuard } from './auth/admin.guard';
 import { StudentGuard } from './auth/student.guard';
 import { LogoutComponent } from './auth/logout/logout.component';
 import { NewSubjectComponent } from './subjects/new-subject/new-subject.component';
+import { NotificationComponent } from './notification/notification.component';
 
 export const routes: Routes = [
     { path: '', component: HomeComponent },
@@ -33,5 +34,6 @@ export const routes: Routes = [
     { path: 'question', component:  QuestionComponent},
     { path: 'new-question/:subjectId', component:  NewQuestionComponent},
     { path: 'logout', component: LogoutComponent },
+    { path: 'notify', component: NotificationComponent}
 ];
 
