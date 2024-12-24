@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.SignalR;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.SignalR;
 
 namespace ExamSystem.API.Hubs
 {
@@ -6,31 +7,22 @@ namespace ExamSystem.API.Hubs
     {
         Task ReceiveExamNotification(string user, string message);
     }
+    [Authorize(Roles = "Admin")]
     public class NotificationHub: Hub<IHub>
     {
-        public void sendMessage(string user, string message)
+        public override Task OnConnectedAsync()
         {
-            Clients.All.ReceiveExamNotification(user, message);
+            if (Context.User.IsInRole("Admin"))
+            {
+                Groups.AddToGroupAsync(Context.ConnectionId, "Admins");
+            }
+
+            return base.OnConnectedAsync();
         }
-        //public async Task SendMessage()
-        //    => await Clients.All.SendAsync("Student submit an exam");
+        public async Task sendMessageAsync(string user, string message)
+        {
+            await Clients.Group("Admins").ReceiveExamNotification(user, message);
+        }
 
-        //public async Task SendMessage(string user, string message)
-        //{ 
-        //    await Clients.All.SendAsync("ReceiveMessage2", user, message); 
-        //}
-
-        //public async Task SendMessageToCaller(string user, string message)
-        //    => await Clients.Caller.SendAsync("ReceiveMessage3", user, message);
-
-        //public async Task SendMessageToGroup(string user, string message)
-        //    => await Clients.Group("SignalR Users").SendAsync("ReceiveMessage4", user, message);
-
-        //public async Task<string> WaitForMessage(string connectionId)
-        //{
-        //    var message = await Clients.Client(connectionId).InvokeAsync<string>(
-        //        "GetMessage");
-        //    return message;
-        //}
     }
 }

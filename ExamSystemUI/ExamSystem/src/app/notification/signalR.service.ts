@@ -7,8 +7,9 @@ export class SignalRService {
   private hubConnection!: signalR.HubConnection;
 
   startConnection() {
+    const token = localStorage.getItem('authToken');
     this.hubConnection = new signalR.HubConnectionBuilder()
-      .withUrl('http://localhost:5130/notify-admin') // Adjust based on your API's base URL
+      .withUrl('http://localhost:5130/notify-admin', {accessTokenFactory(){ return token!} }) // Adjust based on your API's base URL
       .withAutomaticReconnect()
       .build();
 

@@ -96,7 +96,7 @@ namespace ExamSystem.Application.Services
             if (await _unitOfWork.CompleteAsync() <= 0) return null;
 
 
-            await _hubContext.Clients.All.ReceiveExamNotification($"{examdto.StudentId}" , "has submit exam");
+            await _hubContext.Clients.All.ReceiveExamNotification($"{await getUserName(examdto.StudentId)}" , "has submit exam");
 
             return new ExamResultdto
             {
