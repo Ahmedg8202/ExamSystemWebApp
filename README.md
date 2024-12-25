@@ -9,15 +9,15 @@ An exam management system designed to streamline the process of exam creation, a
     
 2.  Technologies Used
     
-3.  Setup Instructions
+<!--3.  Setup Instructions-->
     
-4.  Usage
+3.  Usage
     
-5.  Architecture Overview
+4.  Architecture Overview
     
-6.  Future Enhancements
+5.  Future Enhancements
     
-7.  Contributors
+6.  Contributors
     
 
 
