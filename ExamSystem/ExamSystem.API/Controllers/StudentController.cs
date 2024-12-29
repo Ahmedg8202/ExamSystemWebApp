@@ -18,7 +18,7 @@ namespace ExamSystem.API.Controllers
         }
 
         [HttpGet("students")]
-        public async Task<IActionResult> GetAllStudents([FromQuery] int page, [FromQuery] int pageSize) {
+        public async Task<IActionResult> GetAllStudents([FromQuery] int page = 0, [FromQuery] int pageSize = 0) {
             var students = await _studentService.GetAll(page, pageSize);
             return Ok(students);
         }

@@ -3,6 +3,7 @@ using ExamSystem.Application.DTOs;
 using ExamSystem.Application.Interfaces;
 using ExamSystem.Core.Entites;
 using ExamSystem.Core.Interfaces;
+using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,6 +23,12 @@ namespace ExamSystem.Application.Services
             _mapper = mapper;
         }
 
+        public async Task<IEnumerable<Subject>> GetAll(int page, int pageSize)
+        {
+            var subjects = await _unitOfWork.SubjectRepository.GetAllAsync(page, pageSize);
+            return subjects;
+        }
+
         public async Task<bool> AddSubjectAsync(Subjectdto subjectdto)
         {
             var subject = _mapper.Map<Subject>(subjectdto);
@@ -35,22 +42,17 @@ namespace ExamSystem.Application.Services
             return await _unitOfWork.SubjectRepository.GetByIdAsync(subjectId);
         }
 
-        public async Task<IEnumerable<Subject>> GetAllSubjectsAsync(int page = 0, int pageSize = 0)
-        {
-            return await _unitOfWork.SubjectRepository.GetAllAsync(page, pageSize);
-        }
-
         public async Task<bool> UpdateSubjectAsync(string subjectId, Subjectdto subjectdto)
         {
             var existingSubject = await _unitOfWork.SubjectRepository.GetByIdAsync(subjectId);
             if (existingSubject == null)
                 return false;
 
-            existingSubject.Name = subjectdto.Name;
-            existingSubject.Description = subjectdto.Description;
-            existingSubject.Duration = subjectdto.Duration;
-            existingSubject.QuestionsNumber = subjectdto.QuestionsNumber;
-            existingSubject.total = subjectdto.total;
+            if (!subjectdto.Name.IsNullOrEmpty()) existingSubject.Name = subjectdto.Name;
+            if (!subjectdto.Description.IsNullOrEmpty()) existingSubject.Description = subjectdto.Description;
+            if (subjectdto.Duration > 0) existingSubject.Duration = subjectdto.Duration;
+            if (subjectdto.QuestionsNumber > 0) existingSubject.QuestionsNumber = subjectdto.QuestionsNumber;
+            if (subjectdto.total > 0) existingSubject.total = subjectdto.total;
 
             await _unitOfWork.SubjectRepository.UpdateAsync(existingSubject);
             return await _unitOfWork.CompleteAsync() > 0;
@@ -66,11 +68,6 @@ namespace ExamSystem.Application.Services
             return await _unitOfWork.CompleteAsync() > 0;
         }
 
-        public async Task<IEnumerable<Subject>> GetAll(int page, int pageSize)
-        {
-            var subjects = await _unitOfWork.SubjectRepository.GetAllAsync(page, pageSize);
-            return subjects;
-        }
     }
 
 }

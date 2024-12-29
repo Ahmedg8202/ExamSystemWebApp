@@ -11,7 +11,7 @@ namespace ExamSystem.Application.Interfaces
 {
     public interface IQuestionService
     {
-        Task<IEnumerable<Question>> GetAllQuestions(string subjectId);
+        Task<IEnumerable<Question>> GetAllQuestions(string subjectId, int page, int pageSize);
         Task<Question> GetQuestionById(string questionId);
         Task<bool> AddQuestion(Questiondto questiondto);
         Task<bool> UpdateQuestion(Questiondto questiondto);

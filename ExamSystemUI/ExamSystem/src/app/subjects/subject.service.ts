@@ -45,7 +45,7 @@ export class SubjectService {
     const headers = new HttpHeaders({
       'Authorization': `Bearer ${token}`,
     });
-    return this.http.post(`${this.baseUrl}/Subject/${subjectId}`, subject, { headers });
+    return this.http.put(`${this.baseUrl}/Subject/${subjectId}`, subject, { headers });
   }
 
   deleteSubject(subjectId: any): Observable<any> {

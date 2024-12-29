@@ -18,14 +18,5 @@ namespace ExamSystem.Infrastructure.Repositories
             _context = context;
         }
 
-        public async Task AddExamResult(ExamResult examResult)
-        {
-            await _context.AddAsync(examResult);
-        }
-
-        public async Task<List<ExamResult>> GetAll(string studentId)
-        {
-            return await _context.ExamResults.Where(er => er.StudentId == studentId).ToListAsync();
-        }
     }
 }

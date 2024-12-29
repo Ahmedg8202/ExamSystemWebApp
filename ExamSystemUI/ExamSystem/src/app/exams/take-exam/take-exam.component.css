@@ -1,6 +1,28 @@
-.formExam{
-    align-items: start;
-    justify-content: start;
-    display: flex;
-    flex-direction: column;
-}
+.question-card {
+    position: relative;
+    overflow: hidden;
+    animation: fadeIn 0.5s ease-in-out;
+  }
+  
+  .question-number {
+    width: 40px;
+    height: 40px;
+    line-height: 40px;
+    font-weight: bold;
+    font-size: 1.2rem;
+    top: -20px;
+    left: -20px;
+    z-index: 1;
+  }
+  
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  

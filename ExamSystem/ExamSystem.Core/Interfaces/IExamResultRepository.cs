@@ -9,7 +9,5 @@ namespace ExamSystem.Core.Interfaces
 {
     public interface IExamResultRepository: IGenericRepository<ExamResult>
     {
-        Task<List<ExamResult>> GetAll(string studentId);
-        Task AddExamResult(ExamResult examResult);
     }
 }

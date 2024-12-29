@@ -40,13 +40,10 @@ namespace ExamSystem.Infrastructure.Repositories
             return await _dbSet.FindAsync(id);
         }
 
-        public async Task<IEnumerable<T>> GetAllAsync(int page, int pageSize)
+        public async Task<IEnumerable<T>> GetAllAsync(int page = 1, int pageSize = 10)
         {
-            if (page <= 0 || pageSize <= 0)
-            {
-                return await _dbSet.ToListAsync();
-            }
             return await _dbSet
+                .OrderDescending()
                 .Skip((page - 1) * pageSize)
                 .Take(pageSize)
                 .ToListAsync();

@@ -17,13 +17,13 @@ namespace ExamSystem.API.Controllers
         }
 
         [HttpGet("AllSubjects")]
-        public async Task<IActionResult> AllSubjects([FromQuery] int page, [FromQuery] int pageSize)
+        public async Task<IActionResult> AllSubjects([FromQuery] int page = 1, [FromQuery] int pageSize = 10)
         {
             var result = await _subjectService.GetAll(page, pageSize);
             return Ok(result);
         }
 
-        [Authorize(Roles = "Admin")]
+        //[Authorize(Roles = "Admin")]
         [HttpPost("Subject")]
         public async Task<IActionResult> AddSubject([FromBody] Subjectdto subjectdto)
         {
@@ -48,14 +48,6 @@ namespace ExamSystem.API.Controllers
             return Ok(subject);
         }
 
-        [Authorize(Roles = "Admin")]
-        [HttpGet("Subjects")]
-        public async Task<IActionResult> GetAllSubjects(int page = 0, int pageSize = 0)
-        {
-            var subjects = await _subjectService.GetAllSubjectsAsync(page, pageSize);
-            return Ok(subjects);
-        }
-
         //[Authorize(Roles = "Admin")]
         [HttpPut("Subject/{subjectId}")]
         public async Task<IActionResult> UpdateSubject(string subjectId, [FromBody] Subjectdto subjectdto)
@@ -66,10 +58,10 @@ namespace ExamSystem.API.Controllers
                 return NotFound($"Subject with ID {subjectId} not found or failed to update.");
             }
 
-            return Ok("Subject updated successfully.");
+            return Ok();
         }
 
-        [Authorize(Roles = "Admin")]
+        //[Authorize(Roles = "Admin")]
         [HttpDelete("Subject/{subjectId}")]
         public async Task<IActionResult> DeleteSubject(string subjectId)
         {
@@ -79,7 +71,7 @@ namespace ExamSystem.API.Controllers
                 return NotFound($"Subject with ID {subjectId} not found or failed to delete.");
             }
 
-            return Ok("Subject deleted successfully.");
+            return Ok();
         }
     }
 }

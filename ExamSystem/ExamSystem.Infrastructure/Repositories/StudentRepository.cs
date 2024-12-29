@@ -38,20 +38,12 @@ namespace ExamSystem.Infrastructure.Repositories
                 .ToListAsync();
             var users = new List<IdentityUser> { };
 
-            if (page <= 0 || pageSize <= 0)
-            {
-                users = await _context.Users
-                   .Where(u => userIds.Contains(u.Id))
-                   .ToListAsync();
-            }
-            else
-            {
-                users = await _context.Users
-                    .Where(u => userIds.Contains(u.Id))
-                    .Skip((page - 1) * pageSize)
-                    .Take(pageSize)
-                    .ToListAsync();
-            }
+            users = await _context.Users
+                .OrderDescending()
+                .Where(u => userIds.Contains(u.Id))
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize)
+                .ToListAsync();
 
             return users.Select(u => new Student
             {

@@ -53,19 +53,9 @@ namespace ExamSystem.Infrastructure.Repositories
             return examQuestions;
         }
 
-        public async Task AddExamResultAsync(ExamResult result)
-        {
-            _context.ExamResults.Add(result);
-        }
-
         public async Task<List<Exam>> GetExamsBySubjectAsync(string subjectId)
         {
             return await _context.Exams.Where(e => e.SubjectId == subjectId).ToListAsync();
-        }
-
-        public Task AddQuestionAsync(Question question)
-        {
-            throw new NotImplementedException();
         }
 
         public Task<ExamResult> GetExamResultAsync(string studentId, string examId)
@@ -73,10 +63,18 @@ namespace ExamSystem.Infrastructure.Repositories
             throw new NotImplementedException();
         }
 
-        public async Task<IList<ExamResult>> GetExamHistoryAsync(string studentId)
+        public async Task<IList<ExamResult>> GetExamHistoryAsync(string studentId, int page, int pageSize)
         {
-            return await _context.ExamResults.Where(er => er.StudentId == studentId).ToListAsync();
+            return await _context.ExamResults
+                .Include(er => er.Exam)
+                .ThenInclude(ex => ex.Subject)
+                .Where(er => er.StudentId == studentId)
+                .OrderByDescending(er => er.DateTime)
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize)
+                .ToListAsync();
         }
+
 
     }
 

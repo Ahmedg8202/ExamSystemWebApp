@@ -20,6 +20,54 @@ namespace ExamSystem.Application.Services
             _mapper = mapper;
         }
 
+
+        public async Task<IEnumerable<ExamResultdto>> AllExamResults(int page, int pageSize)
+        {
+            var examResults = await _unitOfWork.ExamResultRepository.GetAllAsync(page, pageSize);
+
+            if (examResults == null || !examResults.Any())
+                return null;
+
+            var subjectId = examResults.FirstOrDefault().SubjectId;
+            var subjectName = await getSubjectName(subjectId);
+
+
+            var resultDtoList = new List<ExamResultdto>();
+
+            foreach (var result in examResults)
+            {
+                var studentName = await getUserName(result.StudentId);
+
+                resultDtoList.Add(new ExamResultdto
+                {
+                    ExamId = result.ExamId,
+                    StudentId = result.StudentId,
+                    SubjectId = result.SubjectId,
+                    StudentName = studentName,
+                    SubjectName = subjectName,
+                    DateTime = result.DateTime,
+                    Score = result.Score,
+                    Status = result.Status
+                });
+            }
+
+            return resultDtoList;
+        }
+        
+        public async Task<IEnumerable<ExamFromdb>> AllExams(int page, int pageSize)
+        {
+            var examFromDB = await _unitOfWork.ExamRepository.GetAllAsync(page, pageSize);
+
+            var exams = _mapper.Map<IEnumerable<ExamFromdb>>(examFromDB);
+
+            foreach (var exam in exams)
+            {
+                exam.SubjectName = await getSubjectName(exam.SubjectId);
+            }
+
+            return exams;
+        }
+        
         public async Task<ExamQuestiondto> GetRandomExam(string subjectId)
         {
             var examQuestions = await _unitOfWork.ExamRepository.GetRandomExamAsync(subjectId);
@@ -32,6 +80,27 @@ namespace ExamSystem.Application.Services
             examQuestionDto.Questions = _mapper.Map<List<QuestionExam>>(examQuestions);
 
             return examQuestionDto;
+        }
+        public async Task<IEnumerable<ExamResultdto>> GetExamHistoryForStudent(string studentId, int page, int pageSize)
+        {
+            var examResults = await _unitOfWork.ExamRepository.GetExamHistoryAsync(studentId, page, pageSize);
+
+            if (examResults == null || !examResults.Any())
+                return null;
+
+            var studentName = await getUserName(studentId);
+
+            return examResults.Select(result => new ExamResultdto
+            {
+                ExamId = result.ExamId,
+                StudentId = result.StudentId,
+                SubjectId = result.SubjectId,
+                StudentName = studentName,
+                SubjectName = result.Exam?.Subject?.Name,
+                DateTime = result.DateTime,
+                Score = result.Score,
+                Status = result.Status
+            }).ToList();
         }
 
 
@@ -54,20 +123,6 @@ namespace ExamSystem.Application.Services
                 SubjectName = exam.Subject.Name,
                 Questions = questions
             };
-        }
-
-        private async Task<int> calculateScore(List<question> questions)
-        {
-            int score = 0;
-            foreach (var question in questions)
-            {
-                var correctAnswerId = await _unitOfWork.QuestionRepository.GetCorrectAnswerId(question.QuestionId);
-                if (correctAnswerId == question.AnswerId)
-                {
-                    score++;
-                }
-            }
-            return (int)((score * 100.0) / questions.Count);
         }
 
         public async Task<ExamResultdto> SubmitExam(SubmitExamdto examdto)
@@ -163,28 +218,18 @@ namespace ExamSystem.Application.Services
             return await _unitOfWork.CompleteAsync() > 0;
         }
 
-        public async Task<IEnumerable<ExamResultdto>> GetExamHistoryForStudent(string studentId)
+        private async Task<int> calculateScore(List<question> questions)
         {
-            var examResults = await _unitOfWork.ExamRepository.GetExamHistoryAsync(studentId);
-
-            if (examResults == null || !examResults.Any())
-                return null;
-
-            var subjectId = examResults.FirstOrDefault().SubjectId;
-            var subjectName = await getSubjectName(subjectId);
-            var studentName = await getUserName(studentId);
-
-            return examResults.Select(result => new ExamResultdto
+            int score = 0;
+            foreach (var question in questions)
             {
-                ExamId = result.ExamId,
-                StudentId = result.StudentId,
-                SubjectId = result.SubjectId,
-                StudentName = studentName,
-                SubjectName = subjectName,
-                DateTime = result.DateTime,
-                Score = result.Score,
-                Status = result.Status
-            }).ToList();
+                var correctAnswerId = await _unitOfWork.QuestionRepository.GetCorrectAnswerId(question.QuestionId);
+                if (correctAnswerId == question.AnswerId)
+                {
+                    score++;
+                }
+            }
+            return (int)((score * 100.0) / questions.Count);
         }
 
         private async Task<string> getUserName(string userId)
@@ -199,86 +244,6 @@ namespace ExamSystem.Application.Services
             return subject.Name;
         }
 
-        public async Task<IEnumerable<ExamResultdto>> AllExamResults(int page, int pageSize)
-        {
-            var examResults = await _unitOfWork.ExamResultRepository.GetAllAsync(page, pageSize);
-
-            if (examResults == null || !examResults.Any())
-                return null;
-
-            var subjectId = examResults.FirstOrDefault().SubjectId;
-            var subjectName = await getSubjectName(subjectId);
-
-
-            var resultDtoList = new List<ExamResultdto>();
-
-            foreach (var result in examResults)
-            {
-                var studentName = await getUserName(result.StudentId);
-
-                resultDtoList.Add(new ExamResultdto
-                {
-                    ExamId = result.ExamId,
-                    StudentId = result.StudentId,
-                    SubjectId = result.SubjectId,
-                    StudentName = studentName,
-                    SubjectName = subjectName,
-                    DateTime = result.DateTime,
-                    Score = result.Score,
-                    Status = result.Status
-                });
-            }
-
-            return resultDtoList;
-        }
-        //public async Task<IEnumerable<ExamResultdto>> AllExamResults(int page, int pageSize)
-        //{
-        //    var examResults = await _unitOfWork.ExamResultRepository.GetAllAsync(page, pageSize);
-
-        //    if (examResults == null || !examResults.Any())
-        //        return null;
-
-        //    var resultDtoList = _mapper.Map<IEnumerable<ExamResultdto>>(examResults);
-
-        //    foreach (var result in resultDtoList)
-        //    {
-        //        result.StudentName = await getUserName(result.StudentId);
-        //        result.SubjectName = await getSubjectName(result.SubjectId);
-        //    }
-
-        //    return resultDtoList;
-        //}
-
-        //public async Task<IEnumerable<ExamFromdb>> AllExams()
-        //{
-        //    var examFromdDB =  await _unitOfWork.ExamRepository.GetAllAsync();
-        //    var exams = new List<ExamFromdb> { };
-        //    foreach(var exam in examFromdDB)
-        //    {
-        //        var name = await getSubjectName(exam.SubjectId);
-        //        exams.Add(new ExamFromdb
-        //        {
-        //            ExamId  = exam.ExamId,
-        //            SubjectId = exam.SubjectId,
-        //            SubjectName = name,
-        //            ExamQuestions = exam.ExamQuestions
-        //        });
-        //    }
-        //    return exams;
-        //}
-        public async Task<IEnumerable<ExamFromdb>> AllExams()
-        {
-            var examFromDB = await _unitOfWork.ExamRepository.GetAllAsync();
-
-            var exams = _mapper.Map<IEnumerable<ExamFromdb>>(examFromDB);
-
-            foreach (var exam in exams)
-            {
-                exam.SubjectName = await getSubjectName(exam.SubjectId);
-            }
-
-            return exams;
-        }
     }
 
 }

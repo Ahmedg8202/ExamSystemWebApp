@@ -13,7 +13,6 @@ namespace ExamSystem.Application.Interfaces
         Task<IEnumerable<Subject>> GetAll(int page, int pageSize);
         Task<bool> AddSubjectAsync(Subjectdto subjectdto);
         Task<Subject> GetSubjectByIdAsync(string subjectId);
-        Task<IEnumerable<Subject>> GetAllSubjectsAsync(int page, int pageSize);
         Task<bool> UpdateSubjectAsync(string subjectId, Subjectdto subjectdto);
         Task<bool> DeleteSubjectAsync(string subjectId);
     }

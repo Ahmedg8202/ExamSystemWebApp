@@ -1,34 +1,42 @@
-<div class="container">
-    <h2 class="text-center">Take Exam</h2>
-
+<div class="container mt-4">
+    <h2 class="text-center text-success">Take Exam</h2>
+  
     <!-- Random Exam Questions -->
-    <!-- class="w-100 d-flex align-items-center justify-content-center" -->
     <div *ngIf="randomExam && randomExam.questions.length > 0">
-        <form >
-            @for(question of randomExam.questions; track question.questionId){
-            <div>
-                <div class="p-4 shadow rounded bg-light mt-4">
-                    <h4>{{ question.text}}</h4>
-
-                    @for(answer of question.answers; track answer.answerId){
-                    <div class="card-body">
-                        <label>
-                            <input type="radio" name="question{{ question.questionId }}" [value]="answer.answerId" 
-                                (change)="onAnswerChange(question.questionId, answer.answerId)">
-                            {{ answer.text }}
-                        </label>
-                    </div>
-                }
-                </div>
+      <form>
+        <div *ngFor="let question of randomExam.questions; let i = index" class="card mt-3 shadow-sm">
+          <div class="card-header bg-success text-white">
+            <span class="fw-bold">Question {{ i + 1 }}:</span> {{ question.text }}
+          </div>
+          <div class="card-body bg-light">
+            @for (answer of question.answers; track answer.answerId) {
+            <div class="form-check">
+              <input
+                class="form-check-input"
+                type="radio"
+                name="question{{ question.questionId }}"
+                [value]="answer.answerId"
+                (change)="onAnswerChange(question.questionId, answer.answerId)"
+              />
+              <label class="form-check-label">{{ answer.text }}</label>
             </div>
             }
-
-            <button type="button" class="btn btn-primary mt-4 mb-4 w-100" [disabled]="isReadyToSubmit()" (click)="submitExam()">Submit Exam</button>
-        </form>
+          </div>
+        </div>
+        <button
+          type="button"
+          class="btn btn-success mt-4 w-100"
+          [disabled]="!isReadyToSubmit()"
+          (click)="submitExam()"
+        >
+          Submit Exam
+        </button>
+      </form>
     </div>
-
+  
     <!-- Loading State -->
-    <div *ngIf="!randomExam || randomExam.questions.length === 0">
-        <p>Loading random exam...</p>
+    <div *ngIf="!randomExam || randomExam.questions.length === 0" class="text-center mt-4">
+      <p class="text-muted">Loading random exam...</p>
     </div>
-</div>
+  </div>
+  

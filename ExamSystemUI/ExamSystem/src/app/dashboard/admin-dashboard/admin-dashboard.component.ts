@@ -23,7 +23,11 @@ export class AdminDashboardComponent {
   dashboard: Dashboard| null = null;
   examResults: any[] = [];
   students: {id: string, email: string, userName: string, active: true}[] = [];
-  filter = {
+  studentsFilter = {
+    page: 1,
+    pageSize: 10
+  };
+  resultsFilter = {
     page: 1,
     pageSize: 10
   };
@@ -55,7 +59,7 @@ export class AdminDashboardComponent {
   }
 
   getAllExamResults(){
-    this.examService.getAllExamsResults().subscribe({
+    this.examService.getAllExamsResults(this.resultsFilter).subscribe({
       next: (data) => {
         this.examResults = data;
         console.log(this.examResults);
@@ -66,8 +70,8 @@ export class AdminDashboardComponent {
     })
   }
   getAllStudents(){
-    console.log(this.filter.pageSize);
-    this.studentService.getAllStudents(this.filter).subscribe({
+    console.log(this.studentsFilter.pageSize);
+    this.studentService.getAllStudents(this.studentsFilter).subscribe({
       next: (data) => {
         this.students = data;
         console.log("students " , this.students);
@@ -84,13 +88,22 @@ export class AdminDashboardComponent {
   }
 
 
-  onPrevious() {
-    this.filter.page --;
+  onPreviousSudent() {
+    this.studentsFilter.page --;
     this.getAllStudents();
   }
-  onNext() {
-    this.filter.page ++;
+  onNextStudent() {
+    this.studentsFilter.page ++;
     this.getAllStudents();
+  }
+
+  onPreviousResult() {
+    this.resultsFilter.page --;
+    this.getAllExamResults();
+  }
+  onNextResult() {
+    this.resultsFilter.page ++;
+    this.getAllExamResults();
   }
 
 }

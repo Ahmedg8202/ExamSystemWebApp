@@ -12,8 +12,7 @@ namespace ExamSystem.Application.Interfaces
     public interface IAdminService
     {
         Task<Dashboarddto> Dashboard();
-        List<IdentityUser> AllStudent();
-        List<ExamResult> studentExams(string studentId);
+
         //Task EnableStudentAsync(Guid studentId, bool isEnabled);
     }
 }

@@ -10,19 +10,12 @@ namespace ExamSystem.Application.Services
 {
     public class AdminService : IAdminService
     {
-        private readonly IAdminRepository _adminRepository;
         private readonly IUnitOfWork _unitOfWork;
-        public AdminService(IAdminRepository adminRepository, IUnitOfWork unitOfWork)
+        public AdminService(IUnitOfWork unitOfWork)
         {
-            _adminRepository = adminRepository;
             _unitOfWork = unitOfWork;
 
         }
-        public List<IdentityUser> AllStudent()
-        {
-            throw new NotImplementedException();
-        }
-
         public async Task<Dashboarddto> Dashboard()
         {
             var examResults = await _unitOfWork.ExamResultRepository.GetAllAsync();
@@ -51,11 +44,6 @@ namespace ExamSystem.Application.Services
                 FailedExam = failedExams,
                 PassedExams = passedExams
             };
-        }
-
-        public List<ExamResult> studentExams(string studentId)
-        {
-            throw new NotImplementedException();
         }
     }
 }

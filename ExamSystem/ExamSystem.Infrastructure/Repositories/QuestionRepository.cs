@@ -27,11 +27,14 @@ namespace ExamSystem.Infrastructure.Repositories
                 .Select(a => a.AnswerId)
                 .FirstOrDefaultAsync();
         }
-        public async Task<List<Question>> GetAll(string subjectId)
+        public async Task<List<Question>> GetAll(string subjectId, int page, int pageSize)
         {
             return await _context.Questions
+                .OrderDescending()
                 .Where(q => q.SubjectId == subjectId)
                 .Include(q => q.Answers)
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize)
                 .ToListAsync();
         }
         public async Task<Question> GetQuestionById(string questionId)

@@ -71,24 +71,26 @@ export class ExamsService {
   }
 
   getAllSubjects(): Observable<Subject[]> {
-    const filter = { page: 0, pageSize: 0 };
-    const params = new HttpParams()
-          .set('page', filter.page)
-          .set('pageSize', filter.pageSize);
-    console.log("loading " + filter.page + " " + filter.pageSize);
-    return this.http.get<Subject[]>(`http://localhost:5130/api/Subject/AllSubjects`, { params });
+    return this.http.get<Subject[]>(`http://localhost:5130/api/Subject/AllSubjects`);
   }
 
-  getAllExamsResults(): Observable<ExamResult[]> {
+  getAllExamsResults(filter: any): Observable<ExamResult[]> {
     const token = localStorage.getItem('authToken');
     const headers = new HttpHeaders({
       'Authorization': `Bearer ${token}`,
     });
-    return this.http.get<ExamResult[]>(`${this.baseUrl}/History`,{ headers });
+    const params = new HttpParams()
+      .set('page', filter.page)
+      .set('pageSize', filter.pageSize);
+
+    return this.http.get<ExamResult[]>(`${this.baseUrl}/History`, { headers, params });
   }
 
-  getStudentHistory(id: string): Observable<ExamResult[]> {
-    return this.http.get<ExamResult[]>(`${this.baseUrl}/History/${id}`);
+  getStudentHistory(id: string, filter: any): Observable<any[]> {
+    const params = new HttpParams()
+      .set('page', filter.page)
+      .set('pageSize', filter.pageSize);
+    return this.http.get<any[]>(`${this.baseUrl}/History/${id}`, {params});
   }
   getRandomExam(subjectId: string): Observable<any> {
     const token = localStorage.getItem('authToken');

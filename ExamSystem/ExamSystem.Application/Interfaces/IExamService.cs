@@ -10,9 +10,9 @@ namespace ExamSystem.Application.Interfaces
 {
     public interface IExamService
     {
-        Task<IEnumerable<ExamResultdto>> GetExamHistoryForStudent(string studentId);
+        Task<IEnumerable<ExamResultdto>> GetExamHistoryForStudent(string studentId, int page, int pageSize);
         Task<IEnumerable<ExamResultdto>> AllExamResults(int page, int pageSize);
-        Task<IEnumerable<ExamFromdb>> AllExams();
+        Task<IEnumerable<ExamFromdb>> AllExams(int page, int pageSize);
         Task<ExamQuestiondto> GetRandomExam(string subjectId);
         Task<ExamQuestiondto> ExamById(string examId);
         Task<ExamResultdto> SubmitExam(SubmitExamdto exam);

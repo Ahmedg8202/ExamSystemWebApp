@@ -1,0 +1,80 @@
+<div class="container mt-4">
+    <div class="card">
+      <div class="card-header bg-primary text-white">
+        <h3>Update Subject</h3>
+      </div>
+      <div class="card-body">
+        <form (ngSubmit)="updateSubject()" *ngIf="subject">
+          <!-- Subject Name -->
+          <div class="mb-3">
+            <label for="name" class="form-label">Subject Name</label>
+            <input
+              type="text"
+              id="name"
+              class="form-control"
+              [(ngModel)]="subject.name"
+              name="name"
+              required
+            />
+          </div>
+  
+          <!-- Description -->
+          <div class="mb-3">
+            <label for="description" class="form-label">Description</label>
+            <textarea
+              id="description"
+              class="form-control"
+              rows="3"
+              [(ngModel)]="subject.description"
+              name="description"
+            ></textarea>
+          </div>
+  
+          <!-- Duration -->
+          <div class="mb-3">
+            <label for="duration" class="form-label">Duration (minutes)</label>
+            <input
+              type="number"
+              id="duration"
+              class="form-control"
+              [(ngModel)]="subject.duration"
+              name="duration"
+              required
+            />
+          </div>
+  
+          <!-- Questions Number -->
+          <div class="mb-3">
+            <label for="questionsNumber" class="form-label">Questions Number</label>
+            <input
+              type="number"
+              id="questionsNumber"
+              class="form-control"
+              [(ngModel)]="subject.questionsNumber"
+              name="questionsNumber"
+              required
+            />
+          </div>
+  
+          <!-- Total Marks -->
+          <div class="mb-3">
+            <label for="total" class="form-label">Total Marks</label>
+            <input
+              type="number"
+              id="total"
+              class="form-control"
+              [(ngModel)]="subject.total"
+              name="total"
+              required
+            />
+          </div>
+  
+          <!-- Submit Button -->
+          <div class="d-flex justify-content-end">
+            <button type="submit" class="btn btn-success">Update Subject</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+  

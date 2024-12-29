@@ -52,7 +52,7 @@
         <label>
           Show entries
         </label>
-          <select [(ngModel)]="filter.pageSize" (change)="getAllStudents()" class="form-select form-select-sm">
+          <select [(ngModel)]="studentsFilter.pageSize" (change)="getAllStudents()" class="form-select form-select-sm">
             <option value="1">1</option>
             <option value="10">10</option>
             <option value="20">20</option>
@@ -62,9 +62,9 @@
       </div>
     
       <div class="btn-group">
-        <a class="btn btn-primary btn-sm" (click)="onPrevious()">Previous</a>
-        <span class="btn btn-primary btn-sm active">{{ filter.page }} </span>
-        <a class="btn btn-primary btn-sm" (click)="onNext()">Next</a>
+        <a class="btn btn-primary btn-sm" (click)="onPreviousSudent()">Previous</a>
+        <span class="btn btn-primary btn-sm active">{{ studentsFilter.page }} </span>
+        <a class="btn btn-primary btn-sm" (click)="onNextStudent()">Next</a>
       </div>
     </div>
     
@@ -103,7 +103,7 @@
         <label>
           Show entries
         </label>
-          <select [(ngModel)]="filter.pageSize" (change)="getAllExamResults()" class="form-select form-select-sm">
+          <select [(ngModel)]="resultsFilter.pageSize" (change)="getAllExamResults()" class="form-select form-select-sm">
             <option value="1">1</option>
             <option value="10">10</option>
             <option value="20">20</option>
@@ -113,9 +113,9 @@
       </div>
     
       <div class="btn-group">
-        <a class="btn btn-primary btn-sm" (click)="onPrevious()">Previous</a>
-        <span class="btn btn-primary btn-sm active">{{ filter.page }}</span>
-        <a class="btn btn-primary btn-sm" (click)="onNext()">Next</a>
+        <a class="btn btn-primary btn-sm" (click)="onPreviousResult()">Previous</a>
+        <span class="btn btn-primary btn-sm active">{{ resultsFilter.page }}</span>
+        <a class="btn btn-primary btn-sm" (click)="onNextResult()">Next</a>
       </div>
     </div>
 

@@ -47,6 +47,10 @@ namespace ExamSystem.Infrastructure.Data
                 .WithMany(q => q.ExamQuestions)
                 .HasForeignKey(eq => eq.QuestionId);
 
+            modelBuilder.Entity<Question>()
+                .HasMany(q => q.Answers)
+                .WithOne()
+                .OnDelete(DeleteBehavior.Cascade);
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

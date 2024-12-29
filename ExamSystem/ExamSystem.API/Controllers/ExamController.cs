@@ -20,7 +20,7 @@ namespace ExamSystem.API.Controllers
 
         [Authorize(Roles = "Admin")]
         [HttpGet("History")]
-        public async Task<IActionResult> AllExamHistory([FromQuery] int page, [FromQuery] int pageSize)
+        public async Task<IActionResult> AllExamHistory([FromQuery] int page = 1, [FromQuery] int pageSize = 10)
         {
             var examHistory = await _examService.AllExamResults(page, pageSize);
 
@@ -34,9 +34,9 @@ namespace ExamSystem.API.Controllers
 
         [Authorize(Roles = "Admin")]
         [HttpGet("Exams")]
-        public async Task<IActionResult> AllExams()
+        public async Task<IActionResult> AllExams([FromQuery] int page = 1, [FromQuery] int pageSize = 10)
         {
-            var exams = await _examService.AllExams();
+            var exams = await _examService.AllExams(page, pageSize);
 
             if (exams == null || !exams.Any())
             {
@@ -47,9 +47,9 @@ namespace ExamSystem.API.Controllers
         }
 
         [HttpGet("History/{studentId}")]
-        public async Task<IActionResult> ExamHistory(string studentId)
+        public async Task<IActionResult> ExamHistory(string studentId, [FromQuery] int page = 1, [FromQuery] int pageSize = 10)
         {
-            var examHistory = await _examService.GetExamHistoryForStudent(studentId);
+            var examHistory = await _examService.GetExamHistoryForStudent(studentId, page, pageSize);
 
             if (examHistory == null || !examHistory.Any())
             {
@@ -122,7 +122,7 @@ namespace ExamSystem.API.Controllers
             return Ok();
         }
 
-        [Authorize(Roles = "Admin")]
+        //[Authorize(Roles = "Admin")]
         [HttpDelete("deleteExam/{examId}")]
         public async Task<ActionResult> DeleteExam(string examId)
         {
@@ -135,7 +135,7 @@ namespace ExamSystem.API.Controllers
             return Ok();
         }
 
-        [Authorize(Roles = "Admin")]
+        //[Authorize(Roles = "Admin")]
         [HttpDelete("deleteExamResult/{examResultId}")]
         public async Task<ActionResult> DeleteExamResult(string examResultId)
         {

@@ -71,6 +71,7 @@ export class ExamsComponent {
   }
 
   loadSubjects(): void {
+    
     console.log("load subjects");
     this.examService.getAllSubjects().subscribe(
       (data) => {

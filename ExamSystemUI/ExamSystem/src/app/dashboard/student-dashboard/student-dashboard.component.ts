@@ -14,9 +14,17 @@ import { CommonModule } from '@angular/common';
 })
 export class StudentDashboardComponent {
   subjects: Subject[] = [];
-
-  examHistory: ExamResult[] = [];
-
+  userId!: string;
+  examHistory: any[] = [];
+  subjectFilter = {
+    page: 1,
+    pageSize: 10
+  };
+  
+  HistoryFilter = {
+    page: 1,
+    pageSize: 10
+  };
   constructor(private router: Router, 
     private examService: ExamsService, 
     private authService: AuthService,
@@ -26,19 +34,28 @@ export class StudentDashboardComponent {
     this.dashboard();
   }
   dashboard() {
-    const userId = this.authService.getId();
-    this.examService.getAllSubjects().subscribe((data) => {
+    this.userId = this.authService.getId()!;
+
+    this.getAllSubjects();
+
+    this.studentHistory();
+  }
+
+  getAllSubjects() {
+    this.subjectService.getAllSubjects(this.subjectFilter).subscribe((data) => {
       this.subjects = data;
     }
-    )
+    );
+  }
 
-    this.examService.getStudentHistory(userId!).subscribe((data) => {      
+  studentHistory() {
+    this.examService.getStudentHistory(this.userId!, this.HistoryFilter).subscribe((data) => {
       console.log(data);
       this.examHistory = data;
     },
-    (error) => {
-      console.error('Error fetching exams:', error);
-    })
+      (error) => {
+        console.error('Error fetching exams:', error);
+      });
   }
 
   getSubjectName(subjectId: string) {

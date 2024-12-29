@@ -18,6 +18,7 @@ import { StudentGuard } from './auth/student.guard';
 import { LogoutComponent } from './auth/logout/logout.component';
 import { NewSubjectComponent } from './subjects/new-subject/new-subject.component';
 import { NotificationComponent } from './notification/notification.component';
+import { UpdateSubjectComponent } from './subjects/update-subject/update-subject.component';
 
 export const routes: Routes = [
     { path: '', component: HomeComponent },
@@ -27,6 +28,7 @@ export const routes: Routes = [
     { path: 'admin-Dashboard', component: AdminDashboardComponent, canActivate: [AdminGuard] },
     { path: 'subject', component:  SubjectsComponent, canActivate: [AdminGuard]},
     { path: 'new-subject', component:  NewSubjectComponent, canActivate: [AdminGuard]},
+    { path: 'update-subject/:subjectId', component:  UpdateSubjectComponent, canActivate: [AdminGuard]},
     { path: 'exams', component:  ExamsComponent},
     { path: 'take-exam/:subjectId', component:  TakeExamComponent, canActivate: [StudentGuard]},
     { path: 'new-exam/:subjectId', component:  NewExamComponent, canActivate: [AdminGuard]},
