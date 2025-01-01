@@ -30,6 +30,7 @@ export interface Exam {
   
   export class ExamQuestion {
     examId = '';
+    duration: number = 0;
     questions: Question[]=[];
   }
 

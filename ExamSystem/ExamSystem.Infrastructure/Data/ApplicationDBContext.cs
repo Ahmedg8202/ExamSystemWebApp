@@ -7,7 +7,7 @@ using System.Data;
 
 namespace ExamSystem.Infrastructure.Data
 {
-    public class ApplicationDBContext: IdentityDbContext
+    public class ApplicationDBContext: IdentityDbContext<ApplicationUser>
     {
         public ApplicationDBContext(DbContextOptions<ApplicationDBContext> options)
             : base(options)

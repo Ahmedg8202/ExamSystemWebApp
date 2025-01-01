@@ -15,7 +15,7 @@ namespace ExamSystem.API.Controllers
             _questionService = service;
         }
 
-        //[Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin")]
         [HttpGet("questions/{subjectId}")]
         public async Task<ActionResult> AllQuestions(string subjectId, [FromQuery] int page = 1, [FromQuery] int pageSize = 10)
         {

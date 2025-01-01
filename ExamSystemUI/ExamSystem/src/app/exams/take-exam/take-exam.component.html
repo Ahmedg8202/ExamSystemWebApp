@@ -1,8 +1,13 @@
 <div class="container mt-4">
     <h2 class="text-center text-success">Take Exam</h2>
-  
+
     <!-- Random Exam Questions -->
     <div *ngIf="randomExam && randomExam.questions.length > 0">
+        <!-- Countdown Timer -->
+      <div class="text-center">
+        <p>Time Remaining: {{ formattedTime }}</p>
+      </div>
+
       <form>
         <div *ngFor="let question of randomExam.questions; let i = index" class="card mt-3 shadow-sm">
           <div class="card-header bg-success text-white">
@@ -26,17 +31,23 @@
         <button
           type="button"
           class="btn btn-success mt-4 w-100"
-          [disabled]="!isReadyToSubmit()"
+          [disabled]="!isReadyToSubmit() || remainingTime <= 0"
           (click)="submitExam()"
         >
           Submit Exam
         </button>
       </form>
+      <!-- Time is up message -->
+      <div *ngIf="remainingTime <= 0" class="alert alert-danger text-center mt-4">
+        <p class="fw-bold">Time's up! Your exam has been submitted automatically.</p>
+      </div>
     </div>
   
     <!-- Loading State -->
     <div *ngIf="!randomExam || randomExam.questions.length === 0" class="text-center mt-4">
       <p class="text-muted">Loading random exam...</p>
     </div>
+
+  
   </div>
   

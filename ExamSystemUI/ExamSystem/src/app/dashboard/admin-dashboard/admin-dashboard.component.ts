@@ -22,7 +22,7 @@ export class AdminDashboardComponent {
   examDetails: Array<{ name: string; date: string; passed: number; failed: number }> = [];
   dashboard: Dashboard| null = null;
   examResults: any[] = [];
-  students: {id: string, email: string, userName: string, active: true}[] = [];
+  students: {id: string, email: string, userName: string, active: boolean}[] = [];
   studentsFilter = {
     page: 1,
     pageSize: 10
@@ -82,9 +82,19 @@ export class AdminDashboardComponent {
     })
   }
 
-  toggleActiveStatus(student: any): void {
-    student.active = !student.active; 
-    console.log(`Student ${student.userName} is now ${student.active ? 'Active' : 'Inactive'}`);
+ studentStatus(studentId: string, isEnabled: boolean): void {
+    this.adminService.studentStatus(studentId, isEnabled).subscribe({
+      next: (response) => {
+          console.log('Student status updated successfully:');
+          const student = this.students.find(s => s.id === studentId);
+          if (student) {
+            student.active = isEnabled;
+          }
+      },
+      error: (error) => {
+          console.error('Error updating student status:', error);
+      }
+  });
   }
 
 

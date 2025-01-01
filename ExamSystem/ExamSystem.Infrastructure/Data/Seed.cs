@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using ExamSystem.Core.Entites;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace ExamSystem.Infrastructure.Data
@@ -19,7 +20,7 @@ namespace ExamSystem.Infrastructure.Data
                 }
             }
 
-            var userManager = serviceProvider.GetRequiredService<UserManager<IdentityUser>>();
+            var userManager = serviceProvider.GetRequiredService<UserManager<ApplicationUser>>();
             var admins = new[]
             {
                 new { UserName = "admin1", Email = "admin1@example.com", Password = "Admin@123" },
@@ -32,7 +33,7 @@ namespace ExamSystem.Infrastructure.Data
                 var existingUser = await userManager.FindByEmailAsync(admin.Email);
                 if (existingUser == null)
                 {
-                    var newAdmin = new IdentityUser
+                    var newAdmin = new ApplicationUser
                     {
                         UserName = admin.UserName,
                         Email = admin.Email

@@ -11,6 +11,7 @@ namespace ExamSystem.Application.DTOs
         public string ExamId { get; set; }
         public string SubjectId { get; set; }
         public string SubjectName { get; set; }
+        public int Duration { get; set; }
         public List<QuestionExam> Questions { get; set; }
     }
 

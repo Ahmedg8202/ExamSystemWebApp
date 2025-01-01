@@ -36,7 +36,8 @@ namespace ExamSystem.Infrastructure.Repositories
                 .Where(ur => ur.RoleId == role.Id)
                 .Select(ur => ur.UserId)
                 .ToListAsync();
-            var users = new List<IdentityUser> { };
+
+            var users = new List<ApplicationUser> { };
 
             users = await _context.Users
                 .OrderDescending()
@@ -50,11 +51,11 @@ namespace ExamSystem.Infrastructure.Repositories
                 id = u.Id,
                 userName = u.UserName,
                 email = u.Email,
+                active = u.Active,
                 Result = "",
                 Token = ""
             }).ToList();
         }
-
 
         public async Task<Student> GetByIdAsync(string studentId)
         {
@@ -79,8 +80,19 @@ namespace ExamSystem.Infrastructure.Repositories
             {
                 id = user.Id,
                 userName = user.UserName,
-                email = user.Email
+                email = user.Email,
+                active = user.Active
             };
+        }
+
+        public async Task<ApplicationUser> GetApplicationUserById(string studentId)
+        {
+            return await _context.Users.FindAsync(studentId);
+        }
+
+        public void UpdateStudentStatus(ApplicationUser student)
+        {
+            _context.Users.Update(student);
         }
     }
 }

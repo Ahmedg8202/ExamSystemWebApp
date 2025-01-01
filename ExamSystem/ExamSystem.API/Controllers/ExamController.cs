@@ -122,7 +122,7 @@ namespace ExamSystem.API.Controllers
             return Ok();
         }
 
-        //[Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin")]
         [HttpDelete("deleteExam/{examId}")]
         public async Task<ActionResult> DeleteExam(string examId)
         {
@@ -135,7 +135,7 @@ namespace ExamSystem.API.Controllers
             return Ok();
         }
 
-        //[Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin")]
         [HttpDelete("deleteExamResult/{examResultId}")]
         public async Task<ActionResult> DeleteExamResult(string examResultId)
         {

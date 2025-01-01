@@ -73,7 +73,7 @@ namespace ExamSystem.Application.Services
             var examQuestions = await _unitOfWork.ExamRepository.GetRandomExamAsync(subjectId);
 
             if (examQuestions == null || !examQuestions.Any())
-                return null;
+                return null;    
 
             var examQuestionDto = _mapper.Map<ExamQuestiondto>(examQuestions.First());
 
@@ -102,7 +102,6 @@ namespace ExamSystem.Application.Services
                 Status = result.Status
             }).ToList();
         }
-
 
         public async Task<ExamQuestiondto> ExamById(string examId)
         {

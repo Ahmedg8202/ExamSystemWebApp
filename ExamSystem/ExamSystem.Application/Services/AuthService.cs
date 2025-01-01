@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using ExamSystem.Application.DTOs;
 using ExamSystem.Application.Interfaces;
+using ExamSystem.Core.Entites;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
@@ -17,14 +18,14 @@ namespace ExamSystem.Application.Services
 {
     public class AuthService : IAuthService
     {
-        private readonly UserManager<IdentityUser> _userManager;
+        private readonly UserManager<ApplicationUser> _userManager;
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly IConfiguration _configuration;
         private readonly ILogger<AuthService> _logger;
         private readonly IMapper _mapper;
 
         public AuthService(
-            UserManager<IdentityUser> userManager,
+            UserManager<ApplicationUser> userManager,
             RoleManager<IdentityRole> roleManager,
             IConfiguration configuration,
             ILogger<AuthService> logger,
@@ -55,7 +56,7 @@ namespace ExamSystem.Application.Services
                 return new Userdto { Result = "Email already exists." };
             }
 
-            var user = new IdentityUser
+            var user = new ApplicationUser
             {
                 UserName = registerdto.userName.Replace(" ", ""),
                 Email = registerdto.email
@@ -102,7 +103,7 @@ namespace ExamSystem.Application.Services
             return userdto;
         }
 
-        private async Task<string> GenerateToken(IdentityUser user)
+        private async Task<string> GenerateToken(ApplicationUser user)
         {
             var key = Encoding.UTF8.GetBytes(_configuration["JWTConfig:Key"]);
 

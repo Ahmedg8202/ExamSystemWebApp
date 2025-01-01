@@ -38,6 +38,7 @@ namespace ExamSystem.Application.Mappers
                 .ForMember(dest => dest.ExamId, opt => opt.MapFrom(src => src.ExamId))
                 .ForMember(dest => dest.SubjectId, opt => opt.MapFrom(src => src.Exam.SubjectId))
                 .ForMember(dest => dest.SubjectName, opt => opt.MapFrom(src => src.Exam.Subject.Name))
+                .ForMember(dest => dest.Duration, opt => opt.MapFrom(src => src.Exam.Subject.Duration))
                 .ForMember(dest => dest.Questions, opt => opt.Ignore());
 
 

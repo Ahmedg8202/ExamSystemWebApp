@@ -8,7 +8,7 @@
         <div class="card shadow border-primary">
           <div class="card-body text-center">
             <h5 class="card-title text-primary">Total Students</h5>
-            <h3>{{ dashboard?.studentNumber }}</h3>
+            <h3>{{ dashboard?.students }}</h3>
           </div>
         </div>
       </div>
@@ -18,7 +18,7 @@
         <div class="card shadow border-info">
           <div class="card-body text-center">
             <h5 class="card-title text-info">Completed Exams</h5>
-            <h3>{{ dashboard?.examCompleted }}</h3>
+            <h3>{{ dashboard?.completedExams }}</h3>
           </div>
         </div>
       </div>
@@ -38,7 +38,7 @@
         <div class="card shadow border-danger">
           <div class="card-body text-center">
             <h5 class="card-title text-danger">Failed Exams</h5>
-            <h3>{{ dashboard?.failedExam }}</h3>
+            <h3>{{ dashboard?.failedExams }}</h3>
           </div>
         </div>
       </div>
@@ -86,7 +86,7 @@
             <button 
           class="btn"
           [ngClass]="student.active ? 'btn-success' : 'btn-danger'"
-          (click)="toggleActiveStatus(student)"
+          (click)="studentStatus(student.id, !student.active)"
         >
           {{ student.active ? 'Active' : 'Inactive' }}
         </button>
@@ -131,15 +131,13 @@
         </tr>
       </thead>
       <tbody>
-          @for(exam of examResults; track exam.name){
-              <tr>
-                  <td>{{ 1 }}</td>
-                  <td>{{ exam.subjectName }}</td>
-                  <td>{{ exam.studentName }}</td>
-                  <td>{{ exam.dateTime | date}}</td>
-                  <td>{{ exam.status ? 'Pass' : 'Fail' }}</td>
-                </tr>
-          }
+        <tr *ngFor="let exam of examResults; let i = index">
+            <td>{{ i + 1 }}</td>
+            <td>{{ exam.subjectName }}</td>
+            <td>{{ exam.studentName }}</td>
+            <td>{{ exam.dateTime | date}}</td>
+            <td>{{ exam.status ? 'Pass' : 'Fail' }}</td>
+          </tr>
       </tbody>
     </table>
   </div>

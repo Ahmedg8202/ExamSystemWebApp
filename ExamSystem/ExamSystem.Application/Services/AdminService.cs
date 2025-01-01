@@ -4,6 +4,7 @@ using ExamSystem.Application.Validators;
 using ExamSystem.Core.Entites;
 using ExamSystem.Core.Interfaces;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 
 namespace ExamSystem.Application.Services
@@ -16,34 +17,21 @@ namespace ExamSystem.Application.Services
             _unitOfWork = unitOfWork;
 
         }
-        public async Task<Dashboarddto> Dashboard()
+        public async Task<Dashboard> Dashboard()
         {
-            var examResults = await _unitOfWork.ExamResultRepository.GetAllAsync();
+            return await _unitOfWork.ExamResultRepository.Dashboard();
+        }
 
-            if (examResults == null || !examResults.Any())
-                return null;
+        public async Task<bool> EnableStudentAsync(string studentId, bool isEnabled)
+        {
+            var student = await _unitOfWork.StudentRepository.GetApplicationUserById(studentId);
+            if (student == null)
+                return false;
 
-            var customExamResult = examResults.Select(result => new ExamResult
-            {
-                ExamId = result.ExamId,
-                StudentId = result.StudentId,
-                DateTime = result.DateTime,
-                Score = result.Score,
-                Status = result.Status
-            }).ToList();
+            student.Active = isEnabled;
 
-            var studentNumber = (await _unitOfWork.StudentRepository.GetAllAsync()).Count;
-            var examCompleted = examResults.Count();
-            var failedExams = examResults.Count(e => !e.Status);
-            var passedExams = examResults.Count(e => e.Status);
-
-
-            return new Dashboarddto {
-                StudentNumber = studentNumber,
-                ExamCompleted = examCompleted,
-                FailedExam = failedExams,
-                PassedExams = passedExams
-            };
+            _unitOfWork.StudentRepository.UpdateStudentStatus(student);
+            return await _unitOfWork.CompleteAsync() > 0;
         }
     }
 }

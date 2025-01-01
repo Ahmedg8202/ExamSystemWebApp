@@ -3,10 +3,10 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 export interface Dashboard{
-    studentNumber: number;
-    examCompleted: number;
+    students: number;
+    completedExams: number;
     passedExams: number;
-    failedExam: number;
+    failedExams: number;
 }
 
 @Injectable({
@@ -24,4 +24,16 @@ export class AdminService {
         });
         return this.http.get<Dashboard>(`${this.baseUrl}/Dashboard`, { headers });
     }
+
+    studentStatus(studentId: string, isEnabled: boolean): Observable<any> {
+        const token = localStorage.getItem('authToken');
+        const headers = new HttpHeaders({
+        'Authorization': `Bearer ${token}`,
+        });
+        return this.http.put<any>(
+            `${this.baseUrl}/studentStatus/${studentId}?isEnabled=${isEnabled}`, 
+            { headers }
+        );
+    }
+    
 }

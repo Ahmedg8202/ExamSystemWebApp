@@ -23,7 +23,7 @@ namespace ExamSystem.API.Controllers
             return Ok(result);
         }
 
-        //[Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin")]
         [HttpPost("Subject")]
         public async Task<IActionResult> AddSubject([FromBody] Subjectdto subjectdto)
         {
@@ -48,7 +48,7 @@ namespace ExamSystem.API.Controllers
             return Ok(subject);
         }
 
-        //[Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin")]
         [HttpPut("Subject/{subjectId}")]
         public async Task<IActionResult> UpdateSubject(string subjectId, [FromBody] Subjectdto subjectdto)
         {
@@ -61,7 +61,7 @@ namespace ExamSystem.API.Controllers
             return Ok();
         }
 
-        //[Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin")]
         [HttpDelete("Subject/{subjectId}")]
         public async Task<IActionResult> DeleteSubject(string subjectId)
         {

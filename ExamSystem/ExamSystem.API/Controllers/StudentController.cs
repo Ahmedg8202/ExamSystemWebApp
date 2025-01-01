@@ -1,5 +1,6 @@
 ﻿using ExamSystem.Application.DTOs;
 using ExamSystem.Application.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ExamSystem.API.Controllers
@@ -18,7 +19,7 @@ namespace ExamSystem.API.Controllers
         }
 
         [HttpGet("students")]
-        public async Task<IActionResult> GetAllStudents([FromQuery] int page = 0, [FromQuery] int pageSize = 0) {
+        public async Task<IActionResult> GetAllStudents([FromQuery] int page = 1, [FromQuery] int pageSize = 10) {
             var students = await _studentService.GetAll(page, pageSize);
             return Ok(students);
         }

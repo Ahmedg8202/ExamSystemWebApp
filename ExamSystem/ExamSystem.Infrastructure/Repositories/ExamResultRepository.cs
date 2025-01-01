@@ -18,5 +18,30 @@ namespace ExamSystem.Infrastructure.Repositories
             _context = context;
         }
 
+        public async Task<Dashboard> Dashboard()
+        {
+            var passed = await _context.ExamResults.CountAsync(e => e.Status);
+            var failed = await _context.ExamResults.Where(er => er.Status == false).CountAsync();
+
+            var studentRoleId = await _context.Roles
+                .Where(r => r.Name == "Student")
+                .Select(r => r.Id)
+                .FirstOrDefaultAsync();
+
+            int students = 0;
+
+            if (!string.IsNullOrEmpty(studentRoleId))
+                students = await _context.UserRoles
+                    .Where(ur => ur.RoleId == studentRoleId)
+                    .CountAsync();
+
+            return new Dashboard
+            {
+                Students = students,
+                CompletedExams = passed + failed,
+                PassedExams = passed,
+                FailedExams = failed
+            };
+        }
     }
 }

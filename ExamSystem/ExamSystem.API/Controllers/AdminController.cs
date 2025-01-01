@@ -25,9 +25,15 @@ namespace ExamSystem.API.Controllers
             return Ok(result);
         }
 
-        [HttpPost("Access")]
-        public IActionResult StudentStatus()
+        [Authorize(Roles = "Admin")]
+        [HttpPut("studentStatus/{studentId}")]
+        public async Task<IActionResult> StudentStatus(string studentId, bool isEnabled)
         {
+            var result = await _adminService.EnableStudentAsync(studentId, isEnabled);
+
+            if (!result)
+                return BadRequest();
+
             return Ok();
         }
 

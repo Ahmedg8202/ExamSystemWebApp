@@ -9,5 +9,6 @@ namespace ExamSystem.Core.Interfaces
 {
     public interface IExamResultRepository: IGenericRepository<ExamResult>
     {
+        Task<Dashboard> Dashboard();
     }
 }

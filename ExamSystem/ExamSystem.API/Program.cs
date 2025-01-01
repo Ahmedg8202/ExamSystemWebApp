@@ -48,7 +48,7 @@ namespace ExamSystem.API
             builder.Services.AddScoped<ISubjectService, SubjectService>();
             builder.Services.AddScoped<ISubjectRepository, SubjectRepository>();
             builder.Services.AddScoped<IAuthService, AuthService>();
-            builder.Services.AddIdentity<IdentityUser, IdentityRole>()
+            builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDBContext>()
                 .AddDefaultTokenProviders();
 

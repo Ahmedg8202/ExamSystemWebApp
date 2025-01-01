@@ -18,7 +18,6 @@ export class StudentService {
 
   constructor(private http: HttpClient) {}
 
-  // Get all students
   getAllStudents(filter: any): Observable<any[]> {
     const params = new HttpParams()
       .set('page', filter.page)
@@ -27,22 +26,18 @@ export class StudentService {
     return this.http.get<any[]>(`${this.baseUrl}students`, { params });
   }
 
-  // Get a single student by ID
   getStudentById(id: string): Observable<any> {
     return this.http.get<any>(`${this.baseUrl}/${id}`);
   }
 
-  // Add a new student
   addStudent(student: Student): Observable<Student> {
     return this.http.post<Student>(`${this.baseUrl}`, student);
   }
 
-  // Update an existing student
   updateStudent(id: string, student: Student): Observable<Student> {
     return this.http.put<Student>(`${this.baseUrl}/${id}`, student);
   }
 
-  // Delete a student by ID
   deleteStudent(id: string): Observable<void> {
     return this.http.delete<void>(`${this.baseUrl}/${id}`);
   }
